@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zolo Multi-Language Prism.js Test</title>
+    
+    <!-- Prism.js Core -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    
+    <!-- Load all 6 generated language definitions -->
+    <script src="../../generated/prism-zolo.js"></script>
+    <script src="../../generated/prism-zspark.js"></script>
+    <script src="../../generated/prism-zui.js"></script>
+    <script src="../../generated/prism-zschema.js"></script>
+    <script src="../../generated/prism-zconfig.js"></script>
+    <script src="../../generated/prism-zenv.js"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4ec9b0;
+            margin-bottom: 10px;
+        }
+        
+        .intro {
+            text-align: center;
+            color: #9cdcfe;
+            margin-bottom: 30px;
+        }
+        
+        .language-section {
+            margin: 40px 0;
+            padding: 20px;
+            background: #252526;
+            border-radius: 8px;
+            border-left: 4px solid #4ec9b0;
+        }
+        
+        .language-section h2 {
+            color: #4ec9b0;
+            margin-top: 0;
+        }
+        
+        .language-section .description {
+            color: #9cdcfe;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        
+        pre {
+            margin: 15px 0;
+            border-radius: 6px;
+            overflow: auto;
+        }
+        
+        pre[class*="language-"] {
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+        }
+        
+        .test-case {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2d2d30;
+            border-radius: 6px;
+        }
+        
+        .test-case h3 {
+            color: #dcdcaa;
+            margin-top: 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .legend {
+            background: #2d2d30;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .legend h2 {
+            color: #4ec9b0;
+            margin-top: 0;
+        }
+        
+        .legend-item {
+            display: inline-block;
+            margin: 10px 20px 10px 0;
+        }
+        
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border-radius: 3px;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 15px;
+            background: #2d2d30;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .status.success {
+            border-left: 4px solid #4ec9b0;
+        }
+        
+        .status.error {
+            border-left: 4px solid #f48771;
+        }
+    </style>
+</head>
+<body>
+    <h1>Zolo Multi-Language Syntax Highlighting Test</h1>
+    <p class="intro">
+        Visual validation for 6 file-type-specific Prism.js languages generated from zlsp SSOT
+    </p>
+    
+    <div class="status" id="status">
+        <strong>Loading languages...</strong>
+    </div>
+    
+    <div class="legend">
+        <h2>Color Legend</h2>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #c586c0;"></span>
+            <span>Root Keys (class-name)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #4ec9b0;"></span>
+            <span>Special Roots/Elements (function)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #9cdcfe;"></span>
+            <span>Properties/Nested Keys (variable)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #569cd6;"></span>
+            <span>Types (type)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #c586c0;"></span>
+            <span>Keywords (keyword)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #ce9178;"></span>
+            <span>Strings (string)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #b5cea8;"></span>
+            <span>Numbers (number)</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background: #6a9955;"></span>
+            <span>Comments (comment)</span>
+        </div>
+    </div>
+    
+    <!-- Generic Zolo -->
+    <div class="language-section">
+        <h2>1. Generic Zolo (REPL)</h2>
+        <p class="description">Language: <code>zolo</code> | Standard root/nested keys for REPL and generic files</p>
+        
+        <div class="test-case">
+            <h3>Regression Test: Settings_Page Bug</h3>
+<pre><code class="language-zolo"># This was the original bug - Settings_Page should be pink (root-key)
+Settings_Page:
+    title: Settings
+    enabled: true
+    description: "User preferences"
+</code></pre>
+        </div>
+    </div>
+    
+    <!-- zSpark -->
+    <div class="language-section">
+        <h2>2. zSpark (Application Entry Point)</h2>
+        <p class="description">Language: <code>zspark</code> | Files: <code>zSpark.*.zolo</code></p>
+        
+        <div class="test-case">
+            <h3>zSpark Root and Nested Keys</h3>
+<pre><code class="language-zspark"># zSpark: should be GREEN (function)
+# All nested keys should be LAVENDER (variable)
+zSpark:
+    title: MyApp
+    zState: Production
+    zScrap: true
+    zMode: zCLI
+    zPath: @.config.app
+</code></pre>
+        </div>
+    </div>
+    
+    <!-- zUI -->
+    <div class="language-section">
+        <h2>3. zUI (User Interface)</h2>
+        <p class="description">Language: <code>zui</code> | Files: <code>zUI.*.zolo</code></p>
+        
+        <div class="test-case">
+            <h3>zUI Special Roots and Elements</h3>
+<pre><code class="language-zui"># zMeta and zVaF: should be GREEN (function)
+zMeta:
+    zNavBar: true
+    zFooter: false
+
+# Component root
+zVaF:
+    # UI elements: should be BLUE/YELLOW (function)
+    zH1:
+        label: Welcome
+        _zClass: title-main
+    
+    zText:
+        content: "This is example text"
+        pause: 1000
+    
+    zMD:
+        content: "# Markdown Header"
+        format: standard
+    
+    # zWizard: control flow
+    zWizard:
+        step1:
+            zInput:
+                prompt: "Enter name"
+                required: true
+</code></pre>
+        </div>
+    </div>
+    
+    <!-- zSchema -->
+    <div class="language-section">
+        <h2>4. zSchema (Data Schema)</h2>
+        <p class="description">Language: <code>zschema</code> | Files: <code>zSchema.*.zolo</code></p>
+        
+        <div class="test-case">
+            <h3>zSchema Tables and Fields</h3>
+<pre><code class="language-zschema"># zMeta: should be GREEN (function)
+zMeta:
+    Data_Type: SQL
+    Data_Label: User Database
+    Schema_Name: app_db
+
+# Table name: should be PINK (root-key)
+users:
+    id:
+        type: int
+        pk: true
+        auto_increment: true
+    
+    username:
+        type: str
+        unique: true
+        required: true
+        min_length: 3
+        max_length: 50
+    
+    email:
+        type: str
+        pattern: "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$"
+</code></pre>
+        </div>
+    </div>
+    
+    <!-- zConfig -->
+    <div class="language-section">
+        <h2>5. zConfig (System Configuration)</h2>
+        <p class="description">Language: <code>zconfig</code> | Files: <code>zConfig.*.zolo</code></p>
+        
+        <div class="test-case">
+            <h3>zConfig Sections (Locked vs Editable)</h3>
+<pre><code class="language-zconfig"># zMachine: should be GREEN (function)
+zMachine:
+    # Locked sections: should be RED (constant)
+    machine_identity:
+        os: Darwin
+        hostname: my-mac
+        architecture: arm64
+    
+    python_runtime:
+        version: "3.12.4"
+        venv_path: ~/.venv
+    
+    # Editable sections: should be BLUE (variable)
+    user_preferences:
+        theme: dark
+        editor: vscode
+    
+    time_date_formatting:
+        timezone: UTC
+        date_format: ISO8601
+</code></pre>
+        </div>
+    </div>
+    
+    <!-- zEnv -->
+    <div class="language-section">
+        <h2>6. zEnv (Environment Configuration)</h2>
+        <p class="description">Language: <code>zenv</code> | Files: <code>zEnv.*.zolo</code></p>
+        
+        <div class="test-case">
+            <h3>zEnv Config and Navigation</h3>
+<pre><code class="language-zenv"># Config roots: should be PURPLE (keyword)
+DEPLOYMENT: Production
+DEBUG: false
+LOG_LEVEL: INFO
+
+# Z-uppercase roots: should be GREEN (function)
+ZNAVBAR:
+    # First-level items: should be ORANGE (type)
+    Home:
+        label: Home
+        zPath: @.home
+        icon: house
+    
+    Products:
+        label: Products
+        # zSub: should be PURPLE (keyword) for grandchild+
+        zSub:
+            Catalog: @.products.catalog
+            Featured: @.products.featured
+    
+    # zRBAC: should be RED (constant)
+    Admin:
+        zRBAC:
+            role: admin
+            permissions: ["read", "write"]
+
+ZSERVER_MOUNTS:
+    public: @.static
+    uploads: ~.data.uploads
+</code></pre>
+        </div>
+    </div>
+    
+    <script>
+        // Check if all languages are loaded
+        window.addEventListener('load', function() {
+            const languages = ['zolo', 'zspark', 'zui', 'zschema', 'zconfig', 'zenv'];
+            const statusDiv = document.getElementById('status');
+            
+            let allLoaded = true;
+            const missing = [];
+            
+            languages.forEach(lang => {
+                if (!Prism.languages[lang]) {
+                    allLoaded = false;
+                    missing.push(lang);
+                }
+            });
+            
+            if (allLoaded) {
+                statusDiv.className = 'status success';
+                statusDiv.innerHTML = `
+                    <strong>✓ All 6 languages loaded successfully!</strong><br>
+                    <small>Languages: ${languages.join(', ')}</small>
+                `;
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = `
+                    <strong>✗ Failed to load some languages</strong><br>
+                    <small>Missing: ${missing.join(', ')}</small>
+                `;
+            }
+            
+            // Re-highlight all code blocks
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>

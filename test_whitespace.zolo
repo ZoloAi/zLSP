@@ -1,0 +1,5 @@
+# Whitespace Object Test
+# Testing how parser handles extra whitespace in objects
+
+whitespace_obj: {  spaced  :  value  ,  another  :  item  }
+normal_obj: {spaced: value, another: item}

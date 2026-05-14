@@ -1,0 +1,236 @@
+"""
+Value Validators - Context-aware value validation
+
+Validates special values in different .zolo file types and generates diagnostics.
+Separates validation logic from token emission for cleaner architecture.
+"""
+
+from typing import Optional, TYPE_CHECKING
+
+from zlsp.lsp_types import Diagnostic, Range, Position
+from ..basic.error_formatter import ErrorFormatter, did_you_mean
+
+if TYPE_CHECKING:
+    from .token_emitter import TokenEmitter
+
+
+class ValueValidator:
+    """
+    Context-aware value validator for special .zolo file types.
+    
+    Validates values based on file type and key context, generating
+    appropriate diagnostics for invalid values.
+    """
+    
+    # Valid values for each special key
+    VALID_VALUES = {
+        'zMode': {'zCLI', 'zBifrost'},
+        'zState': {'Production', 'Development', 'Debug'},
+        'zScrap': {'DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD'},
+    }
+    
+    @staticmethod
+    def validate_zmode(value: str, line: int, start_pos: int) -> Optional[Diagnostic]:
+        """
+        Validate zMode value (zCLI/zBifrost).
+        
+        Args:
+            value: The value to validate
+            line: Line number
+            start_pos: Start position
+            
+        Returns:
+            Diagnostic if invalid, None if valid
+        """
+        valid_values = ValueValidator.VALID_VALUES['zMode']
+        if value not in valid_values:
+            msg = ErrorFormatter.format_invalid_value_error(
+                key='zMode',
+                value=value,
+                valid_values=sorted(valid_values),
+                line=line
+            )
+            return Diagnostic(
+                range=Range(
+                    start=Position(line=line, character=start_pos),
+                    end=Position(line=line, character=start_pos + len(value))
+                ),
+                message=msg,
+                severity=1,  # Error
+                source="zolo-lsp"
+            )
+        return None
+    
+    @staticmethod
+    def validate_deployment(value: str, line: int, start_pos: int) -> Optional[Diagnostic]:
+        """
+        Validate zState value (Production/Development).
+        
+        Args:
+            value: The value to validate
+            line: Line number
+            start_pos: Start position
+            
+        Returns:
+            Diagnostic if invalid, None if valid
+        """
+        valid_values = ValueValidator.VALID_VALUES['zState']
+        if value not in valid_values:
+            msg = ErrorFormatter.format_invalid_value_error(
+                key='zState',
+                value=value,
+                valid_values=sorted(valid_values),
+                line=line
+            )
+            return Diagnostic(
+                range=Range(
+                    start=Position(line=line, character=start_pos),
+                    end=Position(line=line, character=start_pos + len(value))
+                ),
+                message=msg,
+                severity=1,  # Error
+                source="zolo-lsp"
+            )
+        return None
+    
+    @staticmethod
+    def validate_logger(value: str, line: int, start_pos: int) -> Optional[Diagnostic]:
+        """
+        Validate logger value (valid log levels).
+        
+        Args:
+            value: The value to validate
+            line: Line number
+            start_pos: Start position
+            
+        Returns:
+            Diagnostic if invalid, None if valid
+        """
+        valid_values = ValueValidator.VALID_VALUES['zScrap']
+        if value not in valid_values:
+            msg = ErrorFormatter.format_invalid_value_error(
+                key='zScrap',
+                value=value,
+                valid_values=sorted(valid_values),
+                line=line
+            )
+            return Diagnostic(
+                range=Range(
+                    start=Position(line=line, character=start_pos),
+                    end=Position(line=line, character=start_pos + len(value))
+                ),
+                message=msg,
+                severity=1,  # Error
+                source="zolo-lsp"
+            )
+        return None
+    
+    @staticmethod
+    def validate_zvafile(value: str, line: int, start_pos: int) -> Optional[Diagnostic]:
+        """
+        Validate zVaFile value (must be zUI.*).
+        
+        Args:
+            value: The value to validate
+            line: Line number
+            start_pos: Start position
+            
+        Returns:
+            Diagnostic if invalid, None if valid
+        """
+        if not value.startswith('zUI.'):
+            return Diagnostic(
+                range=Range(
+                    start=Position(line=line, character=start_pos),
+                    end=Position(line=line, character=start_pos + len(value))
+                ),
+                message=f"Invalid zVaFile value: '{value}'. Must start with 'zUI.' (e.g., 'zUI.zBreakpoints').",
+                severity=1,  # Error
+                source="zolo-lsp"
+            )
+        return None
+    
+    @staticmethod
+    def validate_zblock(value: str, line: int, start_pos: int) -> Optional[Diagnostic]:
+        """
+        Validate zBlock value (free-form string for naming).
+        
+        Args:
+            value: The value to validate
+            line: Line number
+            start_pos: Start position
+            
+        Returns:
+            Diagnostic if invalid, None if valid (always None - zBlock values are plain strings)
+        """
+        # zBlock values are just plain strings for naming purposes
+        # No validation needed - any string is valid
+        return None
+    
+    @staticmethod
+    def validate_for_key(
+        key: str,
+        value: str,
+        line: int,
+        start_pos: int,
+        emitter: 'TokenEmitter'
+    ) -> bool:
+        """
+        Validate value based on key context and add diagnostic if invalid.
+        
+        Args:
+            key: The key name
+            value: The value to validate
+            line: Line number
+            start_pos: Start position
+            emitter: TokenEmitter to add diagnostics to
+            
+        Returns:
+            True if validation was performed (regardless of result), False if no validation for this key
+        """
+        diagnostic = None
+        
+        # zSpark-specific validations
+        if emitter.is_zspark_file:
+            if key == 'zMode':
+                diagnostic = ValueValidator.validate_zmode(value, line, start_pos)
+            elif key == 'zState':
+                diagnostic = ValueValidator.validate_deployment(value, line, start_pos)
+            elif key == 'zScrap':
+                diagnostic = ValueValidator.validate_logger(value, line, start_pos)
+            elif key == 'zVaFile':
+                diagnostic = ValueValidator.validate_zvafile(value, line, start_pos)
+            elif key == 'zBlock':
+                diagnostic = ValueValidator.validate_zblock(value, line, start_pos)
+            else:
+                return False  # No validation for this key
+            
+            if diagnostic:
+                emitter.diagnostics.append(diagnostic)
+            return True
+        
+        return False  # No validation performed
+
+
+# Helper function for backward compatibility
+def validate_special_value(
+    key: str,
+    value: str,
+    line: int,
+    start_pos: int,
+    emitter: 'TokenEmitter'
+) -> bool:
+    """
+    Convenience function to validate special values.
+    
+    Args:
+        key: The key name
+        value: The value to validate
+        line: Line number
+        start_pos: Start position
+        emitter: TokenEmitter to add diagnostics to
+        
+    Returns:
+        True if validation was performed, False otherwise
+    """
+    return ValueValidator.validate_for_key(key, value, line, start_pos, emitter)

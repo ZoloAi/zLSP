@@ -1,0 +1,1034 @@
+# ═══════════════════════════════════════════════════════════════
+# Zolo Default Theme
+# ═══════════════════════════════════════════════════════════════
+# Single source of truth for all editor color schemes
+# Version: 1.0.0
+# Author: Zolo Media
+# Email: info@zolo.media
+# ═══════════════════════════════════════════════════════════════
+
+name: "Zolo Default"
+description: "Default color scheme for .zolo files with LSP semantic tokens"
+author: "Zolo Media"
+author_email: "info@zolo.media"
+version: "1.0.0"
+
+# ═══════════════════════════════════════════════════════════════
+# Color Palette
+# ═══════════════════════════════════════════════════════════════
+# Define colors once in multiple formats for editor compatibility
+# All editors will use these same colors for consistency
+#
+# ORGANIZATION:
+#   1. BASIC SYNTAX COLORS (universal, non-zolo-specific)
+#   2. ZOLO-SPECIFIC COLORS (zOS files & conventions)
+# ═══════════════════════════════════════════════════════════════
+
+palette:
+  # 1. BASIC SYNTAX COLORS (Universal YAML-like Highlighting)
+  light_cream: #strings
+    name: "Light Cream"
+    hex: "#fffbcb"
+    ansi: 230
+    rgb: [255, 251, 203]
+    description: "Soft cream for string values"
+  
+  dark_orange: #numeric
+    name: "Dark Orange"
+    hex: "#FF8C00"
+    ansi: 214
+    rgb: [255, 140, 0]
+    description: "Vibrant orange for numeric values"
+  
+  deep_blue: #boolean/null
+    name: "Deep Blue"
+    hex: "#d7d7ff"
+    ansi: 189
+    rgb: [215, 215, 255]
+    description: "Deep blue for boolean/null values"
+  
+  white: #colons after keys
+    name: "White"
+    hex: "#ffffff"
+    ansi: 15
+    rgb: [255, 255, 255]
+    description: "White for colons after root/nested keys"
+  
+  soft_yellow: #structural
+    name: "Soft Yellow"
+    hex: "#ffff5f"
+    ansi: 227
+    rgb: [255, 255, 95]
+    description: "Soft yellow for commas, type hint parens"
+  
+  magenta_brackets: #array/list brackets
+    name: "Magenta"
+    hex: "#ff00ff"
+    ansi: 200
+    rgb: [255, 0, 255]
+    description: "Magenta for array/list brackets [ ]"
+  
+  magenta: #object braces { }
+    name: "Bright Yellow"
+    hex: "#ffff00"
+    ansi: 226
+    rgb: [255, 255, 0]
+    description: "Bright yellow for object braces { }"
+  
+  lavender: #typehints
+    name: "Lavender"
+    hex: "#af87ff"
+    ansi: 141
+    rgb: [175, 135, 255]
+    description: "Lavender for type hint text (int, bool, float, str)"
+  
+  pale_lavender:
+    name: "Pale Lavender"
+    hex: "#87d7ff"
+    ansi: 117
+    rgb: [135, 215, 255]
+    description: "Muted lavender for type hints (int, bool, float, str)"
+  
+  gray: # Comments
+    name: "Gray"
+    hex: "#626262"
+    ansi: 241
+    rgb: [98, 98, 98]
+    description: "Medium gray for comments (good on black bg)"
+  
+  bright_orange: #escape sequences
+    name: "Bright Red"
+    hex: "#ff0000"
+    ansi: 196
+    rgb: [255, 0, 0]
+    description: "Bright red for escape sequences and error indicators"
+  
+  # 2. ZOLO-SPECIFIC COLORS (zOS Conventions)
+  soft_blue: #Regular zBlocks (root keys)
+    name: "Soft Blue"
+    hex: "#87d700"
+    ansi: 112
+    rgb: [135, 215, 0]
+    description: "Soft blue for root-level keys (industry convention)"
+  
+  salmon_orange: #Other hierarchy markers
+    name: "Salmon Orange"
+    hex: "#ffaf87"
+    ansi: 216
+    rgb: [255, 175, 135]
+    description: "Warm orange for znavbar, zsparkSpecialValue"
+  
+  mint_green: #Nested keys
+    name: "Mint Green"
+    hex: "#87ffaf"
+    ansi: 115
+    rgb: [135, 255, 175]
+    description: "Light mint for nested keys (cool, distinct from root)"
+  
+  golden_yellow: #zDispatch event keys
+    name: "Golden Yellow"
+    hex: "#ffd787"
+    ansi: 222
+    rgb: [255, 215, 135]
+    description: "Golden yellow for zDispatch event keys (zDialog, zData, zCRUD)"
+  
+  light_green: #Unique zBlocks
+    name: "Light Green"
+    hex: "#87d787"
+    ansi: 114
+    rgb: [135, 215, 135]
+    description: "Light green for zOS root keys (zMeta, zSpark, zConfig)"
+  
+  orange_red: # zUI Element Keys
+    name: "Orange Red"
+    hex: "#ff5f00"
+    ansi: 202
+    rgb: [255, 95, 0]
+    description: "Orange-red for UI element keys (zImage, zText, etc.)"
+  
+  bright_yellow: # Env States
+    name: "Bright Yellow"
+    hex: "#ffff00"
+    ansi: 226
+    rgb: [255, 255, 0]
+    description: "Bright yellow for environment/config constants (PROD, DEBUG)"
+    
+  # Bifrost & zPath (Cyan Family)
+  dark_cyan:
+    name: "Bright Cyan"
+    hex: "#00ffff"
+    ansi: 51
+    rgb: [0, 255, 255]
+    description: "Bright cyan for Bifrost underscore keys (_zClass, _zId) and zPath values"
+  
+  # zMachine & Locked Items (Red Family)
+  dark_red:
+    name: "Dark Red"
+    hex: "#d70000"
+    ansi: 160
+    rgb: [215, 0, 0]
+    description: "Dark red for locked/restricted items (zMachine auto-detected keys)"
+  
+  # Reserved/Unused
+  test_blue:
+    name: "Test Blue"
+    hex: "#0000d7"
+    ansi: 20
+    rgb: [0, 0, 215]
+    description: "Test color (currently unused, reserved for future use)"
+
+# ═══════════════════════════════════════════════════════════════
+# Semantic Token Styles
+# ═══════════════════════════════════════════════════════════════
+# Map LSP semantic token types to colors and styles
+# These mappings are editor-agnostic
+#
+# ORGANIZATION:
+#   1. Generic Keys (root, nested)
+#   2. zSchema File Tokens
+#   3. zUI File Tokens
+#   4. zEnv File Tokens
+#   5. zConfig File Tokens
+#   6. zSpark File Tokens
+#   7. Value Tokens (strings, numbers, booleans)
+#   8. Type Hints
+#   9. Structural Tokens (brackets, braces, punctuation)
+#   10. Comments
+# ═══════════════════════════════════════════════════════════════
+
+tokens:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 1. Generic Keys (Non-Kernel Files)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  rootKey:
+    color: soft_blue
+    style: none
+    description: "Top-level keys in non-zOS files (app_name, server, features)"
+  
+  nestedKey:
+    color: mint_green
+    style: none
+    description: "Standard nested keys (host, port, ssl)"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 2. zSchema.*.zolo File Tokens
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  zmetaKey:
+    color: light_green
+    style: none
+    description: "zMeta root key in zUI/zSchema files (Zolo convention)"
+  
+  zosDataKey:
+    color: lavender
+    style: none
+    description: "zData keys under zMeta in zSchema files (Data_Type, Data_Label, Data_Source, Schema_Name, zMigration, zMigrationVersion)"
+  
+  zschemaPropertyKey:
+    color: lavender
+    style: none
+    description: "Field property keys at indent 4 in zSchema files (type, pk, auto_increment, unique, required, default, rules, zHash, comment)"
+  
+  # TODO: Add zschemaNestedPropertyKey for indent 6+ (format, min_length, max_length under rules:)
+  # This will use a lighter/faded lavender color for visual hierarchy
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 3. zUI.*.zolo File Tokens
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  bifrostKey:
+    color: dark_cyan
+    style: none
+    description: "Bifrost underscore keys in zUI files (_zClass, _zId)"
+  
+  uiElementKey:
+    color: orange_red
+    style: none
+    description: "UI element keys in zUI files (zImage, zText, zURL, zH1-zH6, zNavBar, zUL, zOL, zDL)"
+  
+  dispatchKey:
+    color: golden_yellow
+    style: none
+    description: "zDispatch event keys (zDialog, zData, zCRUD, zLogin)"
+  
+  controlFlowKey:
+    color: light_green
+    style: none
+    description: "Control flow construct keys (zWizard for sequential UI flows)"
+  
+  uiElementPropertyKey:
+    color: lavender
+    style: none
+    description: "Property keys inside UI elements (src, label, color)"
+  
+  zsubKey:
+    color: lavender
+    style: none
+    description: "zSub key in zUI/zEnv files at grandchild+ level (indent >= 4)"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 4. zEnv.*.zolo File Tokens
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  zenvConfigKey:
+    color: lavender
+    style: none
+    description: "Config root keys in zEnv files (DEPLOYMENT, DEBUG, LOG_LEVEL)"
+  
+  znavbarNestedKey:
+    color: salmon_orange
+    style: none
+    description: "First-level nested keys under ZNAVBAR in zEnv files (not grandchildren)"
+  
+  zrbacKey:
+    color: bright_orange
+    style: none
+    description: "zRBAC access control key in zEnv/zUI files (child of any key)"
+  
+  zrbacOptionKey:
+    color: lavender
+    style: none
+    description: "zKey modifiers in zEnv/zUI files (^, ~, !, *)"
+  
+  envConfigValue:
+    color: bright_yellow
+    style: none
+    description: "Environment/config constants (PROD, DEBUG, INFO, ERROR, WARN)"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 5. zConfig.*.zolo File Tokens
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  zconfigKey:
+    color: light_green
+    style: none
+    description: "z-prefixed root keys in zConfig files (zMachine, zPreferences)"
+  
+  zmachineEditableKey:
+    color: deep_blue
+    style: none
+    description: "Editable section headers under zMachine (user_preferences, time_date_formatting)"
+  
+  zmachineLockedKey:
+    color: dark_red
+    style: none
+    description: "Locked section headers under zMachine (machine_identity, python_runtime, cpu)"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 6. zSpark.*.zolo File Tokens
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  zsparkKey:
+    color: light_green
+    style: none
+    description: "zSpark root key in zSpark files"
+  
+  zsparkNestedKey:
+    color: lavender
+    style: none
+    description: "All nested keys under zSpark root (zMode, zVaFile, zBlock)"
+  
+  zconfigNestedKey:
+    color: lavender
+    style: none
+    description: "All nested keys under zMachine root in zConfig files"
+  
+  zsparkModeValue:
+    color: light_green
+    style: none
+    description: "zMode value in zSpark files (zCLI/zBifrost) - bright red"
+  
+  zsparkVaFileValue:
+    color: light_green
+    style: none
+    description: "zVaFile value in zSpark files (zUI.*, zSchema.*) - dark green"
+  
+  zsparkSpecialValue:
+    color: salmon_orange
+    style: none
+    description: "zBlock value in zSpark files - salmon orange"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 7. Value Tokens (Strings, Numbers, Booleans)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  string:
+    color: light_cream
+    style: none
+    description: "Standard string values"
+  
+  versionString:
+    color: light_cream
+    style: none
+    description: "Version numbers (1.0.0, 2.1.3-beta, v3.12.4)"
+  
+  timeString:
+    color: light_cream
+    style: none
+    description: "Time values (14:30:00, 09:15:30)"
+  
+  timestampString:
+    color: light_cream
+    style: none
+    description: "Timestamp values (2024-01-06T14:30:00, ISO 8601)"
+  
+  ratioString:
+    color: light_cream
+    style: none
+    description: "Ratio values (16:9, 4:3, 21:9)"
+  
+  number:
+    color: dark_orange
+    style: none
+    description: "Numeric values (8080, 100, 3.14, -42)"
+  
+  boolean:
+    color: deep_blue
+    style: none
+    description: "Boolean values (true, false)"
+  
+  "null":
+    color: deep_blue
+    style: none
+    description: "Null values (null)"
+  
+  zpathValue:
+    color: dark_cyan
+    style: none
+    description: "zPath values in zOS files (@.logs, ~.config, $.env)"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 8. Type Hints
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  typeHint:
+    color: pale_lavender
+    style: none
+    description: "Type hint text (int, bool, float, str, list, dict)"
+  
+  typeHintParen:
+    color: white
+    style: none
+    description: "Type hint parentheses ( )"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 9. Structural Tokens (Brackets, Braces, Punctuation)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  bracketStructural:
+    color: magenta_brackets
+    style: none
+    description: "Array/list brackets [ ] (outside strings)"
+  
+  braceStructural:
+    color: magenta
+    style: none
+    description: "Object/dict braces { } (outside strings)"
+  
+  stringBracket:
+    color: light_pink
+    style: none
+    description: "Brackets [ ] inside string values"
+  
+  stringBrace:
+    color: magenta
+    style: none
+    description: "Braces { } inside string values"
+  
+  colon:
+    color: white
+    style: none
+    description: "Colon separator (:) after root/nested keys"
+  
+  comma:
+    color: soft_yellow
+    style: none
+    description: "Comma separator (,)"
+  
+  escapeSequence:
+    color: bright_orange
+    style: none
+    description: "Escape sequences in strings (\\n, \\t, \\uXXXX)"
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 10. Comments
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  comment:
+    color: gray
+    style: italic
+    description: "Single-line comments (#) and inline comments"
+
+# ═══════════════════════════════════════════════════════════════
+# Editor-Specific Overrides (Optional)
+# ═══════════════════════════════════════════════════════════════
+# Use sparingly - only when an editor requires special handling
+
+overrides:
+  vim:
+    # Vim-specific: Clear conflicting default groups
+    clearGroups: ['Identifier', 'Keyword', 'Constant', 'Special']
+  
+  vscode:
+    # VS Code-specific overrides (if needed in future)
+    # Example: scope mappings, workbench integration
+    
+  cursor:
+    # Cursor-specific overrides (if needed in future)
+
+# ═══════════════════════════════════════════════════════════════
+# Theme Metadata
+# ═══════════════════════════════════════════════════════════════
+
+metadata:
+  compatibility:
+    terminal: true       # Works in terminal
+    gui: true           # Works in GUI
+    truecolor: true     # Supports 24-bit color
+    ansi256: true       # Supports 256-color ANSI
+    ansi16: false       # Not optimized for 16-color
+  
+  variants:
+    current: "default"
+    planned: ["high_contrast", "deuteranopia_friendly"]
+
+# ═══════════════════════════════════════════════════════════════
+# Code Actions (LSP Quick Fixes & Refactorings)
+# ═══════════════════════════════════════════════════════════════
+# Define LSP code actions as data (not hardcoded in Python)
+# Framework reads this config and generates actions dynamically
+#
+# PHILOSOPHY:
+#   Code actions = Configuration (SSOT), not code
+#   Same approach as colors and tokens
+#   Community-friendly: Non-developers can add/modify actions
+#
+# BENEFITS:
+#   - Easy to customize per-project or per-user
+#   - Version-controlled with themes
+#   - A/B testable (enable/disable variants)
+#   - New actions in ~15 min (just edit YAML!)
+# ═══════════════════════════════════════════════════════════════
+
+code_actions:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 1. Add Type Hint Action
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  add_type_hint:
+    enabled: true
+    id: "zolo.addTypeHint"
+    title: "Add type hint comment"
+    description: "Automatically add #> type <# based on value pattern"
+    category: "quickfix"
+    priority: 1  # Higher = shown first
+    
+    # When to show this action (triggers)
+    triggers:
+      # Show when diagnostic contains these phrases
+      diagnostics:
+        - pattern: "type hint"
+          case_sensitive: false
+        - pattern: "type annotation"
+          case_sensitive: false
+        - pattern: "consider adding type"
+          case_sensitive: false
+      
+      # Future: Could also trigger on cursor position, file patterns, etc.
+      # cursor_on: "key_with_value"
+      # file_patterns: ["*.zolo"]
+    
+    # How to generate the hint (pattern matching)
+    execution:
+      type: "insert_at_end_of_line"
+      
+      # Patterns to detect type from value
+      patterns:
+        # String values (quoted)
+        - condition: "value_contains_quotes"
+          match_regex: '["''].*["'']'
+          hint: "#> str <#"
+          
+        # Boolean values
+        - condition: "value_is_boolean"
+          match_values: ["true", "false", "True", "False"]
+          hint: "#> bool <#"
+          
+        # Integer values
+        - condition: "value_is_integer"
+          match_regex: '^-?\d+$'
+          hint: "#> int <#"
+          
+        # Float values
+        - condition: "value_is_float"
+          match_regex: '^-?\d+\.\d+$'
+          hint: "#> float <#"
+          
+        # List values (starts with [)
+        - condition: "value_starts_with_bracket"
+          match_regex: '^\s*\['
+          hint: "#> list <#"
+          
+        # Dict values (starts with {)
+        - condition: "value_starts_with_brace"
+          match_regex: '^\s*\{'
+          hint: "#> dict <#"
+        
+        # zPath values (@, ~, $)
+        - condition: "value_is_zpath"
+          match_regex: '^[@~$]\.'
+          hint: "#> zPath <#"
+        
+        # Null values
+        - condition: "value_is_null"
+          match_values: ["null", "None", "nil"]
+          hint: "#> None <#"
+        
+        # Default fallback
+        - condition: "default"
+          hint: "#> Any <#"
+      
+      # Formatting options
+      format:
+        padding_before: "  "  # Two spaces before hint
+        padding_after: ""
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 2. Fix Indentation Action
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  fix_indentation:
+    enabled: true
+    id: "zolo.fixIndentation"
+    title: "Normalize indentation to 4 spaces"
+    description: "Fix inconsistent indentation to match Zolo standard (4 spaces, like Python)"
+    category: "quickfix"
+    priority: 2
+    
+    # When to show this action
+    triggers:
+      diagnostics:
+        - pattern: "indentation"
+          case_sensitive: false
+        - pattern: "mixed spaces"
+          case_sensitive: false
+        - pattern: "inconsistent indent"
+          case_sensitive: false
+        - pattern: "expected indent"
+          case_sensitive: false
+    
+    # How to fix indentation
+    execution:
+      type: "replace_indentation"
+      
+      config:
+        standard_indent: 4       # Zolo convention: 4 spaces per level (like Python)
+        convert_tabs: true       # Convert tabs to spaces
+        detect_indent_level: true  # Auto-detect nesting level
+        preserve_blank_lines: true
+        preserve_comments: true
+        
+        # Rules for detecting correct indent level
+        indent_rules:
+          root_level: 0          # Root keys: no indent
+          first_child: 4         # First nested level: 4 spaces
+          increment: 4           # Each deeper level: +4 spaces
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 3. Add Required Fields Action (zSchema Scaffolding)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  add_required_fields:
+    enabled: true
+    id: "zolo.addRequiredFields"
+    title: "Add common property fields"
+    description: "Scaffold zSchema property with type-specific fields"
+    category: "refactor"
+    priority: 3
+    
+    # When to show this action
+    triggers:
+      # Only in zSchema files
+      file_patterns:
+        - "zSchema.*.zolo"
+        - "zSchema.*.yaml"
+      
+      # Context requirements
+      context:
+        cursor_on: "property_key"  # Cursor on field name
+        has_type_only: true        # Only 'type' field exists
+    
+    # How to scaffold fields
+    execution:
+      type: "insert_multiline_template"
+      
+      # Type-specific templates
+      templates:
+        # String type scaffolding
+        str:
+          - "required: true"
+          - "rules:"
+          - "  max_length: 255"
+        
+        # Integer type scaffolding
+        int:
+          - "required: true"
+          - "default: 0"
+          - "rules:"
+          - "  min: 0"
+        
+        # Boolean type scaffolding
+        bool:
+          - "required: true"
+          - "default: false"
+        
+        # Float type scaffolding
+        float:
+          - "required: true"
+          - "default: 0.0"
+          - "rules:"
+          - "  min: 0.0"
+        
+        # List type scaffolding
+        list:
+          - "required: true"
+          - "default: []"
+        
+        # Dict type scaffolding
+        dict:
+          - "required: true"
+          - "default: {}"
+        
+        # Special: Email field scaffolding
+        email:
+          - "required: true"
+          - "unique: true"
+          - "rules:"
+          - "  format: email"
+          - "  max_length: 255"
+        
+        # Special: Password field scaffolding
+        password:
+          - "required: true"
+          - "zHash: bcrypt"
+          - "rules:"
+          - "  min_length: 8"
+          - "  max_length: 255"
+      
+      # Formatting options
+      format:
+        indent_increase: 2  # Indent nested items by 2 spaces
+        preserve_existing: true  # Don't overwrite existing fields
+  
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # Future Actions (Disabled by default - Add as needed)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  extract_to_zblock:
+    enabled: false  # Not implemented yet
+    id: "zolo.extractToZBlock"
+    title: "Extract UI elements to zBlock"
+    description: "Refactor inline UI elements into reusable zBlock"
+    category: "refactor"
+    priority: 4
+    
+    triggers:
+      file_patterns: ["zUI.*.zolo"]
+      context:
+        selection_contains: "ui_elements"
+    
+    # TODO: Define execution patterns when implemented
+  
+  sort_keys_alphabetically:
+    enabled: false  # Not implemented yet
+    id: "zolo.sortKeys"
+    title: "Sort keys alphabetically"
+    description: "Organize keys in alphabetical order within current block"
+    category: "refactor"
+    priority: 5
+    
+    triggers:
+      context:
+        cursor_in: "key_block"
+        min_keys: 3  # Only offer if 3+ keys to sort
+    
+    execution:
+      type: "reorder_lines"
+      config:
+        preserve_comments: true
+        group_by_indent_level: true
+        sort_order: "alphabetical"
+  
+  convert_to_multiline:
+    enabled: false  # Not implemented yet
+    id: "zolo.convertToMultiline"
+    title: "Convert inline value to multiline"
+    description: "Split long inline lists/dicts across multiple lines"
+    category: "refactor"
+    priority: 6
+    
+    triggers:
+      context:
+        value_length_exceeds: 80  # Line length threshold
+        value_type: ["list", "dict"]
+    
+    execution:
+      type: "split_to_multiline"
+      config:
+        indent_items: 2
+        one_item_per_line: true
+  
+  generate_zmeta:
+    enabled: false  # Not implemented yet
+    id: "zolo.generateZMeta"
+    title: "Generate zMeta from filename"
+    description: "Scaffold zMeta block based on file type and name"
+    category: "source"
+    priority: 7
+    
+    triggers:
+      file_patterns: ["zSchema.*.zolo", "zUI.*.zolo"]
+      context:
+        missing_zmeta: true
+    
+    # TODO: Define templates for different file types
+
+# ═══════════════════════════════════════════════════════════════
+# Code Action Configuration (Global Settings)
+# ═══════════════════════════════════════════════════════════════
+
+code_action_config:
+  # Enable/disable the entire code actions system
+  enabled: true
+  
+  # Show actions even without diagnostics (proactive suggestions)
+  show_without_diagnostics: false
+  
+  # Debounce time for action computation (milliseconds)
+  # Prevents excessive computation on every keystroke
+  debounce_ms: 200
+  
+  # Maximum actions to show at once
+  # Prevents overwhelming the user with too many options
+  max_actions_per_context: 5
+  
+  # Which action categories are enabled
+  enabled_categories:
+    - quickfix      # Quick fixes for diagnostics
+    - refactor      # Code refactorings
+    # - source      # Source actions (organize imports, etc.)
+    # - organize    # Organize/format actions
+  
+  # Sort actions by priority (higher = shown first)
+  sort_by_priority: true
+  
+  # Logging level for code actions (for debugging)
+  log_level: "info"  # "debug", "info", "warn", "error"
+  
+  # Performance settings
+  performance:
+    cache_action_results: true
+    cache_ttl_ms: 5000  # Cache results for 5 seconds
+    max_concurrent_actions: 3
+
+# ═══════════════════════════════════════════════════════════════
+# Completions (Autocomplete/IntelliSense) - SSOT for all file types
+# ═══════════════════════════════════════════════════════════════
+#
+# Phase 3 Architecture: Basic vs zVAF Separation
+# 
+# Basic completions (type hints, common values) are handled by:
+#   - BasicCompletionProvider (fast path for generic .zolo files)
+#   - Source: providers/shared/documentation_registry.py
+#   - No theme config needed (hardcoded in registry)
+#
+# zVAF completions (file-type-specific) are handled by:
+#   - ZVAFCompletionProvider (full features for zSpark, zUI, zEnv, zConfig, zSchema)
+#   - Source: This YAML file (single source of truth)
+#   - All key and value completions defined below
+#
+# Routing:
+#   - Generic .zolo → BasicCompletionProvider (no file type detection overhead)
+#   - zVAF files → ZVAFCompletionProvider (theme-driven completions)
+# ═══════════════════════════════════════════════════════════════
+
+completions:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # zSpark.*.zolo - Spark Configuration Files
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  zspark:
+    _description: "Completions for zSpark.*.zolo Spark configuration files"
+    file_patterns: ["zSpark.*.zolo"]
+    
+    # Root level (indent 0) - ONLY zSpark: is valid
+    root_keys:
+      - label: "zSpark"
+        detail: "🎯 Root key (REQUIRED)"
+        kind: "class"
+        documentation: "Main configuration block for Spark apps. This is the ONLY valid root key for zSpark.*.zolo files."
+        insert_text: "zSpark:\n    "
+        priority: 0
+        preselect: true
+      
+      - label: "zSpark>>"
+        detail: "📋 Full template scaffold"
+        kind: "snippet"
+        documentation: "Expand to full zSpark structure with all common properties and placeholder values. Press Tab to jump between fields."
+        insert_text: "zSpark:\n    title: ${1:MyApp}\n    zState: ${2:Development}\n    zScrap: ${3:INFO}\n    zScrapath: ${4:@.logs}\n    zMode: ${5:zCLI}\n    zServer:\n        enabled: ${6:True}\n        zShell: ${7:True}\n    zSwap: ${8:True}\n    zVaFolder: ${9:@.UI}\n    zVaFile: ${10:zUI.Component}\n    zBlock: ${11:MainLayout}"
+        insert_text_format: "snippet"
+        priority: 1
+        preselect: false
+    
+    # Properties under zSpark: (indent 4)
+    properties:
+      - label: "title"
+        detail: "App title"
+        kind: "property"
+        documentation: "Application name or title"
+        insert_text: "title: "
+        priority: 1
+      
+      - label: "zState"
+        detail: "Environment"
+        kind: "property"
+        documentation: "Deployment environment (Production or Development)"
+        insert_text: "zState: "
+        priority: 1
+        value_completions: ["Production", "Development"]
+      
+      - label: "zScrap"
+        detail: "Logger level"
+        kind: "property"
+        documentation: "Logging level (DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD)"
+        insert_text: "zScrap: "
+        priority: 1
+        value_completions: ["DEBUG", "SESSION", "INFO", "WARNING", "ERROR", "CRITICAL", "PROD"]
+      
+      - label: "zScrapath"
+        detail: "Log path"
+        kind: "property"
+        documentation: "Directory for log files (use zPath syntax: @.logs)"
+        insert_text: "zScrapath: "
+        priority: 1
+      
+      - label: "zMode"
+        detail: "Execution mode"
+        kind: "property"
+        documentation: "Execution mode (zCLI or zBifrost)"
+        insert_text: "zMode: "
+        priority: 1
+        value_completions: ["zCLI", "zBifrost"]
+      
+      - label: "zServer"
+        detail: "Server config"
+        kind: "property"
+        documentation: "Server configuration block"
+        insert_text: "zServer:\n    "
+        priority: 1
+      
+      - label: "zSwap"
+        detail: "Storage flag"
+        kind: "property"
+        documentation: "Enable application storage"
+        insert_text: "zSwap: "
+        priority: 1
+        value_completions: ["true", "false"]
+      
+      - label: "zVaFolder"
+        detail: "Theme folder"
+        kind: "property"
+        documentation: "Path to theme folder (zPath syntax)"
+        insert_text: "zVaFolder: "
+        priority: 1
+      
+      - label: "zVaFile"
+        detail: "UI file ref"
+        kind: "property"
+        documentation: "Reference to zUI file for styling"
+        insert_text: "zVaFile: "
+        priority: 1
+      
+      - label: "zBlock"
+        detail: "Block reference"
+        kind: "property"
+        documentation: "Reference to reusable zBlock component"
+        insert_text: "zBlock: "
+        priority: 1
+    
+    # Nested completions (under specific parent keys)
+    nested:
+      zServer:
+        indent: 4
+        parent_key: "zServer"
+        properties:
+          - label: "enabled"
+            detail: "Enable server"
+            kind: "property"
+            documentation: "Enable or disable the server component"
+            insert_text: "enabled: "
+            priority: 1
+            value_completions: ["true", "false", "True", "False"]
+          
+          - label: "zShell"
+            detail: "Shell access"
+            kind: "property"
+            documentation: "Enable zShell interactive shell access"
+            insert_text: "zShell: "
+            priority: 1
+            value_completions: ["true", "false", "True", "False"]
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # zUI.*.zolo - UI Component Files
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  zui:
+    _description: "Completions for zUI.*.zolo UI component files"
+    file_patterns: ["zUI.*.zolo"]
+    
+    # Value completions for zUI-specific keys
+    properties:
+      - label: "zVaFile"
+        detail: "zVaFile type"
+        kind: "property"
+        documentation: "Type of zVaFile (zTerminal, zWeb, zMobile)"
+        insert_text: "zVaFile: "
+        priority: 1
+        value_completions: ["zTerminal", "zWeb", "zMobile"]
+      
+      - label: "zBlock"
+        detail: "zBlock type"
+        kind: "property"
+        documentation: "Type of zBlock rendering (zTerminal, zHTML, zJSON)"
+        insert_text: "zBlock: "
+        priority: 1
+        value_completions: ["zTerminal", "zHTML", "zJSON"]
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # zSchema.*.zolo - Data Schema Definition Files
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  zschema:
+    _description: "Completions for zSchema.*.zolo schema definition files"
+    file_patterns: ["zSchema.*.zolo"]
+    
+    # Value completions for zSchema field types
+    properties:
+      - label: "type"
+        detail: "Field type"
+        kind: "property"
+        documentation: "Data type for the field (string, integer, float, boolean, date, datetime)"
+        insert_text: "type: "
+        priority: 1
+        value_completions: ["string", "integer", "float", "boolean", "date", "datetime"]
+
+# ═══════════════════════════════════════════════════════════════
+# Completion Configuration (Global Settings)
+# ═══════════════════════════════════════════════════════════════
+
+completion_config:
+  # Enable/disable the entire completion system
+  enabled: true
+  
+  # Trigger characters (when to show completions)
+  trigger_characters: [":", "z", "@", " "]
+  
+  # Maximum completions to show at once
+  max_items: 20
+  
+  # Show LSP completions with higher priority than word-based
+  prioritize_lsp: true
+  
+  # Case sensitivity for filtering
+  case_sensitive: false
+  
+  # Show documentation in completion items
+  show_documentation: true
+  
+  # Auto-insert snippets (e.g., "zSpark:\n  ")
+  enable_snippets: true

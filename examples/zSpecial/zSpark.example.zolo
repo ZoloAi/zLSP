@@ -1,0 +1,14 @@
+zSpark:
+    title: MyApp
+    zSpace: @
+    zVaFolder: @.UI
+    zVaFile: zUI.Component
+    zBlock: MainLayout
+    zMode: zCLI
+    zState: Development
+    zScrap: INFO
+    zScrapath: @.logs
+    zSwap: True
+    zServer:
+        enabled: True
+        zShell: True

@@ -1,0 +1,4 @@
+# Type hint override test
+port_string(str): 8080
+bool_string(str): true
+coords_string(str): [1, 2, 3]

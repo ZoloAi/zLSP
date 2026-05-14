@@ -1,0 +1,240 @@
+"""
+Unit tests for ValueValidator
+
+Tests value validation logic for context-aware special values.
+"""
+
+import pytest
+import sys
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+from zlsp.parser.zvaf.value_validators import ValueValidator
+from zlsp.parser.core.token_emitter import TokenEmitter
+
+
+class TestValueValidator:
+    """Test ValueValidator class"""
+    
+    def test_validate_zmode_valid_zcli(self):
+        """Test zMode validation with valid 'zCLI' value"""
+        diagnostic = ValueValidator.validate_zmode('zCLI', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_zmode_valid_zbifrost(self):
+        """Test zMode validation with valid 'zBifrost' value"""
+        diagnostic = ValueValidator.validate_zmode('zBifrost', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_zmode_invalid(self):
+        """Test zMode validation with invalid value"""
+        diagnostic = ValueValidator.validate_zmode('Invalid', 0, 10)
+        assert diagnostic is not None
+        assert "Invalid value for 'zMode'" in diagnostic.message
+        assert ('zCLI' in diagnostic.message and 'zBifrost' in diagnostic.message)
+    
+    def test_validate_deployment_valid_production(self):
+        """Test zState validation with valid 'Production' value"""
+        diagnostic = ValueValidator.validate_deployment('Production', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_deployment_valid_development(self):
+        """Test zState validation with valid 'Development' value"""
+        diagnostic = ValueValidator.validate_deployment('Development', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_deployment_invalid(self):
+        """Test zState validation with invalid value"""
+        diagnostic = ValueValidator.validate_deployment('Staging', 0, 10)
+        assert diagnostic is not None
+        assert "Invalid value for 'zState'" in diagnostic.message
+        assert ('Production' in diagnostic.message and 'Development' in diagnostic.message)
+    
+    def test_validate_logger_valid_all_levels(self):
+        """Test zScrap validation with all valid log levels"""
+        valid_levels = ['DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD']
+        for level in valid_levels:
+            diagnostic = ValueValidator.validate_logger(level, 0, 10)
+            assert diagnostic is None, f"{level} should be valid"
+    
+    def test_validate_logger_invalid(self):
+        """Test zScrap validation with invalid value"""
+        diagnostic = ValueValidator.validate_logger('TRACE', 0, 10)
+        assert diagnostic is not None
+        assert "Invalid value for 'zScrap'" in diagnostic.message
+    
+    def test_validate_zvafile_valid(self):
+        """Test zVaFile validation with valid value"""
+        diagnostic = ValueValidator.validate_zvafile('zUI.zVaF', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_zvafile_valid_complex(self):
+        """Test zVaFile validation with valid complex name"""
+        diagnostic = ValueValidator.validate_zvafile('zUI.zBreakpoints', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_zvafile_invalid_no_zui(self):
+        """Test zVaFile validation with missing zUI prefix"""
+        diagnostic = ValueValidator.validate_zvafile('Component', 0, 10)
+        assert diagnostic is not None
+        assert 'Invalid zVaFile value' in diagnostic.message
+        assert "Must start with 'zUI.'" in diagnostic.message
+    
+    def test_validate_zvafile_invalid_wrong_prefix(self):
+        """Test zVaFile validation with wrong prefix"""
+        diagnostic = ValueValidator.validate_zvafile('zBlock.Component', 0, 10)
+        assert diagnostic is not None
+        assert 'Invalid zVaFile value' in diagnostic.message
+    
+    def test_validate_zblock_freeform_string(self):
+        """Test zBlock accepts any free-form string"""
+        diagnostic = ValueValidator.validate_zblock('zBreakpoints_Details', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_zblock_simple_name(self):
+        """Test zBlock accepts simple names"""
+        diagnostic = ValueValidator.validate_zblock('Component', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_zblock_dotted_name(self):
+        """Test zBlock accepts dotted names"""
+        diagnostic = ValueValidator.validate_zblock('zBlock.Navbar', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_zblock_any_prefix(self):
+        """Test zBlock accepts any prefix format"""
+        diagnostic = ValueValidator.validate_zblock('zUI.Component', 0, 10)
+        assert diagnostic is None
+
+
+class TestValueValidatorIntegration:
+    """Test ValueValidator integration with TokenEmitter"""
+    
+    def test_validate_for_key_zspark_zmode_valid(self):
+        """Test validate_for_key with valid zMode in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zMode', 'zCLI', 0, 10, emitter)
+        assert result is True  # Validation was performed
+        assert len(emitter.diagnostics) == 0  # No errors
+    
+    def test_validate_for_key_zspark_zmode_invalid(self):
+        """Test validate_for_key with invalid zMode in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zMode', 'Invalid', 0, 10, emitter)
+        assert result is True  # Validation was performed
+        assert len(emitter.diagnostics) == 1  # Error added
+        assert "Invalid value for 'zMode'" in emitter.diagnostics[0].message
+    
+    def test_validate_for_key_zspark_deployment_valid(self):
+        """Test validate_for_key with valid zState in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zState', 'Production', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 0
+    
+    def test_validate_for_key_zspark_deployment_invalid(self):
+        """Test validate_for_key with invalid zState in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zState', 'Staging', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 1
+        assert "Invalid value for 'zState'" in emitter.diagnostics[0].message
+    
+    def test_validate_for_key_zspark_logger_valid(self):
+        """Test validate_for_key with valid zScrap in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zScrap', 'DEBUG', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 0
+    
+    def test_validate_for_key_zspark_logger_invalid(self):
+        """Test validate_for_key with invalid zScrap in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zScrap', 'TRACE', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 1
+        assert "Invalid value for 'zScrap'" in emitter.diagnostics[0].message
+    
+    def test_validate_for_key_zspark_zvafile_valid(self):
+        """Test validate_for_key with valid zVaFile in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zVaFile', 'zUI.zVaF', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 0
+    
+    def test_validate_for_key_zspark_zvafile_invalid(self):
+        """Test validate_for_key with invalid zVaFile in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zVaFile', 'Component', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 1
+        assert 'Invalid zVaFile value' in emitter.diagnostics[0].message
+    
+    def test_validate_for_key_zspark_zblock_dotted(self):
+        """Test validate_for_key with dotted zBlock name in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zBlock', 'zBlock.Navbar', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 0
+    
+    def test_validate_for_key_zspark_zblock_freeform(self):
+        """Test validate_for_key with free-form zBlock name in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('zBlock', 'zBreakpoints_Details', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 0
+    
+    def test_validate_for_key_unknown_key(self):
+        """Test validate_for_key with unknown key (no validation)"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        result = ValueValidator.validate_for_key('unknownKey', 'value', 0, 10, emitter)
+        assert result is False  # No validation performed
+        assert len(emitter.diagnostics) == 0
+    
+    def test_validate_for_key_non_zspark_file(self):
+        """Test validate_for_key with zMode key in non-zSpark file (no validation)"""
+        emitter = TokenEmitter("", filename="basic.zolo")
+        result = ValueValidator.validate_for_key('zMode', 'Invalid', 0, 10, emitter)
+        assert result is False  # No validation for non-zSpark files
+        assert len(emitter.diagnostics) == 0
+
+
+class TestDiagnosticDetails:
+    """Test diagnostic message details and positions"""
+    
+    def test_diagnostic_position_zmode(self):
+        """Test diagnostic position for zMode error"""
+        diagnostic = ValueValidator.validate_zmode('Bad', 5, 20)
+        assert diagnostic.range.start.line == 5
+        assert diagnostic.range.start.character == 20
+        assert diagnostic.range.end.line == 5
+        assert diagnostic.range.end.character == 23  # 20 + len('Bad')
+    
+    def test_diagnostic_severity(self):
+        """Test diagnostic severity is Error (1)"""
+        diagnostic = ValueValidator.validate_zmode('Bad', 0, 0)
+        assert diagnostic.severity == 1  # Error
+    
+    def test_diagnostic_source(self):
+        """Test diagnostic source is 'zolo-lsp'"""
+        diagnostic = ValueValidator.validate_zmode('Bad', 0, 0)
+        assert diagnostic.source == 'zolo-lsp'
+    
+    def test_diagnostic_message_content_zmode(self):
+        """Test diagnostic message includes invalid value and valid options"""
+        diagnostic = ValueValidator.validate_zmode('Bad', 0, 0)
+        assert "'Bad'" in diagnostic.message
+        assert 'zCLI' in diagnostic.message or 'zBifrost' in diagnostic.message
+    
+    def test_diagnostic_message_content_logger(self):
+        """Test diagnostic message includes all valid zScrap levels"""
+        diagnostic = ValueValidator.validate_logger('INVALID', 0, 0)
+        assert "'INVALID'" in diagnostic.message
+        assert 'DEBUG' in diagnostic.message
+        assert 'PROD' in diagnostic.message
+
+
+if __name__ == '__main__':
+    pytest.main([__file__, '-v'])

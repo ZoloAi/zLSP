@@ -1,0 +1,34 @@
+# zlsp — standalone public repo
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Test / coverage
+.coverage
+.pytest_cache/
+htmlcov/
+
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+*.swp
+
+# VS Code marketplace package (generated during build)
+editors/vscode/marketplace-package/
+
+# Visual regression test screenshots (ephemeral, not golden baselines)
+tests/visual/screenshots/*.png
+tests/visual/screenshots/*.jpg
+
+# Visual test reports
+visual-report.html
+
+# Keep golden baselines (these should be committed)
+!tests/visual/golden/*.png
