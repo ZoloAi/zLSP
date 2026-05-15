@@ -45,6 +45,9 @@ UI_ELEMENT_KEYS: Set[str] = {
     # Layout and navigation
     'zNavBar', 'zRBAC', 'zMeta',
 
+    # Dispatch display events (treated as block UI elements)
+    'zMenu',
+
     # Signal events
     'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo',
 }
@@ -287,6 +290,24 @@ UI_ELEMENTS: List[UIElement] = [
         detail="Navigation bar",
         documentation="Enable/disable navigation bar (boolean value or config block)",
         insert_text="zNavBar: ",
+        priority=1
+    ),
+
+    # Dispatch display events
+    UIElement(
+        label="zMenu",
+        detail="Interactive menu",
+        documentation=(
+            "Interactive menu gate. Options render as buttons; clicking an option "
+            "sequentially reveals its content and all subsequent options (wizard-flow).\n\n"
+            "Properties:\n"
+            "  options: [list of option keys]  (required)\n"
+            "  title: string                   (optional)\n"
+            "  zAnchor: bool                   (~ shorthand — suppresses Back button, default false)\n\n"
+            "Each option key maps to a nested display block.\n\n"
+            "Shorthand: `*` suffix → zMenu; `~*` → zMenu with zAnchor: true"
+        ),
+        insert_text="zMenu:\n    title: \n    options: []\n    ",
         priority=1
     ),
 ]

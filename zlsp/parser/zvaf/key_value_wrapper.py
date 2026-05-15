@@ -113,13 +113,17 @@ def _parse_and_emit_key(
     clean_key, type_hint, has_str_hint = _parse_type_hint(key)
 
     # Split modifiers to get core_key for token type detection
-    _, core_key, _ = ModifierHandler.split_modifiers(clean_key)
+    _, core_key, suffix_mods = ModifierHandler.split_modifiers(clean_key)
 
     # Detect token type using KeyDetector
     if is_root:
         token_type = KeyDetector.detect_root_key(core_key, emitter, indent)
     else:
         token_type = KeyDetector.detect_nested_key(core_key, emitter, indent)
+
+    # * suffix in a zUI file = menu shorthand → promote core key to DISPATCH_KEY (golden)
+    if '*' in suffix_mods and emitter.is_zui_file:
+        token_type = TokenType.DISPATCH_KEY
 
     # Emit key tokens with modifiers
     emit_key_with_modifiers(clean_key, line_num, key_start, token_type, emitter)

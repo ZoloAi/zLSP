@@ -135,6 +135,7 @@ BLOCK_ZSELECT = 'zselect'
 BLOCK_ZRANGE = 'zrange'
 
 # Special blocks
+BLOCK_ZMENU = 'zmenu'
 BLOCK_PLURAL_SHORTHAND = 'plural_shorthand'
 BLOCK_ZMACHINE = 'zMachine'
 BLOCK_ZSPARK = 'zSpark'
@@ -145,7 +146,7 @@ BLOCK_ZMETA = 'zMeta'
 UI_ELEMENT_BLOCK_TYPES = [
     BLOCK_ZIMAGE, BLOCK_ZTEXT, BLOCK_ZMD, BLOCK_ZCODE, BLOCK_ZURL, BLOCK_ZUL, BLOCK_ZOL, BLOCK_ZDL,
     BLOCK_ZTABLE, BLOCK_HEADER, BLOCK_ZCRUMBS, BLOCK_ZINPUT, BLOCK_ZLINK,
-    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE
+    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE, BLOCK_ZMENU
 ]
 
 
@@ -187,7 +188,7 @@ PLURAL_SHORTHAND_KEYS: Set[str] = {
 
 # zDispatch event keys (z-prefixed dispatch commands that trigger backend actions)
 DISPATCH_KEYS: Set[str] = {
-    'zDialog', 'zData', 'zCRUD', 'zLogin', 'zDispatch',
+    'zDialog', 'zData', 'zCRUD', 'zLogin', 'zDispatch', 'zMenu',
 }
 
 # Control flow construct keys (empty - zWizard moved to UI_ELEMENT_MAPPING for consistent coloring)
@@ -201,6 +202,7 @@ UI_ELEMENT_PROPERTY_KEYS: Set[str] = {
     'content', 'pause', 'break_message', 'format',
     'items',
     'title', 'columns', 'rows', 'limit', 'offset', 'show_header', 'interactive',
+    'zAnchor',
     'show', 'parent',
     # Form-specific properties (zInput, zTextarea, zSelect, etc.)
     'prompt', 'type', 'placeholder', 'required', 'disabled', 'readonly',
@@ -444,6 +446,12 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
         'block_name': 'zterminal',
         'requires_zui': True,
         'is_shorthand': True,
+    },
+    'zMenu': {
+        'block_type': BLOCK_ZMENU,
+        'block_name': 'zmenu',
+        'requires_zui': True,
+        'is_shorthand': True,  # Can appear multiple times — __dup suffix for sequential menus
     },
     'zOL': {  # Ordered list
         'block_type': BLOCK_ZOL,
