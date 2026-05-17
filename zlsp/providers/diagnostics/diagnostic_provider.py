@@ -13,6 +13,7 @@ from lsprotocol import types as lsp_types
 from zlsp.parser.parser_service import tokenize
 from zlsp.exceptions import ZoloParseError
 from .formatter import DiagnosticFormatter
+from .menu_validators import validate_menu_options
 from ..shared.value_validators import ValueValidator
 
 
@@ -124,6 +125,11 @@ def get_all_diagnostics(
     value_diags = ValueValidator.validate_document(content, filename=filename)
     logger.info("   📋 Value diagnostics: %d", len(value_diags))
     diagnostics.extend(value_diags)
+
+    # Add menu option/key mismatch validation
+    menu_diags = validate_menu_options(content)
+    logger.info("   📋 Menu diagnostics: %d", len(menu_diags))
+    diagnostics.extend(menu_diags)
 
     logger.info("   ✅ Total diagnostics: %d", len(diagnostics))
     return diagnostics

@@ -221,12 +221,20 @@ def parse_lines_with_tokens(lines: list[str], line_mapping: dict, emitter: 'Toke
                     clean_key = TYPE_HINT_PATTERN.match(key).group(1) if TYPE_HINT_PATTERN.match(key) else key
                     # Only strip modifiers for zVaF files
                     if is_zvaf:
-                        _, core_key, _ = ModifierHandler.split_modifiers(clean_key)
+                        _, core_key, suffix_mods = ModifierHandler.split_modifiers(clean_key)
                     else:
                         core_key = clean_key
+                        suffix_mods = ''
                     validator = validate_for_key_callback if is_zvaf else None
+                    # Menu option arrays: key ends with * (shorthand menu) in zVaF files
+                    # Also: longhand zMenu's `options:` key
+                    is_menu_key = is_zvaf and (
+                        '*' in (suffix_mods if is_zvaf else '') or
+                        core_key == 'options'
+                    )
                     emit_value_tokens(value, original_line_num, value_start, emitter, 
-                                     key=core_key, value_validator=validator)
+                                     key=core_key, value_validator=validator,
+                                     is_menu_options=is_menu_key)
 
                 # Store structured line info
                 structured_lines.append({

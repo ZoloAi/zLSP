@@ -18,7 +18,8 @@ if TYPE_CHECKING:
 def emit_value_tokens(
     value: str, line: int, start_pos: int, emitter: 'TokenEmitter',
     type_hint: str = None, key: str = None,
-    value_validator: Optional[Callable] = None
+    value_validator: Optional[Callable] = None,
+    is_menu_options: bool = False
 ):
     """
     Emit semantic tokens for a value based on its detected type.
@@ -128,7 +129,7 @@ def emit_value_tokens(
 
     # Array (bracket syntax)
     if value.startswith('[') and value.endswith(']'):
-        emit_array_tokens(value, line, start_pos, emitter)
+        emit_array_tokens(value, line, start_pos, emitter, is_menu_options=is_menu_options)
         return
 
     # Object (brace syntax)
@@ -252,7 +253,8 @@ def emit_string_with_escapes(value: str, line: int, start_pos: int, emitter: 'To
         emitter.emit(line, start_pos + last_emit, len(value) - last_emit, TokenType.STRING)
 
 
-def emit_array_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmitter'):
+def emit_array_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmitter',
+                      is_menu_options: bool = False):
     """
     Emit tokens for array syntax [...].
     
@@ -292,7 +294,11 @@ def emit_array_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmit
 
         # Recursively emit tokens for each item
         for item, item_pos in items:
-            emit_value_tokens(item, line, item_pos, emitter)
+            if is_menu_options:
+                # Menu option items are key references — emit as zpathValue (cyan)
+                emitter.emit(line, item_pos, len(item), TokenType.ZPATH_VALUE)
+            else:
+                emit_value_tokens(item, line, item_pos, emitter)
 
     # Closing bracket
     emitter.emit(line, start_pos + len(value) - 1, 1, TokenType.BRACKET_STRUCTURAL)
