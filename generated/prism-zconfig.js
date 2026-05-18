@@ -20,12 +20,12 @@ Prism.languages.zconfig = Prism.languages.extend('zolo', {
         lookbehind: true,
     },
     'zmachine-locked-section': {
-        pattern: /(?<=\n)[ \t]{1}(?:cpu|memory|network|storage|display|python_runtime|machine_identity|user_paths|launch_commands|gpu)(?=\s*:)/m,
+        pattern: /(?<=\n)[ \t]{1}(?:user_paths|cpu|python_runtime|memory|display|launch_commands|gpu|network|storage|machine_identity)(?=\s*:)/m,
         alias: 'constant',
         lookbehind: true,
     },
     'zmachine-editable-section': {
-        pattern: /(?<=\n)[ \t]{1}(?:user_preferences|time_date_formatting|custom)(?=\s*:)/m,
+        pattern: /(?<=\n)[ \t]{1}(?:user_preferences|custom|time_date_formatting)(?=\s*:)/m,
         alias: 'variable',
         lookbehind: true,
     },

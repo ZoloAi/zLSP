@@ -10,7 +10,7 @@
 
 Prism.languages.zenv = Prism.languages.extend('zolo', {
     'zenv-config-root': {
-        pattern: /((?:^|\n)[ \t]*)(?:DEBUG|LOG_LEVEL|DEPLOYMENT)(?=\s*:)/m,
+        pattern: /((?:^|\n)[ \t]*)(?:LOG_LEVEL|DEBUG|DEPLOYMENT)(?=\s*:)/m,
         alias: 'keyword',
         lookbehind: true,
     },

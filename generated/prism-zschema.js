@@ -20,12 +20,12 @@ Prism.languages.zschema = Prism.languages.extend('zolo', {
         lookbehind: true,
     },
     'zschema-zos-data': {
-        pattern: /(?<=\n)[ \t]{1}(?:zMigrationVersion|zMigration|Data_Source|Data_Label|Data_Type|Schema_Name)(?=\s*:)/m,
+        pattern: /(?<=\n)[ \t]{1}(?:Data_Type|Data_Label|zMigrationVersion|Data_Source|zMigration|Schema_Name)(?=\s*:)/m,
         alias: 'keyword',
         lookbehind: true,
     },
     'zschema-property': {
-        pattern: /(?<=\n)[ \t]{2,}(?:rules|default|unique|min|pattern|max|zHash|required|max_length|format|type|pk|auto_increment|min_length|comment)(?=\s*:)/m,
+        pattern: /(?<=\n)[ \t]{2,}(?:unique|type|min|default|auto_increment|comment|min_length|zHash|required|pk|format|pattern|rules|max|max_length)(?=\s*:)/m,
         alias: 'keyword',
         lookbehind: true,
     },

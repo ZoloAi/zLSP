@@ -174,7 +174,7 @@ ZSCHEMA_PROPERTY_KEYS: Set[str] = {
 UI_ELEMENT_KEYS: Set[str] = {
     'zImage', 'zText', 'zMD', 'zCode', 'zURL', 'zNavBar', 'zUL', 'zOL', 'zDL', 'zTable',
     'zH0', 'zH1', 'zH2', 'zH3', 'zH4', 'zH5', 'zH6', 'zCrumbs', 'zInput', 'zLink',
-    'zCheckbox', 'zBtn', 'zSelect', 'zRange', 'zFunc', 'zWizard',
+    'zCheckbox', 'zBtn', 'zSelect', 'zRange', 'zFunc', 'zWizard', 'zTerminal',
     # Signal events
     'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo',
 }
