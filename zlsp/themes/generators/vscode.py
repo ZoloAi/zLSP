@@ -424,6 +424,7 @@ class VSCodeGenerator(BaseGenerator):
             'zmachineEditableKey': 'zmachineEditableKey',
             'zmachineLockedKey': 'zmachineLockedKey',
             'typeHintParen': 'typeHintParen',
+            'zravenPickKey': 'zravenPickKey',
         }
         
         for theme_token_type, semantic_token_type in token_mapping.items():

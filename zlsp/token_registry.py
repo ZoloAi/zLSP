@@ -67,6 +67,7 @@ TOKEN_TYPES_LEGEND: List[str] = [
     "zmachineLockedKey",    # 41
     "typeHintParen",        # 42
     "dispatchKey",          # 43
+    "zravenPickKey",        # 44
 ]
 
 TOKEN_MODIFIERS_LEGEND: List[str] = []  # No modifiers yet
@@ -210,7 +211,10 @@ UI_ELEMENT_PROPERTY_KEYS: Set[str] = {
     'name', 'id', 'maxlength', 'minlength', 'multiple', 'size', 'options', 'multi',
     'prefix', 'suffix',  # Input group properties
     # Button-specific properties (zBtn)
-    'action'
+    'action',
+    # zShot properties
+    'full_page', 'resolution', 'quality', 'selector', 'delay', 'overwrite',
+    'burst', 'every', 'count',
 }
 
 # UI Element Schemas - Define valid properties per element type
@@ -502,6 +506,13 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
 UI_ELEMENT_SHORTHAND_KEYS: Set[str] = {
     key for key, props in UI_ELEMENT_MAPPING.items() 
     if props.get('is_shorthand', False)
+}
+
+# zRaven test primitives that are allowed to repeat at the same nesting level
+# (e.g., multiple zAssert or zPick entries within a single test block)
+ZRAVEN_REPEATABLE_KEYS: Set[str] = {
+    'zPick', 'zSubmit', 'zAssert', 'zBoot', 'zExecute',
+    'zWait', 'zClick', 'zType', 'zShot', 'zDrag', 'zMarker',
 }
 
 # Special blocks mapping (non-UI elements that create block contexts)

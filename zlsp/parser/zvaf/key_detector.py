@@ -174,6 +174,14 @@ class KeyDetector:
         if key.startswith('_'):
             return TokenType.BIFROST_KEY
 
+        # zRaven-only test primitive keys — silver-white
+        _ZRAVEN_PRIMITIVE_KEYS = {'zPick', 'zSubmit', 'zAssert', 'zBoot', 'zExecute',
+                                   'zWait', 'zClick', 'zType', 'zShot', 'zDrag', 'zMarker'}
+        if emitter.is_zui_file and key in _ZRAVEN_PRIMITIVE_KEYS:
+            filename = getattr(emitter, 'filename', '') or ''
+            if 'zRaven.' in filename:
+                return TokenType.ZRAVEN_PICK_KEY
+
         # Control flow construct keys (zWizard)
         if emitter.is_zui_file and key in CONTROL_FLOW_KEYS:
             return TokenType.CONTROL_FLOW_KEY
@@ -191,6 +199,15 @@ class KeyDetector:
                     return TokenType.UI_ELEMENT_KEY
             else:
                 return TokenType.UI_ELEMENT_KEY
+
+        # zShot / zRaven primitive property keys — lavender, no block-context check needed
+        _ZRAVEN_PROP_KEYS = {
+            'full_page', 'resolution', 'quality', 'selector', 'delay',
+            'overwrite', 'burst', 'every', 'count',
+        }
+        filename = getattr(emitter, 'filename', '') or ''
+        if 'zRaven.' in filename and key in _ZRAVEN_PROP_KEYS:
+            return TokenType.UI_ELEMENT_PROPERTY_KEY
 
         # UI element property keys (src, etc.) inside UI elements
         if emitter.is_zui_file and key in UI_ELEMENT_PROPERTY_KEYS:

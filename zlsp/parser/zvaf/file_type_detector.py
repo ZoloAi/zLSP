@@ -7,6 +7,7 @@ Detects and classifies special .zolo file types based on filename patterns:
 - zUI.*.zolo - UI components
 - zConfig.*.zolo - System configuration
 - zSchema.*.zolo - Data schema definitions
+- zRaven.*.zolo - Test files
 """
 
 from enum import Enum
@@ -23,6 +24,7 @@ class FileType(Enum):
     ZUI = "zui"              # zUI.*.zolo
     ZCONFIG = "zconfig"      # zConfig.*.zolo
     ZSCHEMA = "zschema"      # zSchema.*.zolo
+    ZRAVEN = "zraven"        # zRaven.*.zolo
 
 
 class FileTypeDetector:
@@ -39,6 +41,7 @@ class FileTypeDetector:
         ('zUI.', 4, FileType.ZUI),
         ('zConfig.', 8, FileType.ZCONFIG),
         ('zSchema.', 8, FileType.ZSCHEMA),
+        ('zRaven.', 7, FileType.ZRAVEN),
     ]
 
     def __init__(self, filename: Optional[str] = None):
@@ -138,6 +141,10 @@ class FileTypeDetector:
         """Check if file is a zSchema file."""
         return self.file_type == FileType.ZSCHEMA
 
+    def is_zraven(self) -> bool:
+        """Check if file is a zRaven test file."""
+        return self.file_type == FileType.ZRAVEN
+
     def is_generic(self) -> bool:
         """Check if file is a generic .zolo file."""
         return self.file_type == FileType.GENERIC
@@ -155,10 +162,11 @@ class FileTypeDetector:
         """
         Check if file needs zVaF parser (vs basic parser).
         
-        Returns True for special file types (zUI/zEnv/zConfig/zSchema).
+        Returns True for special file types (zUI/zEnv/zConfig/zSchema/zRaven).
         Returns False for generic .zolo files and zSpark (temporarily disabled).
+        zRaven shares zUI rules — same key taxonomy, same completion provider.
         """
-        return self.file_type in (FileType.ZUI, FileType.ZENV, FileType.ZCONFIG, FileType.ZSCHEMA)
+        return self.file_type in (FileType.ZUI, FileType.ZENV, FileType.ZCONFIG, FileType.ZSCHEMA, FileType.ZRAVEN)
 
     def __repr__(self) -> str:
         """String representation for debugging."""

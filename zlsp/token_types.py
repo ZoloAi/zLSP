@@ -57,3 +57,4 @@ class TokenType(Enum):
     ZMACHINE_LOCKED_KEY = "zmachineLockedKey"  # Auto-detected zMachine section keys (red/orange - ERROR)
     ZPATH_VALUE = "zpathValue"  # zPath data references: @.static.brand.logo.png, ~.config.settings (cyan)
     DISPATCH_KEY = "dispatchKey"  # zDispatch event keys: zDialog, zData, zCRUD, zLogin (golden)
+    ZRAVEN_PICK_KEY = "zravenPickKey"  # zRaven-only: zPick (raven silver — unique to test files)

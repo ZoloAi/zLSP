@@ -14,6 +14,7 @@ from zlsp.parser.parser_service import tokenize
 from zlsp.exceptions import ZoloParseError
 from .formatter import DiagnosticFormatter
 from .menu_validators import validate_menu_options
+from .quoted_value_validators import validate_quoted_values
 from ..shared.value_validators import ValueValidator
 
 
@@ -130,6 +131,11 @@ def get_all_diagnostics(
     menu_diags = validate_menu_options(content)
     logger.info("   📋 Menu diagnostics: %d", len(menu_diags))
     diagnostics.extend(menu_diags)
+
+    # Detect unnecessarily quoted values (zFunc, content, label, …)
+    quoted_diags = validate_quoted_values(content)
+    logger.info("   📋 Quoted-value diagnostics: %d", len(quoted_diags))
+    diagnostics.extend(quoted_diags)
 
     logger.info("   ✅ Total diagnostics: %d", len(diagnostics))
     return diagnostics

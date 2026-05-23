@@ -17,8 +17,8 @@ def is_ui_event_shorthand(clean_key: str) -> bool:
     
     Examples: zText, zButton, zH1, zH2, etc.
     """
-    from zlsp.token_registry import UI_ELEMENT_SHORTHAND_KEYS
-    return clean_key in UI_ELEMENT_SHORTHAND_KEYS
+    from zlsp.token_registry import UI_ELEMENT_SHORTHAND_KEYS, ZRAVEN_REPEATABLE_KEYS
+    return clean_key in UI_ELEMENT_SHORTHAND_KEYS or clean_key in ZRAVEN_REPEATABLE_KEYS
 
 
 def handle_duplicate_ui_key(key: str, result: dict) -> str:

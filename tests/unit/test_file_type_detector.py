@@ -57,7 +57,14 @@ class TestFileTypeDetection:
         assert detector.file_type == FileType.ZSCHEMA
         assert detector.is_zschema()
         assert not detector.is_zspark()
-        
+
+    def test_zraven_detection(self):
+        """Test zRaven file detection."""
+        detector = FileTypeDetector('zRaven.myapp.zolo')
+        assert detector.file_type == FileType.ZRAVEN
+        assert detector.is_zraven()
+        assert not detector.is_zui()
+
     def test_generic_file_detection(self):
         """Test generic .zolo file detection."""
         detector = FileTypeDetector('config.zolo')
@@ -106,7 +113,12 @@ class TestComponentNameExtraction:
         """Test extracting component name from zSchema file."""
         detector = FileTypeDetector('zSchema.users.zolo')
         assert detector.component_name == 'users'
-        
+
+    def test_zraven_component_extraction(self):
+        """Test extracting component name from zRaven file."""
+        detector = FileTypeDetector('zRaven.pianoear.zolo')
+        assert detector.component_name == 'pianoear'
+
     def test_generic_no_component(self):
         """Test that generic files return None for component name."""
         detector = FileTypeDetector('config.zolo')

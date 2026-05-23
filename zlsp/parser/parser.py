@@ -110,12 +110,12 @@ def tokenize_zvaf(content: str, filename: Optional[str] = None) -> ParseResult:
     emitter = TokenEmitter(
         content,
         filename=filename,
-        is_zui_file=file_detector.is_zui(),
+        is_zui_file=file_detector.is_zui() or file_detector.is_zraven(),
         is_zenv_file=file_detector.is_zenv(),
         is_zspark_file=file_detector.is_zspark(),
         is_zconfig_file=file_detector.is_zconfig(),
         is_zschema_file=file_detector.is_zschema(),
-        zui_component_name=file_detector.component_name if file_detector.is_zui() else None,
+        zui_component_name=file_detector.component_name if (file_detector.is_zui() or file_detector.is_zraven()) else None,
         zspark_component_name=file_detector.component_name if file_detector.is_zspark() else None,
         zconfig_component_name=file_detector.component_name if file_detector.is_zconfig() else None
     )
