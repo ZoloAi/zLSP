@@ -257,9 +257,7 @@ def emit_array_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmit
                       is_menu_options: bool = False):
     """
     Emit tokens for array syntax [...].
-    
-    Handles nested arrays via depth counter (lines 260-264).
-    Prism pattern: \[(?:[^\[\]]|\[(?:[^\[\]]|\[(?:[^\[\]]|\[[^\[\]]*\])*\])*\])*\]
+    Handles nested arrays via depth counter (respecting nesting).
     Used by: value_pattern_generator.py for syntax highlighting
     """
     # Opening bracket
@@ -307,9 +305,7 @@ def emit_array_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmit
 def emit_object_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmitter'):
     """
     Emit tokens for object syntax {...}.
-    
-    Handles nested objects via depth counter (lines 300-304).
-    Prism pattern: \{(?:[^{}]|\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\})*\}
+    Handles nested objects via depth counter (respecting nesting).
     Used by: value_pattern_generator.py for syntax highlighting
     """
     # Opening brace

@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=61.0,<69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "zlsp"
+name = "zolo-lsp"
 dynamic = ["version"]
 description = "Modern Language Server Protocol (LSP) for .zolo files with semantic highlighting, validation, and Vim integration"
 readme = {file = "README.md", content-type = "text/markdown"}
