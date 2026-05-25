@@ -137,6 +137,8 @@ BLOCK_ZRANGE = 'zrange'
 
 # Special blocks
 BLOCK_ZMENU = 'zmenu'
+BLOCK_ZEXPORT = 'zexport'
+BLOCK_ZIMPORT = 'zimport'
 BLOCK_PLURAL_SHORTHAND = 'plural_shorthand'
 BLOCK_ZMACHINE = 'zMachine'
 BLOCK_ZSPARK = 'zSpark'
@@ -147,7 +149,7 @@ BLOCK_ZMETA = 'zMeta'
 UI_ELEMENT_BLOCK_TYPES = [
     BLOCK_ZIMAGE, BLOCK_ZTEXT, BLOCK_ZMD, BLOCK_ZCODE, BLOCK_ZURL, BLOCK_ZUL, BLOCK_ZOL, BLOCK_ZDL,
     BLOCK_ZTABLE, BLOCK_HEADER, BLOCK_ZCRUMBS, BLOCK_ZINPUT, BLOCK_ZLINK,
-    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE, BLOCK_ZMENU
+    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE, BLOCK_ZMENU, BLOCK_ZEXPORT, BLOCK_ZIMPORT
 ]
 
 
@@ -189,7 +191,7 @@ PLURAL_SHORTHAND_KEYS: Set[str] = {
 
 # zDispatch event keys (z-prefixed dispatch commands that trigger backend actions)
 DISPATCH_KEYS: Set[str] = {
-    'zDialog', 'zData', 'zCRUD', 'zLogin', 'zDispatch', 'zMenu',
+    'zDialog', 'zData', 'zCRUD', 'zLogin', 'zDispatch', 'zMenu', 'zExport', 'zImport',
 }
 
 # Control flow construct keys (empty - zWizard moved to UI_ELEMENT_MAPPING for consistent coloring)
@@ -456,6 +458,18 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
         'block_name': 'zmenu',
         'requires_zui': True,
         'is_shorthand': True,  # Can appear multiple times — __dup suffix for sequential menus
+    },
+    'zExport': {
+        'block_type': BLOCK_ZEXPORT,
+        'block_name': 'zexport',
+        'requires_zui': True,
+        'is_shorthand': False,
+    },
+    'zImport': {
+        'block_type': BLOCK_ZIMPORT,
+        'block_name': 'zimport',
+        'requires_zui': True,
+        'is_shorthand': False,
     },
     'zOL': {  # Ordered list
         'block_type': BLOCK_ZOL,

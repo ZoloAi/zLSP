@@ -48,6 +48,10 @@ UI_ELEMENT_KEYS: Set[str] = {
     # Dispatch display events (treated as block UI elements)
     'zMenu',
 
+    # Export / Import events
+    'zExport',
+    'zImport',
+
     # Signal events
     'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo',
 }
@@ -308,6 +312,63 @@ UI_ELEMENTS: List[UIElement] = [
             "Shorthand: `*` suffix → zMenu; `~*` → zMenu with zAnchor: true"
         ),
         insert_text="zMenu:\n    title: \n    options: []\n    ",
+        priority=1
+    ),
+
+    # Import event
+    UIElement(
+        label="zImport",
+        detail="Import data from file into a model",
+        documentation=(
+            "Import event — reads a source file and inserts rows into a target model.\n\n"
+            "Properties:\n"
+            "  format:  csv | json | tsv  (required)\n"
+            "  source:  zPath dot-notation to source file (required)\n"
+            "  target:  zPath dot-notation to model (required)\n"
+            "  mode:    append | replace  (default: append)\n\n"
+            "Source path examples:\n"
+            "  @.Data.imports.contacts.csv\n"
+            "  @.Data.imports.zConv.filename  (after zDialog)\n\n"
+            "Example:\n"
+            "  zImport:\n"
+            "      format: csv\n"
+            "      source: @.Data.imports.contacts.csv\n"
+            "      target: @.models.zSchema.crm.contacts\n"
+            "      mode:   append"
+        ),
+        insert_text=(
+            "zImport:\n"
+            "    format: csv\n"
+            "    source: @.Data.imports.\n"
+            "    target: @.models.zSchema.\n"
+            "    mode:   append"
+        ),
+        priority=1
+    ),
+
+    # Export event
+    UIElement(
+        label="zExport",
+        detail="Export data to file or download",
+        documentation=(
+            "Export event — sources data and delivers it as a file.\n\n"
+            "Properties:\n"
+            "  format:   csv | json | tsv | txt  (required)\n"
+            "  filename: string — output name, no extension (optional, default: 'export')\n"
+            "  zData:    owned sub-block — silent read, rows piped to encoder\n"
+            "  content:  raw value to export (alternative to zData)\n\n"
+            "Delivery:\n"
+            "  zCLI    → writes Data/exports/{filename}.{format}, prints path\n"
+            "  Bifrost → pushes download event over WebSocket\n\n"
+            "Example:\n"
+            "  zExport:\n"
+            "      format:   csv\n"
+            "      filename: contacts_export\n"
+            "      zData:\n"
+            "          action: read\n"
+            "          model:  @.models.zSchema.crm.contacts"
+        ),
+        insert_text="zExport:\n    format:   csv\n    filename: \n    zData:\n        action: read\n        model:  ",
         priority=1
     ),
 ]
