@@ -244,20 +244,44 @@ SPECIAL_KEYS = [
         category="zSpark"
     ),
     Documentation(
-        label="zState",
+        label="zEnv",
         title="Deployment Environment",
         description="Deployment mode: Production or Development.",
-        example="zState: Production",
+        example="zEnv: Production",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zSpark"
+    ),
+    Documentation(
+        label="zState",
+        title="Deployment Environment (deprecated → zEnv)",
+        description="Deprecated. Use zEnv instead.",
+        example="zEnv: Production",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zSpark"
+    ),
+    Documentation(
+        label="zLog",
+        title="Logger Level",
+        description="Logging level: DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD.",
+        example="zLog: INFO",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zSpark"
     ),
     Documentation(
         label="zScrap",
-        title="Logger Level",
-        description="Logging level: DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD.",
-        example="zScrap: INFO",
+        title="Logger Level (deprecated → zLog)",
+        description="Deprecated. Use zLog instead.",
+        example="zLog: INFO",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zSpark"
+    ),
+    Documentation(
+        label="zLogger",
+        title="App Log Event",
+        description="Emit an app-level log. Shorthand: zLogger: message (INFO). Nested: message/level/tag.",
+        example="zLogger: Order saved\n# or:\nzLogger:\n    message: Order saved\n    level: WARNING\n    tag: crm.orders",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
     ),
     Documentation(
         label="zMeta",

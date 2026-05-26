@@ -162,8 +162,10 @@ UI_ELEMENT_BLOCK_TYPES = [
 
 # zOS zData keys under zMeta in zSchema files
 ZOS_DATA_KEYS: Set[str] = {
-    'Data_Type', 'Data_Label', 'Data_Source', 'Schema_Name', 
-    'zMigration', 'zMigrationVersion'
+    'Data_Type', 'Data_Label', 'Data_Source', 'Schema_Name',
+    'zMigration', 'zMigrationVersion',
+    # zUIVersion — UI file versioning (mirrors zMigration pattern)
+    'zUIVersion', 'zUITracking',
 }
 
 # zSchema property keys (field properties)

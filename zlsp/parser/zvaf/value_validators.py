@@ -24,9 +24,11 @@ class ValueValidator:
     
     # Valid values for each special key
     VALID_VALUES = {
-        'zMode': {'zCLI', 'zBifrost'},
-        'zState': {'Production', 'Development', 'Debug'},
-        'zScrap': {'DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD'},
+        'zMode':  {'zCLI', 'zBifrost'},
+        'zEnv':   {'Production', 'Development', 'Debug'},
+        'zState': {'Production', 'Development', 'Debug'},   # deprecated → zEnv
+        'zLog':   {'DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD'},
+        'zScrap': {'DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD'},  # deprecated → zLog
     }
     
     @staticmethod
@@ -74,10 +76,10 @@ class ValueValidator:
         Returns:
             Diagnostic if invalid, None if valid
         """
-        valid_values = ValueValidator.VALID_VALUES['zState']
+        valid_values = ValueValidator.VALID_VALUES['zEnv']
         if value not in valid_values:
             msg = ErrorFormatter.format_invalid_value_error(
-                key='zState',
+                key='zEnv',
                 value=value,
                 valid_values=sorted(valid_values),
                 line=line
@@ -106,10 +108,10 @@ class ValueValidator:
         Returns:
             Diagnostic if invalid, None if valid
         """
-        valid_values = ValueValidator.VALID_VALUES['zScrap']
+        valid_values = ValueValidator.VALID_VALUES['zLog']
         if value not in valid_values:
             msg = ErrorFormatter.format_invalid_value_error(
-                key='zScrap',
+                key='zLog',
                 value=value,
                 valid_values=sorted(valid_values),
                 line=line
@@ -194,9 +196,9 @@ class ValueValidator:
         if emitter.is_zspark_file:
             if key == 'zMode':
                 diagnostic = ValueValidator.validate_zmode(value, line, start_pos)
-            elif key == 'zState':
+            elif key in ('zEnv', 'zState'):
                 diagnostic = ValueValidator.validate_deployment(value, line, start_pos)
-            elif key == 'zScrap':
+            elif key in ('zLog', 'zScrap'):
                 diagnostic = ValueValidator.validate_logger(value, line, start_pos)
             elif key == 'zVaFile':
                 diagnostic = ValueValidator.validate_zvafile(value, line, start_pos)

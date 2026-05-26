@@ -27,7 +27,7 @@ class ErrorFormatter:
     COMMON_KEYS = {
         'zSpark', 'zUI', 'zEnv', 'zConfig', 'zSchema',
         'zMeta', 'zVaF', 'zMachine', 'zRBAC', 'zSub',
-        'zMode', 'zBlock', 'zVaFile', 'zState', 'zScrap',
+        'zMode', 'zBlock', 'zVaFile', 'zEnv', 'zLog', 'zState', 'zScrap', 'zLogger',
         'zNavBar', 'zImage', 'zText', 'zCode', 'zURL', 'zTable',
         'zH1', 'zH2', 'zH3', 'zH4', 'zH5', 'zH6',
         'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo',

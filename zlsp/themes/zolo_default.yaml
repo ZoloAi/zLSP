@@ -874,7 +874,7 @@ completions:
         detail: "📋 Full template scaffold"
         kind: "snippet"
         documentation: "Expand to full zSpark structure with all common properties and placeholder values. Press Tab to jump between fields."
-        insert_text: "zSpark:\n    title: ${1:MyApp}\n    zState: ${2:Development}\n    zScrap: ${3:INFO}\n    zScrapath: ${4:@.logs}\n    zMode: ${5:zCLI}\n    zServer:\n        enabled: ${6:True}\n        zShell: ${7:True}\n    zSwap: ${8:True}\n    zVaFolder: ${9:@.UI}\n    zVaFile: ${10:zUI.Component}\n    zBlock: ${11:MainLayout}"
+        insert_text: "zSpark:\n    title: ${1:MyApp}\n    zEnv: ${2:Development}\n    zLog: ${3:INFO}\n    zScrapath: ${4:@.logs}\n    zMode: ${5:zCLI}\n    zServer:\n        enabled: ${6:True}\n        zShell: ${7:True}\n    zPersist: ${8:True}\n    zVaFolder: ${9:@.UI}\n    zVaFile: ${10:zUI.Component}\n    zBlock: ${11:MainLayout}"
         insert_text_format: "snippet"
         priority: 1
         preselect: false
@@ -888,20 +888,36 @@ completions:
         insert_text: "title: "
         priority: 1
       
-      - label: "zState"
+      - label: "zEnv"
         detail: "Environment"
         kind: "property"
         documentation: "Deployment environment (Production or Development)"
-        insert_text: "zState: "
+        insert_text: "zEnv: "
         priority: 1
         value_completions: ["Production", "Development"]
+
+      - label: "zState"
+        detail: "Environment (deprecated → zEnv)"
+        kind: "property"
+        documentation: "Deprecated. Use zEnv instead."
+        insert_text: "zEnv: "
+        priority: 0
+        value_completions: ["Production", "Development"]
       
-      - label: "zScrap"
+      - label: "zLog"
         detail: "Logger level"
         kind: "property"
         documentation: "Logging level (DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD)"
-        insert_text: "zScrap: "
+        insert_text: "zLog: "
         priority: 1
+        value_completions: ["DEBUG", "SESSION", "INFO", "WARNING", "ERROR", "CRITICAL", "PROD"]
+
+      - label: "zScrap"
+        detail: "Logger level (deprecated → zLog)"
+        kind: "property"
+        documentation: "Deprecated. Use zLog instead."
+        insert_text: "zLog: "
+        priority: 0
         value_completions: ["DEBUG", "SESSION", "INFO", "WARNING", "ERROR", "CRITICAL", "PROD"]
       
       - label: "zScrapath"
@@ -926,12 +942,20 @@ completions:
         insert_text: "zServer:\n    "
         priority: 1
       
-      - label: "zSwap"
-        detail: "Storage flag"
+      - label: "zPersist"
+        detail: "Persistence flag"
         kind: "property"
-        documentation: "Enable application storage"
-        insert_text: "zSwap: "
+        documentation: "Enable app persistent storage — creates Apps/{title}/ directory on boot"
+        insert_text: "zPersist: "
         priority: 1
+        value_completions: ["true", "false"]
+
+      - label: "zSwap"
+        detail: "Persistence flag (deprecated → use zPersist)"
+        kind: "property"
+        documentation: "⚠️ Deprecated — use zPersist instead"
+        insert_text: "zPersist: "
+        priority: 0
         value_completions: ["true", "false"]
       
       - label: "zVaFolder"
@@ -1001,6 +1025,40 @@ completions:
         insert_text: "zBlock: "
         priority: 1
         value_completions: ["zTerminal", "zHTML", "zJSON"]
+
+      - label: "zLogger"
+        detail: "App log event"
+        kind: "property"
+        documentation: "Emit an app-level log event. Shorthand: zLogger: message. Nested: zLogger: {message: ..., level: INFO, tag: module.name}"
+        insert_text: "zLogger: "
+        priority: 1
+
+    nested:
+      zLogger:
+        indent: 4
+        parent_key: "zLogger"
+        properties:
+          - label: "message"
+            detail: "Log message"
+            kind: "property"
+            documentation: "The log message string"
+            insert_text: "message: "
+            priority: 1
+
+          - label: "level"
+            detail: "Log level"
+            kind: "property"
+            documentation: "Log level — controls filtering and PROD visibility"
+            insert_text: "level: "
+            priority: 1
+            value_completions: ["INFO", "DEBUG", "WARNING", "ERROR", "CRITICAL", "SESSION"]
+
+          - label: "tag"
+            detail: "Namespace tag"
+            kind: "property"
+            documentation: "Optional dot-namespaced tag shown as prefix (e.g. crm.orders)"
+            insert_text: "tag: "
+            priority: 0
 
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # zSchema.*.zolo - Data Schema Definition Files

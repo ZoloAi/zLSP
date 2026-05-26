@@ -267,8 +267,10 @@ class ZVAFCompletionProvider:
         if values:
             # Determine appropriate detail based on key
             detail_map = {
-                'zState': 'Deployment environment',
-                'zScrap': 'Logger level',
+                'zEnv':   'Deployment environment',
+                'zState': 'Deployment environment (deprecated)',
+                'zLog':   'Logger level',
+                'zScrap': 'Logger level (deprecated)',
                 'zMode': 'Execution mode',
                 'zVaFile': 'zVaFile type',
                 'zBlock': 'zBlock type',

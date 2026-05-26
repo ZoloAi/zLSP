@@ -3,10 +3,10 @@
 from zOS import zOS
 
 zSpark = {
-    "zState": "Production",
-    "zScrap": "PROD",
+    "zEnv": "Production",
+    "zLog": "PROD",
     "zMode": "zCLI",  # Use zCLI mode for testing
-    "zSwap": True,
+    "zPersist": True,
     "zVaFolder": "@",
     "zVaFile": "zUI.lists",
     "zBlock": "Lists_block",
