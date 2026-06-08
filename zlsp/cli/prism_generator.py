@@ -4,9 +4,6 @@ Prism.js generation CLI command.
 Generates Prism.js syntax highlighting files from zlsp SSOT.
 """
 
-import sys
-from pathlib import Path
-
 
 def generate_prism_patterns(args):
     """
@@ -91,20 +88,13 @@ def generate_prism_all(args):
         print("✅ Prism.js generation complete!")
         print("=" * 70)
         print()
-        print("Generated files:")
-        print("  JS Patterns:")
-        print("    - zlsp/generated/prism-*.js (6 files)")
-        print("    - Copied to zOS/bifrost/src/syntax/")
-        print("    - Copied to zCloud/static/js/")
+        print("Generated bundle: zLSP/bifrost-prism/")
+        print("  - prism-*.js (6 pattern files)")
+        print("  - prism-zolo-theme.css")
         print()
-        print("  CSS Theme:")
-        print("    - zCloud/static/css/prism-zolo-theme.css")
-        print("    - Copied to zOS/bifrost/static/css/")
-        print()
-        print("Next steps:")
-        print("  1. Restart zServer to load new files")
-        print("  2. Hard refresh browser (Cmd+Shift+R)")
-        print("  3. Open .zolo files in web UI to see syntax highlighting")
+        print("Manual handoff (no auto-deploy):")
+        print("  1. Copy zLSP/bifrost-prism/* → zbifrost-client/syntax/")
+        print("  2. Push + bump zbifrost-client, then update the CDN pin")
         print()
         return 0
     else:

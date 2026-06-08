@@ -491,37 +491,29 @@ class PrismCSSGenerator(BaseGenerator):
     
     def generate_css_to_file(self, css_output_path: Path = None) -> Path:
         """
-        Generate and write Prism.js CSS theme to file.
-        
+        Generate and write the Prism.js CSS theme to the local bifrost-prism bundle.
+
+        SSOT handoff (manual): the bundle dir ``zLSP/bifrost-prism/`` is the SINGLE
+        committed output. It is NOT auto-deployed — a dev copies the bundle into the
+        bifrost client (``zbifrost-client/syntax/``), then pushes + bumps that
+        repo. This generator never reaches into other repos (no zCloud, no zTheme).
+
         NOTE: This only generates CSS. For JS patterns, use:
             python3 -m zlsp.generators.generate_prism_zolo
-        
+
         Args:
-            css_output_path: Optional custom output path for CSS.
-                            Defaults to zCloud/static/css/prism-zolo-theme.css
-        
+            css_output_path: Optional custom output path. Defaults to
+                            zLSP/bifrost-prism/prism-zolo-theme.css
+
         Returns:
             Path to generated CSS file
         """
         if css_output_path is None:
             zlsp_root = Path(__file__).parent.parent.parent.parent
-            project_root = zlsp_root.parent
-            css_output_path = project_root / 'zCloud' / 'static' / 'css' / 'prism-zolo-theme.css'
-        
-        # Ensure directory exists
+            css_output_path = zlsp_root / 'bifrost-prism' / 'prism-zolo-theme.css'
+
         css_output_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Generate and write CSS
-        css_content = self.generate_css()
-        css_output_path.write_text(css_content, encoding='utf-8')
-        
-        # Also copy to zTheme/src/css/ (npm package source)
-        zlsp_root = Path(__file__).parent.parent.parent.parent
-        project_root = zlsp_root.parent
-        ztheme_css_path = project_root / 'zOS' / 'zTheme' / 'src' / 'css' / 'prism-zolo-theme.css'
-        ztheme_css_path.parent.mkdir(parents=True, exist_ok=True)
-        ztheme_css_path.write_text(css_content, encoding='utf-8')
-        
+        css_output_path.write_text(self.generate_css(), encoding='utf-8')
         return css_output_path
 
 
@@ -566,16 +558,13 @@ if __name__ == '__main__':
     print(f"   Size: {len(css_content)} bytes")
     print(f"   Lines: {len(css_content.splitlines())}")
     print()
-    print("📁 Also copied to:")
-    print(f"   - zOS/zTheme/src/css/prism-zolo-theme.css")
-    print()
     print("=" * 70)
     print("✅ CSS generation complete!")
     print("=" * 70)
     print()
-    print("Next steps:")
+    print("Manual handoff (no auto-deploy):")
     print("  1. Generate JS patterns: python3 -m zlsp.generators.generate_prism_zolo")
-    print("  2. Hard refresh browser (Cmd+Shift+R)")
-    print("  3. Check syntax highlighting colors match IDE")
+    print("  2. Copy zLSP/bifrost-prism/* → zbifrost-client/syntax/")
+    print("  3. Push + bump zbifrost-client, then update the CDN pin")
     print()
     print("=" * 70)
