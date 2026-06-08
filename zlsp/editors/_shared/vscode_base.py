@@ -247,10 +247,69 @@ class VSCodeBasedInstaller:
         
         return dirs
     
+    # Per-role file icons. Each role is a SIBLING language id that shares the
+    # source.zolo grammar + LSP (documentSelector below), so it highlights
+    # identically but gets its own explorer icon by filename glob. zSpark and any
+    # other .zolo fall through to the base `zolo` language (green base icon).
+    # role -> (language id, filename globs, icon suffix, alias)
+    ROLE_LANGUAGES = [
+        ('zolo-ui',     ['zUI.*.zolo'],                          'ui',     'Zolo UI'),
+        ('zolo-env',    ['zEnv.*.zolo'],                         'env',    'Zolo Env'),
+        ('zolo-server', ['zServer.*.zolo'],                      'server', 'Zolo Server'),
+        ('zolo-raven',  ['zRaven.*.zolo', '**/zRaven/*.zolo'],   'raven',  'Zolo Raven'),
+    ]
+
+    # Editor defaults applied to every zolo language id (base + siblings).
+    _ZOLO_EDITOR_DEFAULTS = {
+        "editor.bracketPairColorization.enabled": False,
+        "editor.guides.bracketPairs": False,
+        "editor.semanticHighlighting.enabled": True,
+    }
+
     def generate_package_json(self, base_dir):
         """Generate package.json from theme and generator."""
         semantic_legend = self.generator.generate_semantic_tokens_legend()
-        
+
+        # Base language (extension match) — green icon, the catch-all for .zolo.
+        languages_contrib = [
+            {
+                "id": "zolo",
+                "aliases": ["Zolo", "zolo"],
+                "extensions": [".zolo"],
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "light": "./icons/zolo_filetype.png",
+                    "dark": "./icons/zolo_filetype.png",
+                },
+            }
+        ]
+        grammars_contrib = [
+            {"language": "zolo", "scopeName": "source.zolo",
+             "path": "./syntaxes/zolo.tmLanguage.json"}
+        ]
+        config_defaults = {"[zolo]": dict(self._ZOLO_EDITOR_DEFAULTS)}
+
+        # Sibling languages — filename-glob match wins over the base extension, so
+        # zUI.*/zEnv.*/zServer.*/zRaven.* get their tinted icon while keeping the
+        # shared grammar, LSP, and editor defaults.
+        for lang_id, globs, suffix, alias in self.ROLE_LANGUAGES:
+            languages_contrib.append({
+                "id": lang_id,
+                "aliases": [alias],
+                "filenamePatterns": globs,
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "light": f"./icons/zolo_filetype.{suffix}.png",
+                    "dark": f"./icons/zolo_filetype.{suffix}.png",
+                },
+            })
+            grammars_contrib.append({
+                "language": lang_id,
+                "scopeName": "source.zolo",
+                "path": "./syntaxes/zolo.tmLanguage.json",
+            })
+            config_defaults[f"[{lang_id}]"] = dict(self._ZOLO_EDITOR_DEFAULTS)
+
         package_json = {
             "name": "zolo-lsp",
             "displayName": "Zolo LSP",
@@ -284,25 +343,8 @@ class VSCodeBasedInstaller:
             ],
             "main": "./out/extension.js",
             "contributes": {
-                "languages": [
-                    {
-                        "id": "zolo",
-                        "aliases": ["Zolo", "zolo"],
-                        "extensions": [".zolo"],
-                        "configuration": "./language-configuration.json",
-                        "icon": {
-                            "light": "./icons/zolo_filetype.png",
-                            "dark": "./icons/zolo_filetype.png"
-                        }
-                    }
-                ],
-                "grammars": [
-                    {
-                        "language": "zolo",
-                        "scopeName": "source.zolo",
-                        "path": "./syntaxes/zolo.tmLanguage.json"
-                    }
-                ],
+                "languages": languages_contrib,
+                "grammars": grammars_contrib,
                 "semanticTokenTypes": [
                     {"id": token_type, "description": f"Zolo {token_type}"}
                     for token_type in semantic_legend['tokenTypes']
@@ -327,13 +369,7 @@ class VSCodeBasedInstaller:
                         }
                     }
                 },
-                "configurationDefaults": {
-                    "[zolo]": {
-                        "editor.bracketPairColorization.enabled": False,
-                        "editor.guides.bracketPairs": False,
-                        "editor.semanticHighlighting.enabled": True
-                    }
-                }
+                "configurationDefaults": config_defaults
             },
             "dependencies": {},
             "devDependencies": {}
@@ -377,8 +413,38 @@ class VSCodeBasedInstaller:
         
         return dest_path
     
+    def resolve_server_command(self):
+        """
+        Resolve the LSP server location AT INSTALL TIME.
+
+        GUI-launched editors (Dock/Finder) do NOT inherit the shell PATH, so the
+        extension cannot rely on `which zolo-lsp` at runtime. We capture the
+        absolute path here — in the same interpreter that has zlsp installed —
+        and bake it into extension.js. The runtime keeps `which` + `python -m`
+        as fallbacks for portability.
+        """
+        exe = shutil.which('zolo-lsp')
+        if not exe:
+            candidate = Path(sys.executable).parent / 'zolo-lsp'
+            if candidate.exists():
+                exe = str(candidate)
+
+        bin_dir = str(Path(exe).parent) if exe else str(Path(sys.executable).parent)
+        return {
+            'exe': exe or '',
+            'python': sys.executable,
+            'module': 'zlsp.server.lsp_server',
+            'bin_dir': bin_dir,
+        }
+
     def generate_extension_js(self, base_dir):
         """Generate extension.js with LSP client."""
+        srv = self.resolve_server_command()
+        baked_exe = json.dumps(srv['exe'])
+        baked_python = json.dumps(srv['python'])
+        baked_module = json.dumps(srv['module'])
+        baked_bin = json.dumps(srv['bin_dir'])
+
         code = f"""// Generated by zlsp installer - DO NOT EDIT
 // This file activates the Zolo LSP client for {self.editor_name}
 
@@ -390,20 +456,35 @@ const {{ LanguageClient }} = require('vscode-languageclient/node');
 let client;
 let outputChannel;
 
+// ── Baked at install time (absolute) — activation never depends on editor PATH ──
+const BAKED_SERVER_PATH = {baked_exe};
+const BAKED_PYTHON      = {baked_python};
+const BAKED_MODULE      = {baked_module};
+const BAKED_BIN_DIR     = {baked_bin};
+
 /**
- * Check if zolo-lsp command is available
+ * Resolve how to launch the LSP server, in priority order:
+ *   1. Baked absolute path to the zolo-lsp console script (set by installer)
+ *   2. PATH lookup via `which` (works when the editor is launched from a shell)
+ *   3. Module form via the baked Python interpreter (`python -m zlsp.server...`)
+ * Returns {{ command, args }} or null when nothing is usable.
  */
-function checkZoloLspAvailable() {{
-    const {{ execSync }} = require('child_process');
-    try {{
-        const zoloLspPath = execSync('which zolo-lsp || where zolo-lsp', {{ 
-            encoding: 'utf8',
-            stdio: ['pipe', 'pipe', 'ignore'] // Suppress stderr
-        }}).trim();
-        return zoloLspPath ? zoloLspPath : null;
-    }} catch (err) {{
-        return null;
+function resolveServer() {{
+    if (BAKED_SERVER_PATH && fs.existsSync(BAKED_SERVER_PATH)) {{
+        return {{ command: BAKED_SERVER_PATH, args: [], how: 'baked path' }};
     }}
+    try {{
+        const {{ execSync }} = require('child_process');
+        const p = execSync('which zolo-lsp || where zolo-lsp', {{
+            encoding: 'utf8',
+            stdio: ['pipe', 'pipe', 'ignore']
+        }}).trim();
+        if (p) return {{ command: p.split(/\\r?\\n/)[0], args: [], how: 'PATH lookup' }};
+    }} catch (err) {{ /* not on PATH — fall through */ }}
+    if (BAKED_PYTHON && fs.existsSync(BAKED_PYTHON)) {{
+        return {{ command: BAKED_PYTHON, args: ['-m', BAKED_MODULE], how: 'python -m' }};
+    }}
+    return null;
 }}
 
 /**
@@ -429,37 +510,48 @@ async function showSetupInstructions() {{
 }}
 
 function activate(context) {{
-    // Create output channel for debugging
-    outputChannel = vscode.window.createOutputChannel('Zolo LSP');
+    // Create output channel for debugging.
+    // Must be a LogOutputChannel ({{ log: true }}) — vscode-languageclient v9+
+    // calls .error()/.warn()/.info() on it; a plain OutputChannel lacks those
+    // and throws "this.outputChannel.error is not a function" on client.start().
+    outputChannel = vscode.window.createOutputChannel('Zolo LSP', {{ log: true }});
     outputChannel.appendLine('=== Zolo LSP Extension Activating ===');
     outputChannel.appendLine('Editor: {self.editor_name}');
     outputChannel.appendLine('Timestamp: ' + new Date().toISOString());
     
-    // Check if zolo-lsp is available
-    const zoloLspPath = checkZoloLspAvailable();
+    // Resolve the server (PATH-independent: baked path → which → python -m)
+    const resolved = resolveServer();
     
-    if (!zoloLspPath) {{
-        outputChannel.appendLine('✗ ERROR: zolo-lsp not found in PATH!');
-        outputChannel.appendLine('  Install with: pip install zlsp');
-        outputChannel.appendLine('  Then reload {self.editor_name}');
+    if (!resolved) {{
+        outputChannel.appendLine('✗ ERROR: zolo-lsp could not be located!');
+        outputChannel.appendLine('  Baked path: ' + (BAKED_SERVER_PATH || '(none)'));
+        outputChannel.appendLine('  Install with: pip install zlsp, then re-run zlsp-install-all');
         
         // Show user-friendly setup instructions
         showSetupInstructions();
         return;
     }}
     
-    outputChannel.appendLine('[ok] Found zolo-lsp at: ' + zoloLspPath);
+    outputChannel.appendLine('[ok] Server resolved via ' + resolved.how + ': ' + resolved.command +
+        (resolved.args.length ? ' ' + resolved.args.join(' ') : ''));
     
-    // LSP server options (points to zolo-lsp command)
+    // Augment PATH so the spawned server (and any child it needs) resolves tools
+    // even when the editor was launched from the Dock with a minimal PATH.
+    const augmentedEnv = Object.assign({{}}, process.env);
+    const extraPaths = [BAKED_BIN_DIR, '/usr/local/bin', '/opt/homebrew/bin'].filter(Boolean);
+    augmentedEnv.PATH = (augmentedEnv.PATH ? augmentedEnv.PATH + path.delimiter : '') +
+        extraPaths.join(path.delimiter);
+    
+    // LSP server options (absolute command — independent of editor PATH)
     const serverOptions = {{
-        command: 'zolo-lsp',
-        args: [],
+        command: resolved.command,
+        args: resolved.args,
         options: {{
-            env: process.env
+            env: augmentedEnv
         }}
     }};
     
-    outputChannel.appendLine('Server command: zolo-lsp');
+    outputChannel.appendLine('Server command: ' + resolved.command);
     
     // Get trace setting from configuration
     const config = vscode.workspace.getConfiguration('zolo');
@@ -468,7 +560,13 @@ function activate(context) {{
     
     // Client options (file patterns, synchronization, output channel)
     const clientOptions = {{
-        documentSelector: [{{ scheme: 'file', language: 'zolo' }}],
+        documentSelector: [
+            {{ scheme: 'file', language: 'zolo' }},
+            {{ scheme: 'file', language: 'zolo-ui' }},
+            {{ scheme: 'file', language: 'zolo-env' }},
+            {{ scheme: 'file', language: 'zolo-server' }},
+            {{ scheme: 'file', language: 'zolo-raven' }}
+        ],
         synchronize: {{
             fileEvents: vscode.workspace.createFileSystemWatcher('**/*.zolo')
         }},
@@ -665,15 +763,26 @@ Generated from: {self.theme.name} v{self.theme.version}
         except Exception as e:
             print(f"  ⚠ Failed to generate README.md: {e}")
         
-        # 6. Copy file type icon
+        # 6. Copy file type icons (base green + per-role tinted variants)
         try:
-            icon_src = Path(__file__).parent.parent.parent / 'assets' / 'zolo_filetype.png'
-            icon_dest = base_dir / 'icons' / 'zolo_filetype.png'
-            icon_dest.parent.mkdir(exist_ok=True)
-            shutil.copy2(icon_src, icon_dest)
-            installed.append("icons/zolo_filetype.png (file type icon)")
+            assets_dir = Path(__file__).parent.parent.parent / 'assets'
+            icons_dir = base_dir / 'icons'
+            icons_dir.mkdir(exist_ok=True)
+            icon_names = ['zolo_filetype.png'] + [
+                f'zolo_filetype.{suffix}.png'
+                for _, _, suffix, _ in self.ROLE_LANGUAGES
+            ]
+            copied = 0
+            for name in icon_names:
+                src = assets_dir / name
+                if src.exists():
+                    shutil.copy2(src, icons_dir / name)
+                    copied += 1
+                else:
+                    print(f"  ⚠ Missing icon asset: {name}")
+            installed.append(f"icons/ ({copied} file type icons)")
         except Exception as e:
-            print(f"  ⚠ Failed to copy icon: {e}")
+            print(f"  ⚠ Failed to copy icons: {e}")
         
         return installed
     
@@ -693,8 +802,14 @@ Generated from: {self.theme.name} v{self.theme.version}
         ext_uuid = str(uuid.uuid4())
         publisher_uuid = str(uuid.uuid4())
         
-        # Create the extension entry
-        ext_id = "zolo-ai.zolo-lsp"
+        # Create the extension entry.
+        # CRITICAL: this MUST equal Cursor's canonical id = "<publisher>.<name>"
+        # lowercased, derived from package.json (publisher "ZoloAi", name "zolo-lsp"
+        # -> "zoloai.zolo-lsp"). A hyphenated "zolo-ai.zolo-lsp" here drifts from the
+        # real id: on launch Cursor reads package.json, computes "zoloai.zolo-lsp",
+        # finds it flagged in .obsolete, and garbage-collects the extension — the
+        # "zLSP disappears after reboot" bug.
+        ext_id = "zoloai.zolo-lsp"
         ext_entry = {
             "identifier": {
                 "id": ext_id,
@@ -728,7 +843,8 @@ Generated from: {self.theme.name} v{self.theme.version}
         else:
             extensions_list = []
         
-        # Remove any existing zolo-lsp entries
+        # Remove any existing zolo-lsp entries (covers both the legacy hyphenated
+        # "zolo-ai.*" id and the correct "zoloai.*" id)
         extensions_list = [ext for ext in extensions_list if not ext.get('identifier', {}).get('id', '').startswith('zolo')]
         
         # Add our extension
@@ -738,8 +854,35 @@ Generated from: {self.theme.name} v{self.theme.version}
         with open(extensions_json_path, 'w', encoding='utf-8') as f:
             json.dump(extensions_list, f, indent=4)
         
+        # Un-obsolete ourselves so the fresh install survives reboots.
+        self._clear_obsolete_flags(cursor_extensions_dir)
+        
         print(f"  [ok] Registered extension in {self.editor_name} registry")
         return True
+    
+    def _clear_obsolete_flags(self, cursor_extensions_dir):
+        """Strip any zolo* entries from Cursor's `.obsolete` map.
+        
+        Cursor records uninstalled extensions in `.obsolete` and garbage-collects
+        the matching folders on launch. A prior id drift left our *current* version
+        flagged obsolete, so Cursor wiped the extension on every reboot. Clearing
+        these on (re)install guarantees a fresh install is never treated as stale.
+        """
+        obsolete_path = cursor_extensions_dir / '.obsolete'
+        if not obsolete_path.exists():
+            return
+        try:
+            with open(obsolete_path, 'r', encoding='utf-8') as f:
+                obsolete = json.load(f)
+        except Exception:
+            return
+        if not isinstance(obsolete, dict):
+            return
+        pruned = {k: v for k, v in obsolete.items() if not k.lower().startswith('zolo')}
+        if pruned != obsolete:
+            with open(obsolete_path, 'w', encoding='utf-8') as f:
+                json.dump(pruned, f, indent=4)
+            print(f"  [ok] Cleared stale .obsolete entries in {self.editor_name}")
     
     def print_installation_instructions(self):
         """Print instructions for reloading the editor."""
