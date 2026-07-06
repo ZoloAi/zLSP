@@ -15,6 +15,7 @@ from zlsp.exceptions import ZoloParseError
 from .formatter import DiagnosticFormatter
 from .menu_validators import validate_menu_options
 from .quoted_value_validators import validate_quoted_values
+from .field_validators import validate_dialog_fields
 from ..shared.value_validators import ValueValidator
 
 
@@ -136,6 +137,11 @@ def get_all_diagnostics(
     quoted_diags = validate_quoted_values(content)
     logger.info("   📋 Quoted-value diagnostics: %d", len(quoted_diags))
     diagnostics.extend(quoted_diags)
+
+    # Flag unsupported YAML-style block-mapping fields in zDialog blocks
+    field_diags = validate_dialog_fields(content)
+    logger.info("   📋 zDialog field diagnostics: %d", len(field_diags))
+    diagnostics.extend(field_diags)
 
     logger.info("   ✅ Total diagnostics: %d", len(diagnostics))
     return diagnostics
