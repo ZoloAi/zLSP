@@ -43,7 +43,17 @@ UI_ELEMENT_KEYS: Set[str] = {
     'zInput', 'zCheckbox', 'zBtn', 'zSelect', 'zRange',
     
     # Layout and navigation
-    'zNavBar', 'zRBAC', 'zMeta',
+    'zNavBar', 'zGate', 'zRBAC', 'zMeta',
+    'zLink', 'zCrumbs',
+
+    # Navigation verbs (doc 14)
+    'zAlpha', 'zDelta', 'zOmega', 'zPsi', 'zDelegate',
+
+    # Media events (doc 08)
+    'zVideo', 'zEmbed',
+
+    # Rich-UI events (docs 22–25) + wizard/terminal
+    'zSwiper', 'zDash', 'zProgress', 'zTerminal', 'zWizard',
 
     # Dispatch display events (treated as block UI elements)
     'zMenu',
@@ -53,7 +63,7 @@ UI_ELEMENT_KEYS: Set[str] = {
     'zImport',
 
     # Signal events
-    'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo',
+    'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo', 'zPrimary', 'zSecondary',
 }
 
 # Structural Keys - Define application architecture
@@ -294,6 +304,45 @@ UI_ELEMENTS: List[UIElement] = [
         detail="Navigation bar",
         documentation="Enable/disable navigation bar (boolean value or config block)",
         insert_text="zNavBar: ",
+        priority=1
+    ),
+
+    # Media (doc 08)
+    UIElement(
+        label="zVideo",
+        detail="Video clip",
+        documentation="Own video file with native controls. Keys: src (required), alt_text, caption, poster, loop, muted, autoplay, _zClass.",
+        insert_text="zVideo:\n    src: \n    alt_text: ",
+        priority=1
+    ),
+    UIElement(
+        label="zEmbed",
+        detail="Embedded outside media",
+        documentation="Embed an external provider (YouTube/Vimeo/Spotify/Maps) from its normal link. Keys: src (required), alt_text, caption, _zClass. Provider allow-list via ZEMBED_MODE.",
+        insert_text="zEmbed:\n    src: \n    alt_text: ",
+        priority=1
+    ),
+
+    # Rich UI (docs 22, 23, 25)
+    UIElement(
+        label="zSwiper",
+        detail="Slide deck / carousel",
+        documentation="A deck of slides shown one at a time. Keys: slides (required list), label, auto_advance, delay, loop, folder (zCLI page-slides).",
+        insert_text="zSwiper:\n    slides:\n        - ",
+        priority=1
+    ),
+    UIElement(
+        label="zDash",
+        detail="Assembled dashboard",
+        documentation="Compose a folder of pages into a sidebar shell. Keys: type (sidebar), folder, sidebar [Panel, ...], default.",
+        insert_text="zDash:\n    type:    sidebar\n    folder:  \n    sidebar: []\n    default: ",
+        priority=1
+    ),
+    UIElement(
+        label="zProgress",
+        detail="Progress bar / spinner",
+        documentation="A labelled progress bar. Keys: label, current (default 0), total (omit for spinner), color, type (bar/spinner). Percentage is derived.",
+        insert_text="zProgress:\n    label:   \n    current: 0\n    total:   100",
         priority=1
     ),
 

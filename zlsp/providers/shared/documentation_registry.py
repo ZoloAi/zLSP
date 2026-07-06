@@ -292,12 +292,165 @@ SPECIAL_KEYS = [
         category="zOS"
     ),
     Documentation(
+        label="zGate",
+        title="zGate (Access & Conditional Gate)",
+        description=(
+            "The one gate verb — a yes/no question asked before a block renders or "
+            "an action runs. Auth: authed / role / require. Value: %token with "
+            "zAbove/zBelow/zIN/zBetween/zNull/zSet. Combine with zAll/zAny/zNot."
+        ),
+        example="zGate:\n  authed: true",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zOS"
+    ),
+    Documentation(
         label="zRBAC",
-        title="zRBAC (Access Control)",
-        description="Role-based access control block.",
-        example="zRBAC:\n  admin: full",
+        title="zRBAC (DEPRECATED → zGate)",
+        description="Deprecated access-control block — folded into the zGate verb. Use zGate.",
+        example="zGate:\n  authed: true",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zEnv"
+    ),
+    # ── Identity (doc 21) ────────────────────────────────────────────────
+    Documentation(
+        label="zLogin",
+        title="zLogin (Sign-in front desk)",
+        description=(
+            "A zDialog whose submit runs the zAuth login action — renders the form, "
+            "verifies against your user model (bcrypt), writes session['zVisitor']. "
+            "Props: model (required), fields/inputs, title, zAPI, onSuccess, zApp."
+        ),
+        example="zLogin:\n  model: @.models.zSchema.users\n  fields: [email, password]",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zLogout",
+        title="zLogout (Sign-out)",
+        description="Clears session['zVisitor'] + the durable token, then lands home. Gate the link with zGate: {authed: true}.",
+        example="zLogout: myapp",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    # ── Data (docs 16, 17) ───────────────────────────────────────────────
+    Documentation(
+        label="zData",
+        title="zData (Declarative data action)",
+        description=(
+            "One block for the data lifecycle. action: insert|read|update|delete|upsert|"
+            "aggregate|window|set|create|drop|truncate|index|refresh. Keys: model, data, "
+            "fields, values, where, zFilters, order_by, limit, offset, joins, group_by, returning…"
+        ),
+        example="zData:\n  action: read\n  model:  @.models.zSchema.crm.contacts",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zDialog",
+        title="zDialog (Form / collect-then-submit)",
+        description="Gathers inputs + controls and, onSubmit, hands zConv to an action. Props: title, fields, onSubmit, zReset, model.",
+        example="zDialog:\n  fields: [name, email]\n  onSubmit:\n    zData: { action: insert }",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zWizard",
+        title="zWizard (Multi-step flow)",
+        description="A block of named steps run in order. Each step's answer files under its name → zHat[Step]. if: skips a step; a gate (zBtn submit / zDialog) holds the walk. _transaction: true wraps zData steps.",
+        example="zWizard:\n  Ask_Name:\n    zInput: Your name\n  Say_Hi:\n    zText: Hello",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zFunc",
+        title="zFunc (Function call)",
+        description="Point at a function; zOS runs it on render. &.plugin.fn(args) searches plugins; @.path.file.fn is exact; builtins &zNow / &zUUID(). Return surfaces as a zSignal.",
+        example="zFunc: &.calc.add(2, 3)",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    # ── Navigation verbs (doc 14) ────────────────────────────────────────
+    Documentation(
+        label="zAlpha",
+        title="zAlpha (Cross-file hop)",
+        description="Hand it a zPath; zOS loads that file and runs from that block — the workhorse behind menu picks and page-changing buttons.",
+        example="zAlpha: @.zViews.zUI.Home.Home",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zDelta",
+        title="zDelta (Same-file hop)",
+        description="Run another block in THIS file with $Block — nothing loads, the route never moves, reversible with zBack.",
+        example="zDelta: $Section_Two",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zOmega",
+        title="zOmega (Land on a zKey)",
+        description="An adjective on a zAlpha/zDelta saying WHERE in the block to arrive — matches a block's direct key; scrolls (browser) / opens at that key (terminal).",
+        example="zOmega: Pricing",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zDelegate",
+        title="zDelegate (In-place block swap)",
+        description="A button rewires its click to run another block from the same file, right in place — same page, same route. $Block (routeless) / $Block.Sub (dotted → render in place).",
+        example="zDelegate: $Editor.Form",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    # ── zLoom dynamic content (doc 18) ───────────────────────────────────
+    Documentation(
+        label="zSpool",
+        title="zSpool (Data reel binding)",
+        description="Bind a block to a named reel (zLoom/spools/) so %data.<name>.<field> resolves. Also the reel key inside zShuttle.",
+        example="zMeta:\n  zSpool: [contacts]",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zShuttle",
+        title="zShuttle (Loop one pattern over a list)",
+        description="Weave one copy of a zPattern per row of a reel. { zSpool: <list reel>, zPattern: <name> } (+ optional per-row zGate). Lowers to zList {source, each}.",
+        example="zShuttle:\n  zSpool:   products\n  zPattern: Card",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zKnot",
+        title="zKnot (Computed value)",
+        description="Tie % threads + literals into one value. Ops: zAdd zSub zMul zDiv zJoin zIf. Nestable; ÷0/bad op → empty.",
+        example="zKnot:\n  zJoin: [Total: $, {zMul: [%item.price, 2]}]",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zVar",
+        title="zVar (Durable session value)",
+        description="Set a session value read as %var.<name> (or bare %name). Supports _navigate: <path> for immediate navigation after writing.",
+        example="zVar: { contact_id: %zConv.id }",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    # ── zUI zMeta config keys ────────────────────────────────────────────
+    Documentation(
+        label="zTitle",
+        title="zTitle (Page title)",
+        description="The page's display title, declared in zMeta.",
+        example="zMeta:\n  zTitle: My Page",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zBrush",
+        title="zBrush (Page style classes)",
+        description="Page-level style class list applied across the view, declared in zMeta.",
+        example="zMeta:\n  zBrush: [page, hub]",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
     ),
 ]
 

@@ -30,7 +30,7 @@ from lsprotocol import types as lsp_types
 
 # Known meta-keys inside a longhand zMenu: block that are NOT option entries
 _ZMENU_META_KEYS = frozenset(
-    {"title", "zAnchor", "options", "_zClass", "zRBAC", "zMeta"}
+    {"title", "zAnchor", "options", "_zClass", "zGate", "zRBAC", "zMeta"}
 )
 
 # Modifier characters used on keys and option items

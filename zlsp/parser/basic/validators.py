@@ -215,6 +215,7 @@ def is_valid_number(value: str) -> bool:
 # Invalid root keys with their error messages (SINGLE SOURCE OF TRUTH)
 INVALID_ROOT_KEYS = {
     'zSub': "'zSub' cannot be at root level. It must be nested under a parent key.",
+    'zGate': "'zGate' cannot be at root level. It must be nested under a parent key.",
     'zRBAC': "'zRBAC' cannot be at root level. It must be nested under a parent key.",
 }
 

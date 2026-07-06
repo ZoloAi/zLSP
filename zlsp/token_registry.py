@@ -116,8 +116,10 @@ TOKEN_TYPE_MAP: Dict[TokenType, int] = _build_token_type_map()
 # =============================================================================
 
 # UI element blocks (lowercase for internal tracking)
-BLOCK_ZRBAC = 'zRBAC'
+BLOCK_ZGATE = 'zGate'
+BLOCK_ZRBAC = 'zRBAC'   # DEPRECATED — folded into zGate; retained until teaching leaves migrate
 BLOCK_ZIMAGE = 'zimage'
+BLOCK_ZICON = 'zicon'
 BLOCK_ZTEXT = 'ztext'
 BLOCK_ZMD = 'zmd'
 BLOCK_ZCODE = 'zcode'
@@ -134,6 +136,13 @@ BLOCK_ZCHECKBOX = 'zcheckbox'
 BLOCK_ZBTN = 'zbtn'
 BLOCK_ZSELECT = 'zselect'
 BLOCK_ZRANGE = 'zrange'
+# Media + rich-UI element blocks
+BLOCK_ZVIDEO = 'zvideo'
+BLOCK_ZEMBED = 'zembed'
+BLOCK_ZSWIPER = 'zswiper'
+BLOCK_ZDASH = 'zdash'
+BLOCK_ZPROGRESS = 'zprogress'
+BLOCK_ZTERMINAL = 'zterminal'
 
 # Special blocks
 BLOCK_ZMENU = 'zmenu'
@@ -147,9 +156,10 @@ BLOCK_ZMETA = 'zMeta'
 
 # Consolidated list of all UI element block types (for iteration/checking)
 UI_ELEMENT_BLOCK_TYPES = [
-    BLOCK_ZIMAGE, BLOCK_ZTEXT, BLOCK_ZMD, BLOCK_ZCODE, BLOCK_ZURL, BLOCK_ZUL, BLOCK_ZOL, BLOCK_ZDL,
+    BLOCK_ZIMAGE, BLOCK_ZICON, BLOCK_ZTEXT, BLOCK_ZMD, BLOCK_ZCODE, BLOCK_ZURL, BLOCK_ZUL, BLOCK_ZOL, BLOCK_ZDL,
     BLOCK_ZTABLE, BLOCK_HEADER, BLOCK_ZCRUMBS, BLOCK_ZINPUT, BLOCK_ZLINK,
-    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE, BLOCK_ZMENU, BLOCK_ZEXPORT, BLOCK_ZIMPORT
+    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE, BLOCK_ZMENU, BLOCK_ZEXPORT, BLOCK_ZIMPORT,
+    BLOCK_ZVIDEO, BLOCK_ZEMBED, BLOCK_ZSWIPER, BLOCK_ZDASH, BLOCK_ZPROGRESS, BLOCK_ZTERMINAL,
 ]
 
 
@@ -162,7 +172,7 @@ UI_ELEMENT_BLOCK_TYPES = [
 
 # zOS zData keys under zMeta in zSchema files
 ZOS_DATA_KEYS: Set[str] = {
-    'Data_Type', 'Data_Label', 'Data_Source', 'Schema_Name',
+    'Data_Type', 'Data_Label', 'Data_Source', 'Data_Path', 'Schema_Name',
     'zMigration', 'zMigrationVersion',
     # zUIVersion — UI file versioning (mirrors zMigration pattern)
     'zUIVersion', 'zUITracking',
@@ -170,18 +180,29 @@ ZOS_DATA_KEYS: Set[str] = {
 
 # zSchema property keys (field properties)
 ZSCHEMA_PROPERTY_KEYS: Set[str] = {
-    'type', 'pk', 'auto_increment', 'unique', 'required', 
+    'type', 'pk', 'auto_increment', 'unique', 'required',
     'default', 'rules', 'format', 'min_length', 'max_length',
-    'pattern', 'min', 'max', 'zHash', 'comment'
+    'pattern', 'min', 'max', 'zHash', 'comment',
+    # Field-level rules + relationships (doc 16 zData CRUD)
+    'enum', 'nullable', 'immutable', 'transform', 'foreign_key', 'fk',
+    'on_delete', 'primary_key', 'validator', 'pattern_message', 'error_message',
+    'max_size', 'blob_input', 'version', 'zConstraints', 'check',
+    'indexes', 'constraints', 'backfill', 'renamed_from', 'minlength', 'maxlength',
 }
 
 # UI element keys (z-prefixed UI components)
 UI_ELEMENT_KEYS: Set[str] = {
-    'zImage', 'zText', 'zMD', 'zCode', 'zURL', 'zNavBar', 'zUL', 'zOL', 'zDL', 'zTable',
+    'zImage', 'zIcon', 'zText', 'zMD', 'zCode', 'zURL', 'zNavBar', 'zUL', 'zOL', 'zDL', 'zTable',
     'zH0', 'zH1', 'zH2', 'zH3', 'zH4', 'zH5', 'zH6', 'zCrumbs', 'zInput', 'zLink',
     'zCheckbox', 'zBtn', 'zSelect', 'zRange', 'zFunc', 'zWizard', 'zTerminal',
+    # Media events (doc 08)
+    'zVideo', 'zEmbed',
+    # Rich-UI events (docs 22–25)
+    'zSwiper', 'zDash', 'zProgress',
+    # Navigation verbs (doc 14) — cross-file / same-file / anchor hops
+    'zAlpha', 'zDelta', 'zOmega', 'zPsi', 'zDelegate',
     # Signal events
-    'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo',
+    'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo', 'zPrimary', 'zSecondary',
 }
 
 # Plural shorthand keys (SSOT mirror for LSP — keep in sync with dispatch_constants.PLURAL_SHORTHAND_KEYS)
@@ -193,11 +214,15 @@ PLURAL_SHORTHAND_KEYS: Set[str] = {
 
 # zDispatch event keys (z-prefixed dispatch commands that trigger backend actions)
 DISPATCH_KEYS: Set[str] = {
-    'zDialog', 'zData', 'zCRUD', 'zLogin', 'zDispatch', 'zMenu', 'zExport', 'zImport',
+    'zDialog', 'zData', 'zCRUD', 'zLogin', 'zLogout', 'zDispatch', 'zMenu', 'zExport', 'zImport',
 }
 
-# Control flow construct keys (empty - zWizard moved to UI_ELEMENT_MAPPING for consistent coloring)
-CONTROL_FLOW_KEYS: Set[str] = set()
+# Control flow / dynamic-content (zLoom) construct keys
+# NOTE: zWizard stays in UI_ELEMENT_MAPPING for consistent coloring; these are the
+# zLoom weaving events (doc 18) that render green like control flow.
+CONTROL_FLOW_KEYS: Set[str] = {
+    'zLoom', 'zShuttle', 'zList', 'zKnot', 'zVar',
+}
 
 # UI element property keys (properties inside UI elements)
 UI_ELEMENT_PROPERTY_KEYS: Set[str] = {
@@ -212,13 +237,45 @@ UI_ELEMENT_PROPERTY_KEYS: Set[str] = {
     # Form-specific properties (zInput, zTextarea, zSelect, etc.)
     'prompt', 'type', 'placeholder', 'required', 'disabled', 'readonly',
     'min', 'max', 'step', 'pattern', 'autocomplete', 'value', 'checked',
+    'zConv',  # zDialog field identity (canonical binding key; name/field are aliases)
     'name', 'id', 'maxlength', 'minlength', 'multiple', 'size', 'options', 'multi',
     'prefix', 'suffix',  # Input group properties
+    'datalist', 'accept', 'field',  # more input/control props (docs 10, 12, 13)
     # Button-specific properties (zBtn)
     'action',
     # zShot properties
     'full_page', 'resolution', 'quality', 'selector', 'delay', 'overwrite',
     'burst', 'every', 'count',
+    # Media (doc 08 — zVideo/zEmbed/zImage)
+    'poster', 'loop', 'muted', 'autoplay',
+    # Table extras (doc 07)
+    'zPages', 'truncate', 'merge',
+    # zSwiper / zDash / zProgress (docs 22, 23, 25)
+    'slides', 'auto_advance', 'sidebar', 'default', 'folder', 'current', 'total', 'zRun', 'description', 'icon',
+    # Breadcrumbs / navigation props (doc 14)
+    'trail', 'header', 'zBrand', 'zBack', 'zOmega',
+    # Forms / dialog (doc 13) + event hooks
+    'fields', 'onSubmit', 'onSuccess', 'zReset', 'zApp', 'inputs',
+    'onClick', 'onLoad', 'onChange',
+    'onBeforeInsert', 'onAfterInsert', 'onBeforeUpdate', 'onAfterUpdate',
+    # Gate knobs (doc 21) — authed/role/require live inside zGate
+    'authed', 'role', 'require', 'onDenied',
+    # zLoom weaving props (doc 18) — spool/pattern names, knot ops
+    'zSpool', 'zPattern', 'zDye', 'each', 'source',
+    'zAdd', 'zSub', 'zMul', 'zDiv', 'zJoin', 'zIf', 'sep', 'then',
+    # zData CRUD + advanced query/write vocabulary (docs 16, 17)
+    'model', 'action', 'data', 'values', 'where', 'order_by', 'distinct',
+    'group_by', 'having', 'tables', 'joins', 'auto_join', 'function', 'alias',
+    'partition_by', 'frame', 'with', 'from', 'queries', 'search', 'search_fields',
+    'search_mode', 'returning', 'conflict_fields', 'conflict_key', 'set', 'using',
+    'soft_delete', 'into', 'materialized', 'view', 'recursive', 'anchor', 'step',
+    'link', 'backfill', 'buckets', 'zFilters', 'zCase', 'zExpr', 'on',
+    '_transaction', '_savepoint',
+    # zServer route / zAPI vocabulary (doc 19)
+    'kind', 'handler', 'method', 'auth', 'auth_model', 'zAPI', 'autoConnect',
+    'enabled', 'routes', 'mounts',
+    # zUI zMeta config keys
+    'zTitle', 'zBrush', 'zScripts', 'zCanvas',
 }
 
 # UI Element Schemas - Define valid properties per element type
@@ -281,6 +338,30 @@ UI_ELEMENT_SCHEMAS: Dict[str, Dict[str, List[str]]] = {
             '_zClass', '_id', 'indent'
         ],
     },
+    'zvideo': {
+        'required': ['src'],
+        'optional': ['alt_text', 'caption', 'poster', 'loop', 'muted', 'autoplay', '_zClass', '_id'],
+    },
+    'zembed': {
+        'required': ['src'],
+        'optional': ['alt_text', 'caption', '_zClass', '_id'],
+    },
+    'zswiper': {
+        'required': ['slides'],
+        'optional': ['label', 'auto_advance', 'delay', 'loop', 'folder', '_zClass', '_id'],
+    },
+    'zdash': {
+        'required': ['folder', 'sidebar'],
+        'optional': ['type', 'default', '_zClass', '_id'],
+    },
+    'zprogress': {
+        'required': [],
+        'optional': ['label', 'current', 'total', 'color', 'type', '_zClass', '_id'],
+    },
+    'zterminal': {
+        'required': ['content'],
+        'optional': ['title', 'zRun', '_zClass', '_id'],
+    },
     # More elements to be added as needed
 }
 
@@ -311,6 +392,12 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
         'requires_zui': True,
         'is_shorthand': True,  # Can appear multiple times in sequence
     },
+    'zIcon': {
+        'block_type': BLOCK_ZICON,
+        'block_name': 'zicon',
+        'requires_zui': True,
+        'is_shorthand': True,  # zEvent — may repeat at the same level (suffixed on duplicate)
+    },
     'zText': {
         'block_type': BLOCK_ZTEXT,
         'block_name': 'ztext',
@@ -333,7 +420,7 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
         'block_type': BLOCK_ZURL,
         'block_name': 'zurl',
         'requires_zui': True,
-        'is_shorthand': False,
+        'is_shorthand': True,  # zEvent — may repeat at the same level (suffixed on duplicate)
     },
     'zUL': {
         'block_type': BLOCK_ZUL,
@@ -449,12 +536,53 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
         'requires_zui': True,
         'is_shorthand': True,
     },
-    'zTerminal': {  # Added for completeness
-        'block_type': None,  # Define if needed
+    'zTerminal': {  # Live code sample widget (doc 24)
+        'block_type': BLOCK_ZTERMINAL,
         'block_name': 'zterminal',
         'requires_zui': True,
         'is_shorthand': True,
     },
+    # Media events (doc 08)
+    'zVideo': {
+        'block_type': BLOCK_ZVIDEO,
+        'block_name': 'zvideo',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    'zEmbed': {
+        'block_type': BLOCK_ZEMBED,
+        'block_name': 'zembed',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    # Rich-UI events (docs 22, 23, 25)
+    'zSwiper': {
+        'block_type': BLOCK_ZSWIPER,
+        'block_name': 'zswiper',
+        'requires_zui': True,
+        'is_shorthand': False,
+    },
+    'zDash': {
+        'block_type': BLOCK_ZDASH,
+        'block_name': 'zdash',
+        'requires_zui': True,
+        'is_shorthand': False,
+    },
+    'zProgress': {
+        'block_type': BLOCK_ZPROGRESS,
+        'block_name': 'zprogress',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    # Navigation verbs (doc 14) — events, no tracked block
+    'zAlpha': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
+    'zDelta': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
+    'zOmega': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
+    'zPsi':   {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
+    'zDelegate': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
+    # Brand-emphasis signals (doc 09)
+    'zPrimary':   {'block_type': None, 'block_name': 'zprimary', 'requires_zui': True, 'is_shorthand': True},
+    'zSecondary': {'block_type': None, 'block_name': 'zsecondary', 'requires_zui': True, 'is_shorthand': True},
     'zMenu': {
         'block_type': BLOCK_ZMENU,
         'block_name': 'zmenu',
@@ -533,7 +661,12 @@ ZRAVEN_REPEATABLE_KEYS: Set[str] = {
 
 # Special blocks mapping (non-UI elements that create block contexts)
 SPECIAL_BLOCK_MAPPING: Dict[str, Dict[str, any]] = {
-    'zRBAC': {
+    'zGate': {
+        'block_type': BLOCK_ZGATE,
+        'block_name': 'zgate',
+        'method': 'enter_block',  # the one gate verb (auth/role/value/branch)
+    },
+    'zRBAC': {  # DEPRECATED — folded into zGate; retained until teaching leaves migrate
         'block_type': BLOCK_ZRBAC,
         'block_name': 'zrbac',
         'method': 'enter_block',  # Uses regular enter_block
@@ -629,6 +762,7 @@ __all__ = [
     # Block type constants
     'BLOCK_ZRBAC',
     'BLOCK_ZIMAGE',
+    'BLOCK_ZICON',
     'BLOCK_ZTEXT',
     'BLOCK_ZMD',
     'BLOCK_ZURL',
