@@ -5,7 +5,27 @@ Collects YAML-style dash list items (- item1, - item2, etc.) with nested structu
 Handles multiline items, nested dash lists, and inline objects/arrays within dash items.
 """
 
+import re
 from typing import Tuple
+
+# Matches a comma that is NOT already escaped (no preceding backslash).
+_UNESCAPED_COMMA = re.compile(r'(?<!\\),')
+
+
+def _preserve_item_commas(item: str) -> str:
+    """
+    String-first: a dash item is ONE value, even if it contains commas.
+
+    The reconstructed array (``[a, b, c]``) is re-parsed downstream by
+    ``parse_bracket_array`` → ``split_on_comma``, which splits on every top-level
+    comma. To keep each ``- ...`` entry whole, escape the content commas of plain
+    scalar items so they survive that split. Flow items (inline ``{...}`` objects
+    or ``[...]`` arrays) are left untouched — their commas are real separators.
+    """
+    s = item.lstrip()
+    if s.startswith('{') or s.startswith('['):
+        return item
+    return _UNESCAPED_COMMA.sub(r'\\,', item)
 
 
 def collect_dash_list(lines: list[str], start_idx: int, parent_indent: int) -> Tuple[str, int, list]:
@@ -191,7 +211,7 @@ def collect_dash_list(lines: list[str], start_idx: int, parent_indent: int) -> T
 
     # Reconstruct as single-line array format
     if collected_items:
-        reconstructed = '[' + ', '.join(collected_items) + ']'
+        reconstructed = '[' + ', '.join(_preserve_item_commas(it) for it in collected_items) + ']'
     else:
         reconstructed = '[]'
 

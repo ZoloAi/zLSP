@@ -5,6 +5,7 @@ Collects multi-line string content when (str) type hint is used (YAML-style).
 Rule: Collect lines indented MORE than parent, strip base indent, preserve relative.
 """
 
+import re as _re
 from typing import Tuple, Optional
 from . import YAML_LINE_BREAK
 
@@ -127,16 +128,18 @@ def collect_str_hint_multiline(
             if s.startswith('#'):
                 return True  # Heading
             if s.startswith('- ') or s.startswith('* ') or s.startswith('+ '):
-                return True  # Unordered list item
+                return True  # Unordered list item (disc / circle / square)
             if s.startswith('> '):
                 return True  # Blockquote
-            # Ordered list item: digit(s) followed by '.' or ')'
-            for j, ch in enumerate(s):
-                if ch.isdigit():
-                    continue
-                if ch in '.)'  and j > 0:
-                    return True
-                break
+            # Ordered markdown markers: digit(s) + '.'/')'.
+            if _re.match(r'^\d+[.)]', s):
+                return True
+            # zOS canonical ordered markers: <token>- followed by a space.
+            #   token = digits | single letter | roman string  (a- A- i- I- ii- 1-)
+            # Single-letter / roman restriction keeps prose like 'well- known'
+            # and '5-minute' out (space-guarded by the trailing [ \t]).
+            if _re.match(r'^(?:\d+|[ivxlcdmIVXLCDM]+|[A-Za-z])-[ \t]', s):
+                return True
             return False
 
         for i, line in enumerate(collected):
