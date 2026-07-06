@@ -39,7 +39,7 @@ Prism.languages.insertBefore('zui', 'property', {
             alias: 'constant',
         },
         'control-flow-key': {
-            pattern: /\bzWizard(?=\s*:)/,
+            pattern: /\b(?:zKnot|zList|zLoom|zShuttle|zVar|zWizard)(?=\s*:)/,
             alias: 'function',
         },
         'zsub-key': {
@@ -47,7 +47,7 @@ Prism.languages.insertBefore('zui', 'property', {
             alias: 'keyword',
         },
         'zui-element': {
-            pattern: /\b(?:zError|zWizard|zImage|zWarning|zSuccess|zH3|zDL|zTable|zSignal|zH0|zRange|zCheckbox|zInput|zH4|zBtn|zNavBar|zMD|zOL|zH6|zH1|zCode|zLink|zFunc|zCrumbs|zUL|zInfo|zH5|zH2|zURL|zText|zTerminal|zSelect)(?=\s*(?:\([^)]+\))?[*!]?:)/,
+            pattern: /\b(?:zPsi|zUL|zInfo|zTerminal|zDelta|zWarning|zCheckbox|zImage|zIcon|zH3|zBtn|zH0|zError|zURL|zH5|zFunc|zLink|zOmega|zRange|zH1|zPrimary|zDash|zAlpha|zNavBar|zSignal|zOL|zProgress|zH6|zH2|zMD|zCrumbs|zEmbed|zH4|zText|zInput|zSelect|zWizard|zTable|zDL|zSuccess|zSwiper|zSecondary|zCode|zVideo|zDelegate)(?=\s*(?:\([^)]+\))?[*!]?:)/,
             alias: 'function',
         },
         'metadata': {
@@ -55,12 +55,42 @@ Prism.languages.insertBefore('zui', 'property', {
             alias: 'keyword',
         },
         'zui-element-property': {
-            pattern: /\b(?:action|alt_text|autocomplete|break_message|burst|caption|checked|color|columns|content|count|delay|disabled|every|format|full_page|href|id|indent|interactive|items|label|limit|max|maxlength|min|minlength|multi|multiple|name|offset|open_prompt|options|overwrite|parent|pattern|pause|placeholder|prefix|prompt|quality|readonly|rel|required|resolution|rows|selector|semantic|show|show_header|size|src|step|style|suffix|target|title|type|value|window|zAnchor)(?=\s*(?:\([^)]+\))?:)/,
+            pattern: /\b(?:_savepoint|_transaction|accept|action|alias|alt_text|anchor|auth|auth_model|authed|autoConnect|auto_advance|auto_join|autocomplete|autoplay|backfill|break_message|buckets|burst|caption|checked|color|columns|conflict_fields|conflict_key|content|count|current|data|datalist|default|delay|description|disabled|distinct|each|enabled|every|field|fields|folder|format|frame|from|full_page|function|group_by|handler|having|header|href|icon|id|indent|inputs|interactive|into|items|joins|kind|label|limit|link|loop|materialized|max|maxlength|merge|method|min|minlength|model|mounts|multi|multiple|muted|name|offset|on|onAfterInsert|onAfterUpdate|onBeforeInsert|onBeforeUpdate|onChange|onClick|onDenied|onLoad|onSubmit|onSuccess|open_prompt|options|order_by|overwrite|parent|partition_by|pattern|pause|placeholder|poster|prefix|prompt|quality|queries|readonly|recursive|rel|require|required|resolution|returning|role|routes|rows|search|search_fields|search_mode|selector|semantic|sep|set|show|show_header|sidebar|size|slides|soft_delete|source|src|step|style|suffix|tables|target|then|title|total|trail|truncate|type|using|value|values|view|where|window|with|zAPI|zAdd|zAnchor|zApp|zBack|zBrand|zBrush|zCanvas|zCase|zConv|zDiv|zDye|zExpr|zFilters|zIf|zJoin|zMul|zOmega|zPages|zPattern|zReset|zRun|zScripts|zSpool|zSub|zTitle)(?=\s*(?:\([^)]+\))?:)/,
             alias: 'variable',
         },
+        'zgate-key': {
+            pattern: /\bzGate(?=\s*:)/,
+            alias: 'constant',
+        },
         'zdispatch-event': {
-            pattern: /\b(?:zCRUD|zData|zDialog|zDispatch|zExport|zImport|zLogin|zMenu)(?=\s*(?:\([^)]+\))?[*!]?:)/,
+            pattern: /\b(?:zCRUD|zData|zDialog|zDispatch|zExport|zImport|zLogin|zLogout|zMenu)(?=\s*(?:\([^)]+\))?[*!]?:)/,
             alias: 'dispatch-event',
+        }
+});
+
+// Insert value patterns BEFORE string-unquoted for priority
+Prism.languages.insertBefore('zui', 'string-unquoted', {
+        'zfunc-value': {
+            pattern: /&\.?[a-zA-Z][a-zA-Z0-9_.]*(?:\([^)]*\))?/,
+            alias: 'function',
+        }
+});
+Prism.languages.insertBefore('zui', 'string-unquoted', {
+        'zloom-value': {
+            pattern: /%[a-zA-Z][a-zA-Z0-9_.]*/,
+            alias: 'variable',
+        }
+});
+Prism.languages.insertBefore('zui', 'string-unquoted', {
+        'zdelta-value': {
+            pattern: /\$[a-zA-Z][a-zA-Z0-9_.]*/,
+            alias: 'variable',
+        }
+});
+Prism.languages.insertBefore('zui', 'string-unquoted', {
+        'zpath-value': {
+            pattern: /[@~]\.[a-zA-Z0-9_./\- ]+/,
+            alias: 'string',
         }
 });
 

@@ -243,7 +243,15 @@ def extract_nested_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
         })
     
     elif file_type == FileType.ZUI:
-        # Line 139-140: zRBAC key
+        # zGate — the one gate verb (auth / role / value / branch)
+        patterns.append({
+            'name': 'zgate-key',
+            'pattern': r'/\bzGate(?=\s*:)/',
+            'alias': 'constant',
+            'insert_before': 'property',
+            'comment': 'zGate access & conditional gate (red)'
+        })
+        # zRBAC key — DEPRECATED, folded into zGate; retained until leaves migrate
         patterns.append({
             'name': 'zrbac-key',
             'pattern': r'/\bzRBAC(?=\s*:)/',
@@ -251,13 +259,14 @@ def extract_nested_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
             'insert_before': 'property',
             'comment': 'zRBAC access control (red)'
         })
-        # Line 175-176: Control flow keys (zWizard)
+        # Line 175-176: Control flow + zLoom weaving keys (zWizard, zShuttle, zList, zKnot, zVar, zLoom)
+        control_flow = '|'.join(sorted(CONTROL_FLOW_KEYS | {'zWizard'}))
         patterns.append({
             'name': 'control-flow-key',
-            'pattern': r'/\bzWizard(?=\s*:)/',
+            'pattern': rf'/\b(?:{control_flow})(?=\s*:)/',
             'alias': 'function',
             'insert_before': 'property',
-            'comment': 'Control flow constructs (green)'
+            'comment': 'Control flow + zLoom constructs (green)'
         })
         # zDispatch event keys (zDialog, zData, zCRUD, zLogin) — golden
         dispatch_keys = '|'.join(sorted(DISPATCH_KEYS))
@@ -394,7 +403,39 @@ def extract_value_patterns(file_type: FileType) -> List[Dict[str, Any]]:
             'greedy': True,
             'comment': 'zPath values (cyan) - bare @ or ~ or with path - ONLY after specific keys'
         })
-    
+
+    elif file_type == FileType.ZUI:
+        # Sigil-led values in zUI leaves. Names end in "-value" so the generator
+        # inserts them BEFORE 'string-unquoted' (see build_prism_extended_language).
+        # zPath references: @.zViews.file, ~.home.file (cyan)
+        patterns.append({
+            'name': 'zpath-value',
+            'pattern': r'/[@~]\.[a-zA-Z0-9_./\- ]+/',
+            'alias': 'string',
+            'comment': 'zPath references (@. / ~.) — cyan',
+        })
+        # zFunc calls: &.plugin.fn(...), &.folder.file.fn, &zNow, &zUUID()
+        patterns.append({
+            'name': 'zfunc-value',
+            'pattern': r'/&\.?[a-zA-Z][a-zA-Z0-9_.]*(?:\([^)]*\))?/',
+            'alias': 'function',
+            'comment': 'zFunc call sigil (&) — plugin/builtin calls',
+        })
+        # zLoom threads: %data.user.name, %session.x, %item.field, %var.x, %route.x
+        patterns.append({
+            'name': 'zloom-value',
+            'pattern': r'/%[a-zA-Z][a-zA-Z0-9_.]*/',
+            'alias': 'variable',
+            'comment': 'zLoom % thread (spool/session/item/var/route)',
+        })
+        # zDelta same-file hop / $alias / $Block refs
+        patterns.append({
+            'name': 'zdelta-value',
+            'pattern': r'/\$[a-zA-Z][a-zA-Z0-9_.]*/',
+            'alias': 'variable',
+            'comment': 'zDelta $Block / $alias reference',
+        })
+
     return patterns
 
 

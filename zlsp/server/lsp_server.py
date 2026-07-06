@@ -137,10 +137,15 @@ SEMANTIC_LEGEND = lsp_types.SemanticTokensLegend(
     token_modifiers=token_modifiers_list
 )
 
+# Base language + per-prefix sibling languages (zolo-ui/-env/-server/-raven).
+# MUST match the language IDs contributed by the VS Code manifest, else semantic
+# tokens never fire for sibling docs and highlighting silently disappears.
+ZOLO_LANGUAGE_IDS = ["zolo", "zolo-ui", "zolo-env", "zolo-server", "zolo-raven"]
+
 SEMANTIC_OPTIONS = lsp_types.SemanticTokensRegistrationOptions(
     legend=SEMANTIC_LEGEND,
     full=True,
-    document_selector=[{"language": "zolo"}]  # Required for registration options
+    document_selector=[{"language": lang} for lang in ZOLO_LANGUAGE_IDS]
 )
 
 # Load code actions from theme (SSOT approach)  # cspell:ignore SSOT
