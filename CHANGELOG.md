@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0] - 2026-07-12
+
+### Added
+- `zlsp.bifrost_prism_dir()` — accessor to the pre-built Prism.js bundle, shipped as package data (`zlsp/generated/`); consumed by zOS.zServer at `/zsyntax/<version>/`
+- Meta-position diagnostics (`meta_position_validators.py`) with unit coverage
+- zGate registration, media/rich-UI/nav/zLoom vocabulary, zImport token, sigil-value highlighting, multi-language semantic tokens
+- Bundle-freshness gate in `test_prism_patterns.py` — CI fails if `zlsp/generated/` drifts from the grammar SSOT
+
+### Changed
+- Prism bundle output moved from repo-root `bifrost-prism/` (manual copy into zbifrost-client) to packaged `zlsp/generated/` — deployed highlighting now always matches the installed zolo-lsp
+- Prism CSS header embeds the package version instead of a wall-clock timestamp (deterministic output)
+- zSpark semantic highlighting parked (rebuilt from scratch); only the zPath value override remains
+- zRBAC deprecated in favor of zGate
+
+### Fixed
+- Parser preserves scalar dash-item commas and zOS ordered-list markers
+- YAML block-mapping zDialog fields flagged by diagnostics
+
 ## [Unreleased]
 
 ### Added

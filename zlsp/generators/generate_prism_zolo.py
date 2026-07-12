@@ -7,16 +7,20 @@ Extracts patterns from zlsp SSOT (KeyDetector, TokenRegistry, FileTypeDetector).
 Usage:
     python3 -m zlsp.generators.generate_prism_zolo
 
-Output (single committed bundle — manual handoff, no auto-deploy):
-    - zLSP/bifrost-prism/prism-zolo.js (generic)
-    - zLSP/bifrost-prism/prism-zspark.js
-    - zLSP/bifrost-prism/prism-zui.js
-    - zLSP/bifrost-prism/prism-zschema.js
-    - zLSP/bifrost-prism/prism-zconfig.js
-    - zLSP/bifrost-prism/prism-zenv.js
+Output (single committed bundle, shipped as PACKAGE DATA in the wheel):
+    - zlsp/generated/prism-zolo.js (generic)
+    - zlsp/generated/prism-zspark.js
+    - zlsp/generated/prism-zui.js
+    - zlsp/generated/prism-zschema.js
+    - zlsp/generated/prism-zconfig.js
+    - zlsp/generated/prism-zenv.js
 
-A dev copies the bundle into the bifrost client (zbifrost-client/syntax/),
-then pushes + bumps that repo. This generator never writes into other repos.
+No manual handoff anymore: zOS.zServer serves this directory straight from
+the installed package via zlsp.bifrost_prism_dir() (mounted at
+/zsyntax/<version>/ and announced as `syntaxBase` in zui-config), so deployed
+highlighting always matches THIS package's grammar. Regenerate + commit
+whenever the grammar SSOT changes; test_prism_patterns.py fails on a stale
+bundle. This generator never writes into other repos.
 """
 
 import os
@@ -40,12 +44,15 @@ from zlsp.generators.file_type_pattern_extractor import get_all_file_types
 
 
 def ensure_bundle_dir() -> Path:
-    """Ensure the local bifrost-prism bundle dir exists and return it.
+    """Ensure the packaged bundle dir (zlsp/generated/) exists and return it.
 
-    This is the SINGLE committed output. No cross-repo deployment — a dev copies
-    the bundle to zbifrost-client/syntax/ manually, then pushes + bumps.
+    This is the SINGLE committed output AND what ships in the wheel — it must
+    live inside the zlsp package so bifrost_prism_dir() can serve it from any
+    install. (The old repo-root bifrost-prism/ + manual copy into
+    zbifrost-client is retired; the client's bundled syntax/ is a frozen
+    fallback for pre-/zsyntax/ servers only.)
     """
-    bundle_dir = project_root / 'bifrost-prism'
+    bundle_dir = project_root / 'zlsp' / 'generated'
     bundle_dir.mkdir(exist_ok=True)
     return bundle_dir
 
@@ -55,7 +62,7 @@ def generate_base_language_file(bundle_dir: Path) -> Path:
     Generate the base zolo language file.
     
     Args:
-        bundle_dir: Output directory (zLSP/bifrost-prism/)
+        bundle_dir: Output directory (zlsp/generated/)
         
     Returns:
         Path to generated prism-zolo.js
@@ -90,7 +97,7 @@ def generate_extended_language_file(
         file_type: The file type to generate
         config: Language configuration
         base_patterns: Base zolo patterns (for reference)
-        bundle_dir: Output directory (zLSP/bifrost-prism/)
+        bundle_dir: Output directory (zlsp/generated/)
         
     Returns:
         Path to generated file
@@ -163,9 +170,8 @@ def generate_all_languages():
         config = configs[file_type]
         print(f"  - {config['name']}: {config['description']}")
     print()
-    print("Manual handoff (no auto-deploy):")
-    print("  1. Copy zLSP/bifrost-prism/* → zbifrost-client/syntax/")
-    print("  2. Push + bump zbifrost-client, then update the CDN pin")
+    print("Bundle ships as package data (zlsp/generated/) — commit it with the")
+    print("grammar change; zOS serves it at /zsyntax/<version>/ automatically.")
 
 
 def main():

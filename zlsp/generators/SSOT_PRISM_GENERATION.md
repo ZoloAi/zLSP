@@ -129,10 +129,12 @@ This will:
 1. Extract value patterns from SSOT
 2. Validate alignment with parser logic
 3. Generate 6 Prism language files (zolo, zspark, zui, zschema, zconfig, zenv)
-4. Copy to deployment directories:
-   - `zlsp/generated/` (canonical)
-   - `zOS/bifrost/src/syntax/` (dev reference)
-   - `zCloud/static/js/` (runtime)
+   into `zlsp/generated/` — the single committed output, shipped as package
+   data in the wheel. zOS.zServer serves it at `/zsyntax/<version>/` via
+   `zlsp.bifrost_prism_dir()`; no copying into other repos.
+
+Commit `zlsp/generated/` together with the grammar change —
+`tests/integration/test_prism_patterns.py` fails if the bundle is stale.
 
 ### Test SSOT Alignment
 

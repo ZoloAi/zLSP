@@ -88,13 +88,12 @@ def generate_prism_all(args):
         print("✅ Prism.js generation complete!")
         print("=" * 70)
         print()
-        print("Generated bundle: zLSP/bifrost-prism/")
+        print("Generated bundle: zlsp/generated/ (ships as package data)")
         print("  - prism-*.js (6 pattern files)")
         print("  - prism-zolo-theme.css")
         print()
-        print("Manual handoff (no auto-deploy):")
-        print("  1. Copy zLSP/bifrost-prism/* → zbifrost-client/syntax/")
-        print("  2. Push + bump zbifrost-client, then update the CDN pin")
+        print("Commit the bundle with the grammar change — zOS serves it at")
+        print("/zsyntax/<version>/ straight from the installed package.")
         print()
         return 0
     else:

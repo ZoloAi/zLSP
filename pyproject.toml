@@ -100,10 +100,9 @@ include = ["zlsp*"]
 exclude = ["tests*", "docs*", "scripts*", "examples*"]
 
 [tool.setuptools.package-data]
-zlsp = ["assets/*.png", "assets/*.svg"]
-core = ["**/*"]
-editors = ["**/*"]
-themes = ["*.yaml", "generators/*.py"]
+zlsp = ["assets/*.png", "assets/*.svg", "generated/*.js", "generated/*.css"]
+"zlsp.themes" = ["*.yaml"]
+"zlsp.editors.vim" = ["config/**/*.vim", "*.md"]
 
 [tool.setuptools.data-files]
 "share/zlsp/examples" = ["examples/*.zolo"]
@@ -113,7 +112,7 @@ themes = ["*.yaml", "generators/*.py"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
-addopts = "-v --cov=core --cov-report=term-missing"
+addopts = "-v --cov=zlsp --cov-report=term-missing"
 markers = [
     "slow: Slow tests that take significant time to run",
 ]
