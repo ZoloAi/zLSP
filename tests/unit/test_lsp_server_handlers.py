@@ -101,7 +101,7 @@ class TestLSPHandlerUnitTests:
     without actually starting a server or opening files.
     """
     
-    @patch('core.server.lsp_server.zolo_server')
+    @patch('zlsp.server.lsp_server.zolo_server')
     def test_did_open_publishes_diagnostics(self, mock_server):
         """Test that didOpen handler publishes diagnostics."""
         # Mock workspace and document
@@ -168,14 +168,16 @@ class TestLSPHandlerUnitTests:
     
     def test_get_hover_info_returns_info_for_keys(self):
         """Test that hover provider returns information for keys."""
-        from zlsp.providers.hover_provider import get_hover_info
+        from zlsp.providers.hover import get_hover_info
+        from zlsp.parser import tokenize
         
         content = "debug(bool): true\nport(int): 8080"
         line = 0
         character = 0
         
-        # Get hover info for "debug" key
-        hover_info = get_hover_info(content, line, character)
+        # Get hover info for "debug" key (hover uses cached tokens from the LSP server)
+        tokens = tokenize(content).tokens
+        hover_info = get_hover_info(content, line, character, tokens)
         
         # Should return hover info (may be None if position is wrong)
         # This is a smoke test - detailed logic tested in test_hover_provider.py
@@ -183,7 +185,7 @@ class TestLSPHandlerUnitTests:
     
     def test_get_completions_returns_completions(self):
         """Test that completion provider returns completions."""
-        from zlsp.providers.completion_provider import get_completions
+        from zlsp.providers.completion import get_completions
         
         content = "debug(bool): true\npo"
         line = 1
@@ -198,7 +200,7 @@ class TestLSPHandlerUnitTests:
     
     def test_parse_result_with_diagnostics(self):
         """Test that parse results contain diagnostics."""
-        from zlsp.parser.parser import tokenize
+        from zlsp.parser import tokenize
         
         # Valid content
         valid_content = "key: value"

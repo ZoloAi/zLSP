@@ -23,12 +23,21 @@ class ValueValidator:
     """
     
     # Valid values for each special key
+    # zEnv: engine deployment modes (config_environment.py) — accepted in both
+    # Title case and the lowercase spelling used throughout zAgents/src examples
+    # (`zEnv: development` loads zEnv.development.zolo).
+    # zLog: app levels + z-prefixed engine-trace variants (zINFO…) per 01_zspark.md.
+    _ZENV_MODES = {'Production', 'Development', 'Testing', 'Debug'}
+    _ZLOG_LEVELS = {
+        'DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD',
+        'zDEBUG', 'zSESSION', 'zINFO', 'zWARNING', 'zERROR', 'zCRITICAL',
+    }
     VALID_VALUES = {
         'zMode':  {'zCLI', 'zBifrost'},
-        'zEnv':   {'Production', 'Development', 'Debug'},
-        'zState': {'Production', 'Development', 'Debug'},   # deprecated → zEnv
-        'zLog':   {'DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD'},
-        'zScrap': {'DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD'},  # deprecated → zLog
+        'zEnv':   _ZENV_MODES | {v.lower() for v in _ZENV_MODES},
+        'zState': _ZENV_MODES | {v.lower() for v in _ZENV_MODES},   # deprecated → zEnv
+        'zLog':   _ZLOG_LEVELS,
+        'zScrap': _ZLOG_LEVELS,  # deprecated → zLog
     }
     
     @staticmethod
@@ -66,7 +75,7 @@ class ValueValidator:
     @staticmethod
     def validate_deployment(value: str, line: int, start_pos: int) -> Optional[Diagnostic]:
         """
-        Validate zState value (Production/Development).
+        Validate zEnv value (Production/Development/Testing/Debug, either case).
         
         Args:
             value: The value to validate

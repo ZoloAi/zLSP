@@ -66,8 +66,12 @@ class TestCompletionContext:
         assert context.at_line_start is True
     
     def test_not_at_line_start(self):
-        """Test cursor NOT at line start."""
-        content = "  port"
+        """Test cursor NOT at line start.
+        
+        A line without a colon still counts as line start (typing a key),
+        so use a completed key: value line with the cursor mid-line.
+        """
+        content = "  port: 8080"
         context = CompletionContext(content, line=0, character=6)
         
         assert context.at_line_start is False
@@ -218,41 +222,21 @@ class TestCompletionRegistry:
         assert "zCLI" in labels
         assert "zBifrost" in labels
     
-    def test_zui_zvafile_completions(self):
-        """Test zUI zVaFile-specific completions."""
-        content = "zVaFile: "
+    def test_zspark_zenv_value_completions(self):
+        """Test zSpark zEnv value completions include all engine deployment modes."""
+        content = "zEnv: "
         context = CompletionContext(
             content,
             line=0,
-            character=9,
-            filename="zUI.example.zolo"
+            character=6,
+            filename="zSpark.example.zolo"
         )
         
         completions = CompletionRegistry.get_completions(context)
         
-        # Should return zVaFile-specific completions
         labels = [item.label for item in completions]
-        assert "zTerminal" in labels
-        assert "zWeb" in labels
-        assert "zMobile" in labels
-    
-    def test_zui_zblock_completions(self):
-        """Test zUI zBlock-specific completions."""
-        content = "zBlock: "
-        context = CompletionContext(
-            content,
-            line=0,
-            character=8,
-            filename="zUI.component.zolo"
-        )
-        
-        completions = CompletionRegistry.get_completions(context)
-        
-        # Should return zBlock-specific completions
-        labels = [item.label for item in completions]
-        assert "zTerminal" in labels
-        assert "zHTML" in labels
-        assert "zJSON" in labels
+        for mode in ("Production", "Development", "Testing", "Debug"):
+            assert mode in labels
     
     def test_zschema_type_completions(self):
         """Test zSchema field type completions."""
@@ -266,12 +250,10 @@ class TestCompletionRegistry:
         
         completions = CompletionRegistry.get_completions(context)
         
-        # Should return field type completions
+        # Should return field kind completions (zAgents 08_data_crud)
         labels = [item.label for item in completions]
-        assert "string" in labels
-        assert "integer" in labels
-        assert "float" in labels
-        assert "boolean" in labels
+        for kind in ("str", "int", "float", "bool", "date", "time", "datetime", "uuid", "json", "blob"):
+            assert kind in labels
     
     def test_no_completions_without_context(self):
         """Test that no completions are returned without clear context."""
@@ -300,8 +282,8 @@ class TestCompletionRegistry:
         assert "Production" not in labels  # File-specific should not appear
         assert "true" in labels or "false" in labels  # Generic values should appear
     
-    def test_ui_element_completions_at_line_start(self):
-        """Test that UI element completions appear at line start."""
+    def test_no_key_completions_for_generic_file_at_line_start(self):
+        """Key completions are theme-driven per file type; generic files get none."""
         content = ""
         context = CompletionContext(
             content,
@@ -311,16 +293,27 @@ class TestCompletionRegistry:
         
         completions = CompletionRegistry.get_completions(context)
         
-        # Should return UI element completions
-        labels = [item.label for item in completions]
-        assert "zImage" in labels
-        assert "zText" in labels
-        assert "zH1" in labels
-        assert "zTable" in labels
-        assert len(completions) == 16  # All UI elements
+        # Generic files have no theme-defined key completions
+        assert completions == []
     
-    def test_ui_element_completions_in_zui_file(self):
-        """Test that UI element completions appear in zUI files."""
+    def test_zspark_root_key_completions_at_line_start(self):
+        """Test that zSpark files get theme-driven root key completions."""
+        content = ""
+        context = CompletionContext(
+            content,
+            line=0,
+            character=0,
+            filename="zSpark.myapp.zolo"
+        )
+        
+        completions = CompletionRegistry.get_completions(context)
+        
+        labels = [item.label for item in completions]
+        assert "zSpark" in labels
+        assert "zSpark>>" in labels
+    
+    def test_key_completions_in_zui_file(self):
+        """Test that theme-driven zUI key completions appear in zUI files."""
         content = "zMeta:\n  "
         context = CompletionContext(
             content,
@@ -331,24 +324,31 @@ class TestCompletionRegistry:
         
         completions = CompletionRegistry.get_completions(context)
         
-        # Should return UI element completions
+        # Should return zUI property completions from the theme
         labels = [item.label for item in completions]
-        assert "zImage" in labels
+        assert "zTitle" in labels
         assert "zNavBar" in labels
+        assert "zGate" in labels
+        assert "zLogger" in labels
     
-    def test_ui_element_completion_format(self):
-        """Test that UI element completions have correct format."""
-        content = ""
-        context = CompletionContext(content, line=0, character=0)
+    def test_theme_key_completion_format(self):
+        """Test that theme-driven key completions have correct format."""
+        content = "zMeta:\n  "
+        context = CompletionContext(
+            content,
+            line=1,
+            character=2,
+            filename="zUI.component.zolo"
+        )
         
         completions = CompletionRegistry.get_completions(context)
-        zimage = next((c for c in completions if c.label == "zImage"), None)
+        ztitle = next((c for c in completions if c.label == "zTitle"), None)
         
-        assert zimage is not None
-        assert zimage.kind == lsp_types.CompletionItemKind.Class
-        assert zimage.detail == "Image element"
-        assert zimage.insert_text == "zImage: "
-        assert "Display an image" in zimage.documentation.value
+        assert ztitle is not None
+        assert ztitle.kind == lsp_types.CompletionItemKind.Property
+        assert ztitle.detail == "Page title (zMeta)"
+        assert ztitle.insert_text == "zTitle: "
+        assert "zMeta" in ztitle.documentation.value
 
 
 class TestCompletionContextIntegration:

@@ -1,8 +1,8 @@
 {
   "file": "zUI.example.zolo",
   "file_type": "zui",
-  "line_count": 35,
-  "token_count": 90,
+  "line_count": 172,
+  "token_count": 412,
   "tokens": [
     {
       "end": 5,
@@ -23,29 +23,29 @@
       "type": "TokenType.COLON"
     },
     {
-      "end": 9,
+      "end": 11,
       "length": 7,
       "line": 1,
       "modifiers": [],
-      "start": 2,
+      "start": 4,
       "text": "zNavBar",
-      "type": "TokenType.UI_ELEMENT_KEY"
+      "type": "TokenType.NESTED_KEY"
     },
     {
-      "end": 10,
+      "end": 12,
       "length": 1,
       "line": 1,
       "modifiers": [],
-      "start": 9,
+      "start": 11,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 15,
+      "end": 17,
       "length": 4,
       "line": 1,
       "modifiers": [],
-      "start": 11,
+      "start": 13,
       "text": "true",
       "type": "TokenType.BOOLEAN"
     },
@@ -68,189 +68,234 @@
       "type": "TokenType.COLON"
     },
     {
-      "end": 9,
+      "end": 11,
       "length": 7,
       "line": 4,
       "modifiers": [],
-      "start": 2,
+      "start": 4,
       "text": "_zClass",
       "type": "TokenType.BIFROST_KEY"
     },
     {
-      "end": 10,
+      "end": 12,
       "length": 1,
       "line": 4,
       "modifiers": [],
-      "start": 9,
+      "start": 11,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 27,
+      "end": 29,
       "length": 16,
       "line": 4,
       "modifiers": [],
-      "start": 11,
+      "start": 13,
       "text": "zHero zHero-full",
       "type": "TokenType.STRING"
     },
     {
-      "end": 8,
-      "length": 6,
+      "end": 11,
+      "length": 7,
       "line": 5,
       "modifiers": [],
-      "start": 2,
-      "text": "zImage",
+      "start": 4,
+      "text": "zCrumbs",
       "type": "TokenType.UI_ELEMENT_KEY"
     },
     {
-      "end": 9,
+      "end": 12,
       "length": 1,
       "line": 5,
       "modifiers": [],
-      "start": 8,
+      "start": 11,
       "text": ":",
       "type": "TokenType.COLON"
-    },
-    {
-      "end": 7,
-      "length": 3,
-      "line": 6,
-      "modifiers": [],
-      "start": 4,
-      "text": "src",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 8,
-      "length": 1,
-      "line": 6,
-      "modifiers": [],
-      "start": 7,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 43,
-      "length": 34,
-      "line": 6,
-      "modifiers": [],
-      "start": 9,
-      "text": "@.static.brand.zLogo_MainAlpha.png",
-      "type": "TokenType.ZPATH_VALUE"
     },
     {
       "end": 12,
-      "length": 8,
-      "line": 7,
+      "length": 4,
+      "line": 6,
       "modifiers": [],
-      "start": 4,
-      "text": "alt_text",
-      "type": "TokenType.NESTED_KEY"
+      "start": 8,
+      "text": "show",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 13,
       "length": 1,
-      "line": 7,
+      "line": 6,
       "modifiers": [],
       "start": 12,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 18,
-      "length": 4,
-      "line": 7,
+      "end": 21,
+      "length": 7,
+      "line": 6,
       "modifiers": [],
       "start": 14,
-      "text": "Zolo",
+      "text": "session",
       "type": "TokenType.STRING"
     },
     {
-      "end": 5,
-      "length": 3,
-      "line": 9,
+      "end": 14,
+      "length": 6,
+      "line": 7,
       "modifiers": [],
-      "start": 2,
-      "text": "zUL",
-      "type": "TokenType.UI_ELEMENT_KEY"
+      "start": 8,
+      "text": "parent",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
-      "end": 6,
+      "end": 15,
       "length": 1,
-      "line": 9,
+      "line": 7,
       "modifiers": [],
-      "start": 5,
+      "start": 14,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 11,
-      "length": 7,
-      "line": 10,
+      "end": 32,
+      "length": 16,
+      "line": 7,
+      "modifiers": [],
+      "start": 16,
+      "text": "zProducts.zTheme",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 10,
+      "length": 6,
+      "line": 9,
       "modifiers": [],
       "start": 4,
-      "text": "_zClass",
-      "type": "TokenType.BIFROST_KEY"
+      "text": "zImage",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 11,
+      "length": 1,
+      "line": 9,
+      "modifiers": [],
+      "start": 10,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 18,
+      "length": 10,
+      "line": 10,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Required",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 11,
+      "modifiers": [],
+      "start": 8,
+      "text": "src",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 12,
       "length": 1,
-      "line": 10,
+      "line": 11,
       "modifiers": [],
       "start": 11,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 31,
-      "length": 18,
-      "line": 10,
+      "end": 47,
+      "length": 34,
+      "line": 11,
       "modifiers": [],
       "start": 13,
-      "text": "zList-inline zmt-3",
-      "type": "TokenType.STRING"
+      "text": "@.static.brand.zLogo_MainAlpha.png",
+      "type": "TokenType.ZPATH_VALUE"
     },
     {
-      "end": 9,
-      "length": 5,
-      "line": 11,
+      "end": 44,
+      "length": 36,
+      "line": 12,
       "modifiers": [],
-      "start": 4,
-      "text": "zURLs",
-      "type": "TokenType.UI_ELEMENT_KEY"
-    },
-    {
-      "end": 10,
-      "length": 1,
-      "line": 11,
-      "modifiers": [],
-      "start": 9,
-      "text": ":",
-      "type": "TokenType.COLON"
+      "start": 8,
+      "text": "# Optional - Accessibility & Content",
+      "type": "TokenType.COMMENT"
     },
     {
       "end": 16,
-      "length": 10,
-      "line": 12,
+      "length": 8,
+      "line": 13,
       "modifiers": [],
-      "start": 6,
-      "text": "github_cli",
-      "type": "TokenType.NESTED_KEY"
+      "start": 8,
+      "text": "alt_text",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 17,
       "length": 1,
-      "line": 12,
+      "line": 13,
       "modifiers": [],
       "start": 16,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
+      "end": 72,
+      "length": 54,
+      "line": 13,
+      "modifiers": [],
+      "start": 18,
+      "text": "Zolo Logo - Modern framework for building amazing apps",
+      "type": "TokenType.STRING"
+    },
+    {
       "end": 15,
       "length": 7,
-      "line": 13,
+      "line": 14,
+      "modifiers": [],
+      "start": 8,
+      "text": "caption",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 14,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 54,
+      "length": 37,
+      "line": 14,
+      "modifiers": [],
+      "start": 17,
+      "text": "The future of declarative development",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 36,
+      "length": 28,
+      "line": 15,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Bifrost Styling",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 16,
       "modifiers": [],
       "start": 8,
       "text": "_zClass",
@@ -259,34 +304,241 @@
     {
       "end": 16,
       "length": 1,
-      "line": 13,
+      "line": 16,
       "modifiers": [],
       "start": 15,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 46,
-      "length": 29,
-      "line": 13,
+      "end": 67,
+      "length": 50,
+      "line": 16,
       "modifiers": [],
       "start": 17,
-      "text": "zBtn zBtn-lg zBtn-block zmb-2",
+      "text": "zImg-fluid zRounded-circle zmb-3 zmx-auto zd-block",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 17,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 17,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 9,
+      "line": 17,
+      "modifiers": [],
+      "start": 13,
+      "text": "hero-logo",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 36,
+      "length": 28,
+      "line": 18,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Display Control",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 19,
+      "modifiers": [],
+      "start": 8,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 19,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 7,
+      "line": 19,
+      "modifiers": [],
+      "start": 15,
+      "text": "PRIMARY",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 19,
+      "length": 11,
+      "line": 20,
+      "modifiers": [],
+      "start": 8,
+      "text": "open_prompt",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 20,
+      "length": 1,
+      "line": 20,
+      "modifiers": [],
+      "start": 19,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 25,
+      "length": 4,
+      "line": 20,
+      "modifiers": [],
+      "start": 21,
+      "text": "true",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 21,
+      "modifiers": [],
+      "start": 8,
+      "text": "indent",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 21,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 21,
+      "modifiers": [],
+      "start": 16,
+      "text": "0",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 23,
+      "length": 19,
+      "line": 23,
+      "modifiers": [],
+      "start": 4,
+      "text": "# Headers (zH1-zH6)",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 75,
+      "length": 71,
+      "line": 24,
+      "modifiers": [],
+      "start": 4,
+      "text": "# Auto-set indent based on level (1-6), but all properties are optional",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 26,
+      "modifiers": [],
+      "start": 4,
+      "text": "zH1",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 26,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 27,
+      "modifiers": [],
+      "start": 8,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 27,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 30,
+      "length": 15,
+      "line": 27,
+      "modifiers": [],
+      "start": 15,
+      "text": "Main Page Title",
       "type": "TokenType.STRING"
     },
     {
       "end": 13,
       "length": 5,
-      "line": 14,
+      "line": 28,
       "modifiers": [],
       "start": 8,
-      "text": "label",
-      "type": "TokenType.NESTED_KEY"
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 14,
       "length": 1,
-      "line": 14,
+      "line": 28,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 7,
+      "line": 28,
+      "modifiers": [],
+      "start": 15,
+      "text": "PRIMARY",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 29,
+      "modifiers": [],
+      "start": 8,
+      "text": "style",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 29,
       "modifiers": [],
       "start": 13,
       "text": ":",
@@ -295,115 +547,43 @@
     {
       "end": 19,
       "length": 4,
-      "line": 14,
+      "line": 29,
       "modifiers": [],
       "start": 15,
-      "text": "zCLI",
+      "text": "full",
       "type": "TokenType.STRING"
     },
     {
-      "end": 12,
-      "length": 4,
-      "line": 15,
+      "end": 16,
+      "length": 8,
+      "line": 30,
       "modifiers": [],
       "start": 8,
-      "text": "href",
-      "type": "TokenType.NESTED_KEY"
+      "text": "semantic",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
-      "end": 13,
+      "end": 17,
       "length": 1,
-      "line": 15,
-      "modifiers": [],
-      "start": 12,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 49,
-      "length": 35,
-      "line": 15,
-      "modifiers": [],
-      "start": 14,
-      "text": "https://github.com/ZoloAi/zolo-zcli",
-      "type": "TokenType.STRING"
-    },
-    {
-      "end": 14,
-      "length": 6,
-      "line": 16,
-      "modifiers": [],
-      "start": 8,
-      "text": "target",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 15,
-      "length": 1,
-      "line": 16,
-      "modifiers": [],
-      "start": 14,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 22,
-      "length": 6,
-      "line": 16,
+      "line": 30,
       "modifiers": [],
       "start": 16,
-      "text": "_blank",
-      "type": "TokenType.STRING"
-    },
-    {
-      "end": 13,
-      "length": 5,
-      "line": 17,
-      "modifiers": [],
-      "start": 8,
-      "text": "color",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 14,
-      "length": 1,
-      "line": 17,
-      "modifiers": [],
-      "start": 13,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 22,
-      "length": 7,
-      "line": 17,
-      "modifiers": [],
-      "start": 15,
-      "text": "PRIMARY",
-      "type": "TokenType.STRING"
-    },
-    {
-      "end": 12,
+      "end": 24,
       "length": 6,
-      "line": 18,
+      "line": 30,
       "modifiers": [],
-      "start": 6,
-      "text": "ztheme",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 13,
-      "length": 1,
-      "line": 18,
-      "modifiers": [],
-      "start": 12,
-      "text": ":",
-      "type": "TokenType.COLON"
+      "start": 18,
+      "text": "strong",
+      "type": "TokenType.STRING"
     },
     {
       "end": 15,
       "length": 7,
-      "line": 19,
+      "line": 31,
       "modifiers": [],
       "start": 8,
       "text": "_zClass",
@@ -412,88 +592,106 @@
     {
       "end": 16,
       "length": 1,
-      "line": 19,
+      "line": 31,
       "modifiers": [],
       "start": 15,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 46,
-      "length": 29,
-      "line": 19,
+      "end": 49,
+      "length": 32,
+      "line": 31,
       "modifiers": [],
       "start": 17,
-      "text": "zBtn zBtn-lg zBtn-block zmb-2",
+      "text": "zHeading-hero ztext-center zmb-4",
       "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 32,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 32,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 10,
+      "line": 32,
+      "modifiers": [],
+      "start": 13,
+      "text": "page-title",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 34,
+      "modifiers": [],
+      "start": 4,
+      "text": "zH2",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 34,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
     },
     {
       "end": 13,
       "length": 5,
-      "line": 20,
+      "line": 35,
       "modifiers": [],
       "start": 8,
       "text": "label",
-      "type": "TokenType.NESTED_KEY"
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 14,
       "length": 1,
-      "line": 20,
+      "line": 35,
       "modifiers": [],
       "start": 13,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 21,
-      "length": 6,
-      "line": 20,
+      "end": 30,
+      "length": 15,
+      "line": 35,
       "modifiers": [],
       "start": 15,
-      "text": "zTheme",
+      "text": "Section Heading",
       "type": "TokenType.STRING"
-    },
-    {
-      "end": 12,
-      "length": 4,
-      "line": 21,
-      "modifiers": [],
-      "start": 8,
-      "text": "href",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 13,
-      "length": 1,
-      "line": 21,
-      "modifiers": [],
-      "start": 12,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 54,
-      "length": 40,
-      "line": 21,
-      "modifiers": [],
-      "start": 14,
-      "text": "@.UI.zProducts.zUI.zTheme.zTheme_Details",
-      "type": "TokenType.ZPATH_VALUE"
     },
     {
       "end": 13,
       "length": 5,
-      "line": 22,
+      "line": 36,
       "modifiers": [],
       "start": 8,
       "text": "color",
-      "type": "TokenType.NESTED_KEY"
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 14,
       "length": 1,
-      "line": 22,
+      "line": 36,
       "modifiers": [],
       "start": 13,
       "text": ":",
@@ -502,70 +700,25 @@
     {
       "end": 24,
       "length": 9,
-      "line": 22,
+      "line": 36,
       "modifiers": [],
       "start": 15,
       "text": "SECONDARY",
       "type": "TokenType.STRING"
     },
     {
-      "end": 12,
-      "length": 6,
-      "line": 23,
-      "modifiers": [],
-      "start": 6,
-      "text": "zbrain",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 13,
-      "length": 1,
-      "line": 23,
-      "modifiers": [],
-      "start": 12,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 15,
-      "length": 7,
-      "line": 24,
-      "modifiers": [],
-      "start": 8,
-      "text": "_zClass",
-      "type": "TokenType.BIFROST_KEY"
-    },
-    {
-      "end": 16,
-      "length": 1,
-      "line": 24,
-      "modifiers": [],
-      "start": 15,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 46,
-      "length": 29,
-      "line": 24,
-      "modifiers": [],
-      "start": 17,
-      "text": "zBtn zBtn-lg zBtn-block zmb-2",
-      "type": "TokenType.STRING"
-    },
-    {
       "end": 13,
       "length": 5,
-      "line": 25,
+      "line": 37,
       "modifiers": [],
       "start": 8,
-      "text": "label",
-      "type": "TokenType.NESTED_KEY"
+      "text": "style",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 14,
       "length": 1,
-      "line": 25,
+      "line": 37,
       "modifiers": [],
       "start": 13,
       "text": ":",
@@ -574,79 +727,124 @@
     {
       "end": 21,
       "length": 6,
-      "line": 25,
+      "line": 37,
       "modifiers": [],
       "start": 15,
-      "text": "zBrain",
+      "text": "single",
       "type": "TokenType.STRING"
-    },
-    {
-      "end": 12,
-      "length": 4,
-      "line": 26,
-      "modifiers": [],
-      "start": 8,
-      "text": "href",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 13,
-      "length": 1,
-      "line": 26,
-      "modifiers": [],
-      "start": 12,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 17,
-      "length": 3,
-      "line": 26,
-      "modifiers": [],
-      "start": 14,
-      "text": "\"#\"",
-      "type": "TokenType.STRING"
-    },
-    {
-      "end": 14,
-      "length": 6,
-      "line": 27,
-      "modifiers": [],
-      "start": 8,
-      "text": "target",
-      "type": "TokenType.NESTED_KEY"
     },
     {
       "end": 15,
-      "length": 1,
-      "line": 27,
+      "length": 7,
+      "line": 38,
       "modifiers": [],
-      "start": 14,
+      "start": 8,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 38,
+      "modifiers": [],
+      "start": 15,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 21,
-      "length": 5,
-      "line": 27,
+      "end": 28,
+      "length": 11,
+      "line": 38,
       "modifiers": [],
-      "start": 16,
-      "text": "_self",
+      "start": 17,
+      "text": "zmt-4 zmb-3",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 39,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 39,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 9,
+      "line": 39,
+      "modifiers": [],
+      "start": 13,
+      "text": "section-1",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 41,
+      "modifiers": [],
+      "start": 4,
+      "text": "zH3",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 41,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 42,
+      "modifiers": [],
+      "start": 8,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 42,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 31,
+      "length": 16,
+      "line": 42,
+      "modifiers": [],
+      "start": 15,
+      "text": "Subsection Title",
       "type": "TokenType.STRING"
     },
     {
       "end": 13,
       "length": 5,
-      "line": 28,
+      "line": 43,
       "modifiers": [],
       "start": 8,
       "text": "color",
-      "type": "TokenType.NESTED_KEY"
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 14,
       "length": 1,
-      "line": 28,
+      "line": 43,
       "modifiers": [],
       "start": 13,
       "text": ":",
@@ -655,34 +853,70 @@
     {
       "end": 19,
       "length": 4,
-      "line": 28,
+      "line": 43,
       "modifiers": [],
       "start": 15,
       "text": "INFO",
       "type": "TokenType.STRING"
     },
     {
-      "end": 17,
-      "length": 11,
-      "line": 29,
+      "end": 13,
+      "length": 5,
+      "line": 44,
       "modifiers": [],
-      "start": 6,
-      "text": "zphilosophy",
-      "type": "TokenType.NESTED_KEY"
+      "start": 8,
+      "text": "style",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
-      "end": 18,
+      "end": 14,
       "length": 1,
-      "line": 29,
+      "line": 44,
       "modifiers": [],
-      "start": 17,
+      "start": 13,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
+      "end": 19,
+      "length": 4,
+      "line": 44,
+      "modifiers": [],
+      "start": 15,
+      "text": "wave",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 16,
+      "length": 8,
+      "line": 45,
+      "modifiers": [],
+      "start": 8,
+      "text": "semantic",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 45,
+      "modifiers": [],
+      "start": 16,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 20,
+      "length": 2,
+      "line": 45,
+      "modifiers": [],
+      "start": 18,
+      "text": "em",
+      "type": "TokenType.STRING"
+    },
+    {
       "end": 15,
       "length": 7,
-      "line": 30,
+      "line": 46,
       "modifiers": [],
       "start": 8,
       "text": "_zClass",
@@ -691,115 +925,79 @@
     {
       "end": 16,
       "length": 1,
-      "line": 30,
+      "line": 46,
       "modifiers": [],
       "start": 15,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 46,
-      "length": 29,
-      "line": 30,
+      "end": 22,
+      "length": 5,
+      "line": 46,
       "modifiers": [],
       "start": 17,
-      "text": "zBtn zBtn-lg zBtn-block zmb-2",
+      "text": "zmb-2",
       "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 48,
+      "modifiers": [],
+      "start": 4,
+      "text": "zH4",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 48,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
     },
     {
       "end": 13,
       "length": 5,
-      "line": 31,
+      "line": 49,
       "modifiers": [],
       "start": 8,
       "text": "label",
-      "type": "TokenType.NESTED_KEY"
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 14,
       "length": 1,
-      "line": 31,
+      "line": 49,
       "modifiers": [],
       "start": 13,
       "text": ":",
       "type": "TokenType.COLON"
     },
     {
-      "end": 26,
-      "length": 11,
-      "line": 31,
+      "end": 28,
+      "length": 13,
+      "line": 49,
       "modifiers": [],
       "start": 15,
-      "text": "zPhilosophy",
-      "type": "TokenType.STRING"
-    },
-    {
-      "end": 12,
-      "length": 4,
-      "line": 32,
-      "modifiers": [],
-      "start": 8,
-      "text": "href",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 13,
-      "length": 1,
-      "line": 32,
-      "modifiers": [],
-      "start": 12,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 17,
-      "length": 3,
-      "line": 32,
-      "modifiers": [],
-      "start": 14,
-      "text": "\"#\"",
-      "type": "TokenType.STRING"
-    },
-    {
-      "end": 14,
-      "length": 6,
-      "line": 33,
-      "modifiers": [],
-      "start": 8,
-      "text": "target",
-      "type": "TokenType.NESTED_KEY"
-    },
-    {
-      "end": 15,
-      "length": 1,
-      "line": 33,
-      "modifiers": [],
-      "start": 14,
-      "text": ":",
-      "type": "TokenType.COLON"
-    },
-    {
-      "end": 21,
-      "length": 5,
-      "line": 33,
-      "modifiers": [],
-      "start": 16,
-      "text": "_self",
+      "text": "Minor Heading",
       "type": "TokenType.STRING"
     },
     {
       "end": 13,
       "length": 5,
-      "line": 34,
+      "line": 50,
       "modifiers": [],
       "start": 8,
       "text": "color",
-      "type": "TokenType.NESTED_KEY"
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
     },
     {
       "end": 14,
       "length": 1,
-      "line": 34,
+      "line": 50,
       "modifiers": [],
       "start": 13,
       "text": ":",
@@ -808,9 +1006,2709 @@
     {
       "end": 22,
       "length": 7,
-      "line": 34,
+      "line": 50,
       "modifiers": [],
       "start": 15,
+      "text": "WARNING",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 51,
+      "modifiers": [],
+      "start": 8,
+      "text": "style",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 51,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 19,
+      "length": 4,
+      "line": 51,
+      "modifiers": [],
+      "start": 15,
+      "text": "full",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 53,
+      "modifiers": [],
+      "start": 4,
+      "text": "zH5",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 53,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 54,
+      "modifiers": [],
+      "start": 8,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 54,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 28,
+      "length": 13,
+      "line": 54,
+      "modifiers": [],
+      "start": 15,
+      "text": "Small Heading",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 55,
+      "modifiers": [],
+      "start": 8,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 55,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 7,
+      "line": 55,
+      "modifiers": [],
+      "start": 15,
+      "text": "SUCCESS",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 56,
+      "modifiers": [],
+      "start": 8,
+      "text": "style",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 56,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 21,
+      "length": 6,
+      "line": 56,
+      "modifiers": [],
+      "start": 15,
+      "text": "single",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 58,
+      "modifiers": [],
+      "start": 4,
+      "text": "zH6",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 58,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 59,
+      "modifiers": [],
+      "start": 8,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 59,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 27,
+      "length": 12,
+      "line": 59,
+      "modifiers": [],
+      "start": 15,
+      "text": "Tiny Heading",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 60,
+      "modifiers": [],
+      "start": 8,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 60,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 21,
+      "length": 6,
+      "line": 60,
+      "modifiers": [],
+      "start": 15,
+      "text": "DANGER",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 61,
+      "modifiers": [],
+      "start": 8,
+      "text": "style",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 61,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 19,
+      "length": 4,
+      "line": 61,
+      "modifiers": [],
+      "start": 15,
+      "text": "wave",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 9,
+      "length": 5,
+      "line": 63,
+      "modifiers": [],
+      "start": 4,
+      "text": "zText",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 10,
+      "length": 1,
+      "line": 63,
+      "modifiers": [],
+      "start": 9,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 64,
+      "modifiers": [],
+      "start": 8,
+      "text": "content",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 64,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 120,
+      "length": 103,
+      "line": 64,
+      "modifiers": [],
+      "start": 17,
+      "text": "This is a sample text paragraph that demonstrates the zText display event with various styling options.",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 65,
+      "modifiers": [],
+      "start": 8,
+      "text": "indent",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 65,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 65,
+      "modifiers": [],
+      "start": 16,
+      "text": "1",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 66,
+      "modifiers": [],
+      "start": 8,
+      "text": "pause",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 66,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 19,
+      "length": 4,
+      "line": 66,
+      "modifiers": [],
+      "start": 15,
+      "text": "true",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 21,
+      "length": 13,
+      "line": 67,
+      "modifiers": [],
+      "start": 8,
+      "text": "break_message",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 67,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 57,
+      "length": 34,
+      "line": 67,
+      "modifiers": [],
+      "start": 23,
+      "text": "Press Enter to continue reading...",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 16,
+      "length": 8,
+      "line": 68,
+      "modifiers": [],
+      "start": 8,
+      "text": "semantic",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 68,
+      "modifiers": [],
+      "start": 16,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 24,
+      "length": 6,
+      "line": 68,
+      "modifiers": [],
+      "start": 18,
+      "text": "strong",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 69,
+      "modifiers": [],
+      "start": 8,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 69,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 36,
+      "length": 19,
+      "line": 69,
+      "modifiers": [],
+      "start": 17,
+      "text": "ztext-primary zmb-3",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 70,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 70,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 10,
+      "line": 70,
+      "modifiers": [],
+      "start": 13,
+      "text": "intro-text",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 72,
+      "modifiers": [],
+      "start": 4,
+      "text": "zMD",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 72,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 60,
+      "length": 52,
+      "line": 73,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Required - Markdown content with inline formatting",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 74,
+      "modifiers": [],
+      "start": 8,
+      "text": "content",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 74,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 92,
+      "length": 75,
+      "line": 74,
+      "modifiers": [],
+      "start": 17,
+      "text": "zTheme uses **zD-** classes to control visibility at different breakpoints:",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 78,
+      "length": 66,
+      "line": 75,
+      "modifiers": [],
+      "start": 12,
+      "text": "* <span class=\"zText-error\">**zD**</span> = Display utility prefix",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 91,
+      "length": 79,
+      "line": 76,
+      "modifiers": [],
+      "start": 12,
+      "text": "* <span class=\"zText-error\">**-block**</span> = Show element (`display: block`)",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 89,
+      "length": 77,
+      "line": 77,
+      "modifiers": [],
+      "start": 12,
+      "text": "* <span class=\"zText-error\">**-none**</span> = Hide element (`display: none`)",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 80,
+      "length": 68,
+      "line": 78,
+      "modifiers": [],
+      "start": 12,
+      "text": "* <span class=\"zText-error\">**-md-**</span> = At medium breakpoint (",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 86,
+      "length": 6,
+      "line": 78,
+      "modifiers": [],
+      "start": 80,
+      "text": "\\u2265",
+      "type": "TokenType.ESCAPE_SEQUENCE"
+    },
+    {
+      "end": 100,
+      "length": 14,
+      "line": 78,
+      "modifiers": [],
+      "start": 86,
+      "text": " 768px) and up",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 79,
+      "length": 67,
+      "line": 79,
+      "modifiers": [],
+      "start": 12,
+      "text": "* <span class=\"zText-error\">**-lg-**</span> = At large breakpoint (",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 85,
+      "length": 6,
+      "line": 79,
+      "modifiers": [],
+      "start": 79,
+      "text": "\\u2265",
+      "type": "TokenType.ESCAPE_SEQUENCE"
+    },
+    {
+      "end": 99,
+      "length": 14,
+      "line": 79,
+      "modifiers": [],
+      "start": 85,
+      "text": " 992px) and up",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 38,
+      "length": 30,
+      "line": 80,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Indentation level",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 81,
+      "modifiers": [],
+      "start": 8,
+      "text": "indent",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 81,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 81,
+      "modifiers": [],
+      "start": 16,
+      "text": "1",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 50,
+      "length": 42,
+      "line": 82,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Pause for user acknowledgment",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 83,
+      "modifiers": [],
+      "start": 8,
+      "text": "pause",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 83,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 20,
+      "length": 5,
+      "line": 83,
+      "modifiers": [],
+      "start": 15,
+      "text": "false",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 60,
+      "length": 52,
+      "line": 84,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Custom break message (if pause is true)",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 21,
+      "length": 13,
+      "line": 85,
+      "modifiers": [],
+      "start": 8,
+      "text": "break_message",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 85,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 49,
+      "length": 26,
+      "line": 85,
+      "modifiers": [],
+      "start": 23,
+      "text": "Press Enter to continue...",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 52,
+      "length": 44,
+      "line": 86,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Format type (default: markdown)",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 87,
+      "modifiers": [],
+      "start": 8,
+      "text": "format",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 87,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 24,
+      "length": 8,
+      "line": 87,
+      "modifiers": [],
+      "start": 16,
+      "text": "markdown",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 31,
+      "length": 23,
+      "line": 88,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Text color",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 89,
+      "modifiers": [],
+      "start": 8,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 89,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 19,
+      "length": 4,
+      "line": 89,
+      "modifiers": [],
+      "start": 15,
+      "text": "info",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 39,
+      "length": 31,
+      "line": 90,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Custom CSS classes",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 91,
+      "modifiers": [],
+      "start": 8,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 91,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 38,
+      "length": 21,
+      "line": 91,
+      "modifiers": [],
+      "start": 17,
+      "text": "zp-3 zBorder zRounded",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 38,
+      "length": 30,
+      "line": 92,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Custom element ID",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 93,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 93,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 29,
+      "length": 16,
+      "line": 93,
+      "modifiers": [],
+      "start": 13,
+      "text": "markdown-example",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 10,
+      "length": 6,
+      "line": 95,
+      "modifiers": [],
+      "start": 4,
+      "text": "zTable",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 11,
+      "length": 1,
+      "line": 95,
+      "modifiers": [],
+      "start": 10,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 29,
+      "length": 21,
+      "line": 96,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Required - Metadata",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 97,
+      "modifiers": [],
+      "start": 8,
+      "text": "title",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 97,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 42,
+      "length": 27,
+      "line": 97,
+      "modifiers": [],
+      "start": 15,
+      "text": "User Database Query Results",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 39,
+      "length": 31,
+      "line": 98,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Required - Column definitions",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 99,
+      "modifiers": [],
+      "start": 8,
+      "text": "columns",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 99,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 100,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 16,
+      "length": 2,
+      "line": 100,
+      "modifiers": [],
+      "start": 14,
+      "text": "id",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 101,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 22,
+      "length": 8,
+      "line": 101,
+      "modifiers": [],
+      "start": 14,
+      "text": "username",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 102,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 19,
+      "length": 5,
+      "line": 102,
+      "modifiers": [],
+      "start": 14,
+      "text": "email",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 103,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 24,
+      "length": 10,
+      "line": 103,
+      "modifiers": [],
+      "start": 14,
+      "text": "created_at",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 104,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 23,
+      "length": 9,
+      "line": 104,
+      "modifiers": [],
+      "start": 14,
+      "text": "is_active",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 71,
+      "length": 63,
+      "line": 105,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Required - Row data (array format, values match column order)",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 12,
+      "length": 4,
+      "line": 106,
+      "modifiers": [],
+      "start": 8,
+      "text": "rows",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 106,
+      "modifiers": [],
+      "start": 12,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 14,
+      "text": "[",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 15,
+      "text": "1",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 16,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 23,
+      "length": 5,
+      "line": 107,
+      "modifiers": [],
+      "start": 18,
+      "text": "alice",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 24,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 23,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 42,
+      "length": 17,
+      "line": 107,
+      "modifiers": [],
+      "start": 25,
+      "text": "alice@example.com",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 43,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 42,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 54,
+      "length": 10,
+      "line": 107,
+      "modifiers": [],
+      "start": 44,
+      "text": "2025-01-15",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 55,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 54,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 60,
+      "length": 4,
+      "line": 107,
+      "modifiers": [],
+      "start": 56,
+      "text": "true",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 61,
+      "length": 1,
+      "line": 107,
+      "modifiers": [],
+      "start": 60,
+      "text": "]",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 14,
+      "text": "[",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 15,
+      "text": "2",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 16,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 21,
+      "length": 3,
+      "line": 108,
+      "modifiers": [],
+      "start": 18,
+      "text": "bob",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 21,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 38,
+      "length": 15,
+      "line": 108,
+      "modifiers": [],
+      "start": 23,
+      "text": "bob@example.com",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 39,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 38,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 50,
+      "length": 10,
+      "line": 108,
+      "modifiers": [],
+      "start": 40,
+      "text": "2025-01-16",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 51,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 50,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 57,
+      "length": 5,
+      "line": 108,
+      "modifiers": [],
+      "start": 52,
+      "text": "false",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 58,
+      "length": 1,
+      "line": 108,
+      "modifiers": [],
+      "start": 57,
+      "text": "]",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 14,
+      "text": "[",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 15,
+      "text": "3",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 16,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 25,
+      "length": 7,
+      "line": 109,
+      "modifiers": [],
+      "start": 18,
+      "text": "charlie",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 26,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 25,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 46,
+      "length": 19,
+      "line": 109,
+      "modifiers": [],
+      "start": 27,
+      "text": "charlie@example.com",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 47,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 46,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 58,
+      "length": 10,
+      "line": 109,
+      "modifiers": [],
+      "start": 48,
+      "text": "2025-01-17",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 59,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 58,
+      "text": ",",
+      "type": "TokenType.COMMA"
+    },
+    {
+      "end": 64,
+      "length": 4,
+      "line": 109,
+      "modifiers": [],
+      "start": 60,
+      "text": "true",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 65,
+      "length": 1,
+      "line": 109,
+      "modifiers": [],
+      "start": 64,
+      "text": "]",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 72,
+      "length": 64,
+      "line": 110,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Pagination (positive limit for standard pagination)",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 111,
+      "modifiers": [],
+      "start": 8,
+      "text": "limit",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 111,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 2,
+      "line": 111,
+      "modifiers": [],
+      "start": 15,
+      "text": "20",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 112,
+      "modifiers": [],
+      "start": 8,
+      "text": "offset",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 112,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 112,
+      "modifiers": [],
+      "start": 16,
+      "text": "0",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 36,
+      "length": 28,
+      "line": 113,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Display options",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 19,
+      "length": 11,
+      "line": 114,
+      "modifiers": [],
+      "start": 8,
+      "text": "show_header",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 20,
+      "length": 1,
+      "line": 114,
+      "modifiers": [],
+      "start": 19,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 25,
+      "length": 4,
+      "line": 114,
+      "modifiers": [],
+      "start": 21,
+      "text": "true",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 19,
+      "length": 11,
+      "line": 115,
+      "modifiers": [],
+      "start": 8,
+      "text": "interactive",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 20,
+      "length": 1,
+      "line": 115,
+      "modifiers": [],
+      "start": 19,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 25,
+      "length": 4,
+      "line": 115,
+      "modifiers": [],
+      "start": 21,
+      "text": "true",
+      "type": "TokenType.BOOLEAN"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 116,
+      "modifiers": [],
+      "start": 8,
+      "text": "indent",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 116,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 116,
+      "modifiers": [],
+      "start": 16,
+      "text": "0",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 36,
+      "length": 28,
+      "line": 118,
+      "modifiers": [],
+      "start": 8,
+      "text": "# Optional - Bifrost styling",
+      "type": "TokenType.COMMENT"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 119,
+      "modifiers": [],
+      "start": 8,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 119,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 45,
+      "length": 28,
+      "line": 119,
+      "modifiers": [],
+      "start": 17,
+      "text": "zTable-sm custom-query-table",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 120,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 120,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 30,
+      "length": 17,
+      "line": 120,
+      "modifiers": [],
+      "start": 13,
+      "text": "users-query-table",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 122,
+      "modifiers": [],
+      "start": 4,
+      "text": "zUL",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 122,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 123,
+      "modifiers": [],
+      "start": 8,
+      "text": "items",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 123,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 124,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 37,
+      "length": 23,
+      "line": 124,
+      "modifiers": [],
+      "start": 14,
+      "text": "First bullet point item",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 125,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 38,
+      "length": 24,
+      "line": 125,
+      "modifiers": [],
+      "start": 14,
+      "text": "Second bullet point item",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 126,
+      "modifiers": [],
+      "start": 12,
+      "text": "-",
+      "type": "TokenType.BRACKET_STRUCTURAL"
+    },
+    {
+      "end": 37,
+      "length": 23,
+      "line": 126,
+      "modifiers": [],
+      "start": 14,
+      "text": "Third bullet point item",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 127,
+      "modifiers": [],
+      "start": 8,
+      "text": "style",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 127,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 21,
+      "length": 6,
+      "line": 127,
+      "modifiers": [],
+      "start": 15,
+      "text": "bullet",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 128,
+      "modifiers": [],
+      "start": 8,
+      "text": "indent",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 128,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 1,
+      "line": 128,
+      "modifiers": [],
+      "start": 16,
+      "text": "0",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 129,
+      "modifiers": [],
+      "start": 8,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 129,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 32,
+      "length": 15,
+      "line": 129,
+      "modifiers": [],
+      "start": 17,
+      "text": "custom-ul-class",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 130,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 130,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 10,
+      "line": 130,
+      "modifiers": [],
+      "start": 13,
+      "text": "example-ul",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 132,
+      "modifiers": [],
+      "start": 4,
+      "text": "zOL",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 132,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 8,
+      "length": 4,
+      "line": 134,
+      "modifiers": [],
+      "start": 4,
+      "text": "zURL",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 9,
+      "length": 1,
+      "line": 134,
+      "modifiers": [],
+      "start": 8,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 135,
+      "modifiers": [],
+      "start": 8,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 135,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 34,
+      "length": 19,
+      "line": 135,
+      "modifiers": [],
+      "start": 15,
+      "text": "Visit Documentation",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 12,
+      "length": 4,
+      "line": 136,
+      "modifiers": [],
+      "start": 8,
+      "text": "href",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 13,
+      "length": 1,
+      "line": 136,
+      "modifiers": [],
+      "start": 12,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 38,
+      "length": 24,
+      "line": 136,
+      "modifiers": [],
+      "start": 14,
+      "text": "https://docs.example.com",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 137,
+      "modifiers": [],
+      "start": 8,
+      "text": "target",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 137,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 6,
+      "line": 137,
+      "modifiers": [],
+      "start": 16,
+      "text": "_blank",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 138,
+      "modifiers": [],
+      "start": 8,
+      "text": "rel",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 138,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 32,
+      "length": 19,
+      "line": 138,
+      "modifiers": [],
+      "start": 13,
+      "text": "noopener noreferrer",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 14,
+      "length": 6,
+      "line": 139,
+      "modifiers": [],
+      "start": 8,
+      "text": "window",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 15,
+      "length": 1,
+      "line": 139,
+      "modifiers": [],
+      "start": 14,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 17,
+      "length": 5,
+      "line": 140,
+      "modifiers": [],
+      "start": 12,
+      "text": "width",
+      "type": "TokenType.NESTED_KEY"
+    },
+    {
+      "end": 18,
+      "length": 1,
+      "line": 140,
+      "modifiers": [],
+      "start": 17,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 4,
+      "line": 140,
+      "modifiers": [],
+      "start": 19,
+      "text": "1024",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 18,
+      "length": 6,
+      "line": 141,
+      "modifiers": [],
+      "start": 12,
+      "text": "height",
+      "type": "TokenType.NESTED_KEY"
+    },
+    {
+      "end": 19,
+      "length": 1,
+      "line": 141,
+      "modifiers": [],
+      "start": 18,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 3,
+      "line": 141,
+      "modifiers": [],
+      "start": 20,
+      "text": "768",
+      "type": "TokenType.NUMBER"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 142,
+      "modifiers": [],
+      "start": 8,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 142,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 21,
+      "length": 6,
+      "line": 142,
+      "modifiers": [],
+      "start": 15,
+      "text": "ACCENT",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 143,
+      "modifiers": [],
+      "start": 8,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 143,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 47,
+      "length": 30,
+      "line": 143,
+      "modifiers": [],
+      "start": 17,
+      "text": "zLink-external ztext-underline",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 11,
+      "length": 3,
+      "line": 144,
+      "modifiers": [],
+      "start": 8,
+      "text": "_id",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 12,
+      "length": 1,
+      "line": 144,
+      "modifiers": [],
+      "start": 11,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 9,
+      "line": 144,
+      "modifiers": [],
+      "start": 13,
+      "text": "docs-link",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 7,
+      "length": 3,
+      "line": 146,
+      "modifiers": [],
+      "start": 4,
+      "text": "zUL",
+      "type": "TokenType.UI_ELEMENT_KEY"
+    },
+    {
+      "end": 8,
+      "length": 1,
+      "line": 146,
+      "modifiers": [],
+      "start": 7,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 15,
+      "length": 7,
+      "line": 147,
+      "modifiers": [],
+      "start": 8,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 16,
+      "length": 1,
+      "line": 147,
+      "modifiers": [],
+      "start": 15,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 35,
+      "length": 18,
+      "line": 147,
+      "modifiers": [],
+      "start": 17,
+      "text": "zList-inline zmt-3",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 13,
+      "length": 5,
+      "line": 148,
+      "modifiers": [],
+      "start": 8,
+      "text": "zURLs",
+      "type": "TokenType.NESTED_KEY"
+    },
+    {
+      "end": 14,
+      "length": 1,
+      "line": 148,
+      "modifiers": [],
+      "start": 13,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 22,
+      "length": 10,
+      "line": 149,
+      "modifiers": [],
+      "start": 12,
+      "text": "github_cli",
+      "type": "TokenType.NESTED_KEY"
+    },
+    {
+      "end": 23,
+      "length": 1,
+      "line": 149,
+      "modifiers": [],
+      "start": 22,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 7,
+      "line": 150,
+      "modifiers": [],
+      "start": 16,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 24,
+      "length": 1,
+      "line": 150,
+      "modifiers": [],
+      "start": 23,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 54,
+      "length": 29,
+      "line": 150,
+      "modifiers": [],
+      "start": 25,
+      "text": "zBtn zBtn-lg zBtn-block zmb-2",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 151,
+      "modifiers": [],
+      "start": 16,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 151,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 27,
+      "length": 4,
+      "line": 151,
+      "modifiers": [],
+      "start": 23,
+      "text": "zCLI",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 20,
+      "length": 4,
+      "line": 152,
+      "modifiers": [],
+      "start": 16,
+      "text": "href",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 21,
+      "length": 1,
+      "line": 152,
+      "modifiers": [],
+      "start": 20,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 57,
+      "length": 35,
+      "line": 152,
+      "modifiers": [],
+      "start": 22,
+      "text": "https://github.com/ZoloAi/zolo-zcli",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 22,
+      "length": 6,
+      "line": 153,
+      "modifiers": [],
+      "start": 16,
+      "text": "target",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 23,
+      "length": 1,
+      "line": 153,
+      "modifiers": [],
+      "start": 22,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 30,
+      "length": 6,
+      "line": 153,
+      "modifiers": [],
+      "start": 24,
+      "text": "_blank",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 154,
+      "modifiers": [],
+      "start": 16,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 154,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 30,
+      "length": 7,
+      "line": 154,
+      "modifiers": [],
+      "start": 23,
+      "text": "PRIMARY",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 18,
+      "length": 6,
+      "line": 155,
+      "modifiers": [],
+      "start": 12,
+      "text": "ztheme",
+      "type": "TokenType.NESTED_KEY"
+    },
+    {
+      "end": 19,
+      "length": 1,
+      "line": 155,
+      "modifiers": [],
+      "start": 18,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 7,
+      "line": 156,
+      "modifiers": [],
+      "start": 16,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 24,
+      "length": 1,
+      "line": 156,
+      "modifiers": [],
+      "start": 23,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 54,
+      "length": 29,
+      "line": 156,
+      "modifiers": [],
+      "start": 25,
+      "text": "zBtn zBtn-lg zBtn-block zmb-2",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 157,
+      "modifiers": [],
+      "start": 16,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 157,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 29,
+      "length": 6,
+      "line": 157,
+      "modifiers": [],
+      "start": 23,
+      "text": "zTheme",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 20,
+      "length": 4,
+      "line": 158,
+      "modifiers": [],
+      "start": 16,
+      "text": "href",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 21,
+      "length": 1,
+      "line": 158,
+      "modifiers": [],
+      "start": 20,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 62,
+      "length": 40,
+      "line": 158,
+      "modifiers": [],
+      "start": 22,
+      "text": "@.UI.zProducts.zUI.zTheme.zTheme_Details",
+      "type": "TokenType.ZPATH_VALUE"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 159,
+      "modifiers": [],
+      "start": 16,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 159,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 32,
+      "length": 9,
+      "line": 159,
+      "modifiers": [],
+      "start": 23,
+      "text": "SECONDARY",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 18,
+      "length": 6,
+      "line": 160,
+      "modifiers": [],
+      "start": 12,
+      "text": "zbrain",
+      "type": "TokenType.NESTED_KEY"
+    },
+    {
+      "end": 19,
+      "length": 1,
+      "line": 160,
+      "modifiers": [],
+      "start": 18,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 7,
+      "line": 161,
+      "modifiers": [],
+      "start": 16,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 24,
+      "length": 1,
+      "line": 161,
+      "modifiers": [],
+      "start": 23,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 54,
+      "length": 29,
+      "line": 161,
+      "modifiers": [],
+      "start": 25,
+      "text": "zBtn zBtn-lg zBtn-block zmb-2",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 162,
+      "modifiers": [],
+      "start": 16,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 162,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 29,
+      "length": 6,
+      "line": 162,
+      "modifiers": [],
+      "start": 23,
+      "text": "zBrain",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 20,
+      "length": 4,
+      "line": 163,
+      "modifiers": [],
+      "start": 16,
+      "text": "href",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 21,
+      "length": 1,
+      "line": 163,
+      "modifiers": [],
+      "start": 20,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 25,
+      "length": 3,
+      "line": 163,
+      "modifiers": [],
+      "start": 22,
+      "text": "\"#\"",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 22,
+      "length": 6,
+      "line": 164,
+      "modifiers": [],
+      "start": 16,
+      "text": "target",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 23,
+      "length": 1,
+      "line": 164,
+      "modifiers": [],
+      "start": 22,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 29,
+      "length": 5,
+      "line": 164,
+      "modifiers": [],
+      "start": 24,
+      "text": "_self",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 165,
+      "modifiers": [],
+      "start": 16,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 165,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 27,
+      "length": 4,
+      "line": 165,
+      "modifiers": [],
+      "start": 23,
+      "text": "INFO",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 23,
+      "length": 11,
+      "line": 166,
+      "modifiers": [],
+      "start": 12,
+      "text": "zphilosophy",
+      "type": "TokenType.NESTED_KEY"
+    },
+    {
+      "end": 24,
+      "length": 1,
+      "line": 166,
+      "modifiers": [],
+      "start": 23,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 23,
+      "length": 7,
+      "line": 167,
+      "modifiers": [],
+      "start": 16,
+      "text": "_zClass",
+      "type": "TokenType.BIFROST_KEY"
+    },
+    {
+      "end": 24,
+      "length": 1,
+      "line": 167,
+      "modifiers": [],
+      "start": 23,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 54,
+      "length": 29,
+      "line": 167,
+      "modifiers": [],
+      "start": 25,
+      "text": "zBtn zBtn-lg zBtn-block zmb-2",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 168,
+      "modifiers": [],
+      "start": 16,
+      "text": "label",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 168,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 34,
+      "length": 11,
+      "line": 168,
+      "modifiers": [],
+      "start": 23,
+      "text": "zPhilosophy",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 20,
+      "length": 4,
+      "line": 169,
+      "modifiers": [],
+      "start": 16,
+      "text": "href",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 21,
+      "length": 1,
+      "line": 169,
+      "modifiers": [],
+      "start": 20,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 25,
+      "length": 3,
+      "line": 169,
+      "modifiers": [],
+      "start": 22,
+      "text": "\"#\"",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 22,
+      "length": 6,
+      "line": 170,
+      "modifiers": [],
+      "start": 16,
+      "text": "target",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 23,
+      "length": 1,
+      "line": 170,
+      "modifiers": [],
+      "start": 22,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 29,
+      "length": 5,
+      "line": 170,
+      "modifiers": [],
+      "start": 24,
+      "text": "_self",
+      "type": "TokenType.STRING"
+    },
+    {
+      "end": 21,
+      "length": 5,
+      "line": 171,
+      "modifiers": [],
+      "start": 16,
+      "text": "color",
+      "type": "TokenType.UI_ELEMENT_PROPERTY_KEY"
+    },
+    {
+      "end": 22,
+      "length": 1,
+      "line": 171,
+      "modifiers": [],
+      "start": 21,
+      "text": ":",
+      "type": "TokenType.COLON"
+    },
+    {
+      "end": 30,
+      "length": 7,
+      "line": 171,
+      "modifiers": [],
+      "start": 23,
       "text": "WARNING",
       "type": "TokenType.STRING"
     }

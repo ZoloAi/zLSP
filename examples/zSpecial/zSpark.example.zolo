@@ -5,9 +5,9 @@ zSpark:
     zVaFile: zUI.Component
     zBlock: MainLayout
     zMode: zCLI
-    zState: Development
-    zScrap: INFO
-    zScrapath: @.logs
+    zEnv: Development
+    zLog: INFO
+    zLogPath: @.logs
     zPersist: True
     zServer:
         enabled: True

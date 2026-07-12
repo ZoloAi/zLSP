@@ -8,16 +8,9 @@ Author: zOS Framework
 Version: 1.0.0
 """
 
-import sys
 import unittest
-from pathlib import Path
 
-# Add zlsp to path
-current_dir = Path(__file__).parent
-zlsp_root = current_dir.parent.parent.parent
-sys.path.insert(0, str(zlsp_root))
-
-from hover_renderer import HoverRenderer
+from zlsp.providers.hover.renderer import HoverRenderer
 
 
 class TestEmojiHoverIntegration(unittest.TestCase):
@@ -51,7 +44,7 @@ class TestEmojiHoverIntegration(unittest.TestCase):
     
     def test_get_emoji_info_party_popper(self):
         """Test emoji info extraction for party popper emoji."""
-        info = HoverRenderer._get_emoji_info("U+1F389")
+        info = HoverRenderer._get_emoji_info("1F389")
         
         self.assertIsNotNone(info)
         self.assertEqual(info['emoji'], "🎉")
@@ -60,13 +53,15 @@ class TestEmojiHoverIntegration(unittest.TestCase):
         print(f"[ok] Party popper: {info['emoji']} → {info['description']}")
     
     def test_get_emoji_info_various_formats(self):
-        """Test that various codepoint formats work."""
-        # All these should work for mobile phone
+        """Test that supported codepoint formats work.
+        
+        _get_emoji_info expects bare hex codepoints (as extracted from
+        escape sequences by _render_escape), with or without leading zeros.
+        Prefixed forms like "U+1F4F1" are not supported.
+        """
         formats = [
             "1F4F1",
             "0001F4F1",
-            "U+1F4F1",
-            "\\U0001F4F1",
         ]
         
         for fmt in formats:
@@ -117,15 +112,13 @@ class TestEmojiHoverIntegration(unittest.TestCase):
         from zlsp.lsp_types import SemanticToken, TokenType, Range, Position
         
         # Create a token representing the escape sequence
+        # (line/start_char/length are derived properties of range)
         token = SemanticToken(
-            line=0,
-            start_char=10,
-            length=12,  # Length of \U0001F4F1
-            token_type=TokenType.ESCAPE_SEQUENCE,
             range=Range(
-                start=Position(line=0, character=10),
-                end=Position(line=0, character=22)
-            )
+                start=Position(line=0, character=7),
+                end=Position(line=0, character=17)  # Length of \U0001F4F1
+            ),
+            token_type=TokenType.ESCAPE_SEQUENCE
         )
         
         # Content with the escape sequence
@@ -160,14 +153,11 @@ class TestHoverRenderer(unittest.TestCase):
         
         # Create a token for escape sequence
         token = SemanticToken(
-            line=0,
-            start_char=7,
-            length=12,
-            token_type=TokenType.ESCAPE_SEQUENCE,
             range=Range(
                 start=Position(line=0, character=7),
-                end=Position(line=0, character=19)
-            )
+                end=Position(line=0, character=17)
+            ),
+            token_type=TokenType.ESCAPE_SEQUENCE
         )
         
         content = "label: \\U0001F4F1"

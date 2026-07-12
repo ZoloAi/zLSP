@@ -4,7 +4,7 @@ Unit tests for Code Action Executor (core/server/features/code_actions.py)
 Tests generic execution engine that turns YAML configs into LSP TextEdit objects.
 """
 import pytest
-from themes import load_theme, CodeActionRegistry
+from zlsp.themes import load_theme, CodeActionRegistry
 from zlsp.server.code_actions import CodeActionExecutor, execute_code_action
 from lsprotocol.types import Position
 
@@ -241,8 +241,9 @@ class TestReplaceIndentation:
         edits = execute_code_action(action, context)
         
         assert len(edits) == 1
-        # 2 tabs = 2 chars, rounds to level 1 (2 // 2 = 1), so 1*2 = 2 spaces
-        assert edits[0].new_text == '  '
+        # 2 tabs = 2 chars; with standard_indent=4 the remainder 2 rounds up
+        # to level 1 (2 >= 4/2), so 1*4 = 4 spaces
+        assert edits[0].new_text == '    '
         assert edits[0].range.start.character == 0
         assert edits[0].range.end.character == 2
     

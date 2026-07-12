@@ -58,9 +58,9 @@ class TestBasicDataTypes:
         assert result == 'hello'
     
     def test_serialize_empty_string(self):
-        """Test empty string (needs quoting)."""
+        """Test empty string serializes to bare empty value (key: with nothing after)."""
         result = serialize_zolo('')
-        assert result == '""'
+        assert result == ''
 
 
 # ============================================================================
@@ -83,10 +83,13 @@ class TestStringSerializer:
         assert result.endswith('"')
     
     def test_string_with_colon(self):
-        """Test string containing colon needs quotes."""
+        """Test string containing colon stays unquoted (string-first).
+        
+        Parser splits on the first colon only, so colons in values
+        round-trip safely without quoting.
+        """
         result = _serialize_string('key: value')
-        assert result.startswith('"')
-        assert '"' in result
+        assert result == 'key: value'
     
     def test_string_with_hash(self):
         """Test string containing hash needs quotes."""
@@ -346,8 +349,9 @@ class TestRoundTrip:
     def test_roundtrip_with_booleans(self):
         """Test round-trip with boolean values.
         
-        Note: Zolo's string-first philosophy means booleans without type hints
-        are serialized as 'true'/'false' strings. This is intentional behavior.
+        Bare true/false are reserved words: dumps writes `true`/`false`,
+        loads coerces them back to Python booleans. (The literal strings
+        'true'/'false' are quoted by the serializer to stay strings.)
         """
         original = {
             'enabled': True,
@@ -357,9 +361,9 @@ class TestRoundTrip:
         serialized = dumps(original)
         restored = loads(serialized)
         
-        # Booleans become strings without type hints (Zolo's string-first design)
-        assert restored['enabled'] == 'true'
-        assert restored['disabled'] == 'false'
+        # Reserved words round-trip to real booleans
+        assert restored['enabled'] is True
+        assert restored['disabled'] is False
     
     def test_roundtrip_with_null(self):
         """Test round-trip with null value."""
@@ -453,7 +457,7 @@ class TestEdgeCases:
             'app': {
                 'name': 'MyApp',
                 'version': '1.0.0',
-                'debug': True  # Will become 'true' string
+                'debug': True  # Reserved word, round-trips as boolean
             },
             'database': {
                 'host': 'localhost',
@@ -476,8 +480,8 @@ class TestEdgeCases:
         # Check structure and key values
         assert restored['app']['name'] == 'MyApp'
         assert restored['app']['version'] == '1.0.0'
-        # Boolean becomes string without type hint
-        assert restored['app']['debug'] == 'true'
+        # Bare true is a reserved word and round-trips to a real boolean
+        assert restored['app']['debug'] is True
         
         assert restored['database']['host'] == 'localhost'
         assert restored['database']['credentials']['username'] == 'admin'

@@ -68,6 +68,13 @@ palette:
     rgb: [255, 0, 255]
     description: "Magenta for array/list brackets [ ]"
   
+  light_pink: #brackets inside strings
+    name: "Light Pink"
+    hex: "#ffafd7"
+    ansi: 218
+    rgb: [255, 175, 215]
+    description: "Light pink for brackets [ ] inside string values"
+  
   magenta: #object braces { }
     name: "Bright Yellow"
     hex: "#ffff00"
@@ -292,12 +299,12 @@ tokens:
   zrbacKey:
     color: bright_orange
     style: none
-    description: "zRBAC access control key in zEnv/zUI files (child of any key)"
-  
+    description: "zGate access/conditional gate key (and deprecated zRBAC alias) in zEnv/zUI files"
+
   zrbacOptionKey:
     color: lavender
     style: none
-    description: "zKey modifiers in zEnv/zUI files (^, ~, !, *)"
+    description: "Gate knob keys inside zGate/zRBAC blocks (authed, role, require, zAll/zAny/zNot, legacy authenticated/require_role/zGuest)"
   
   envConfigValue:
     color: bright_yellow
@@ -874,7 +881,7 @@ completions:
         detail: "📋 Full template scaffold"
         kind: "snippet"
         documentation: "Expand to full zSpark structure with all common properties and placeholder values. Press Tab to jump between fields."
-        insert_text: "zSpark:\n    title: ${1:MyApp}\n    zEnv: ${2:Development}\n    zLog: ${3:INFO}\n    zScrapath: ${4:@.logs}\n    zMode: ${5:zCLI}\n    zServer:\n        enabled: ${6:True}\n        zShell: ${7:True}\n    zPersist: ${8:True}\n    zVaFolder: ${9:@.UI}\n    zVaFile: ${10:zUI.Component}\n    zBlock: ${11:MainLayout}"
+        insert_text: "zSpark:\n    title: ${1:MyApp}\n    zEnv: ${2:Development}\n    zLog: ${3:INFO}\n    zLogPath: ${4:@.logs}\n    zMode: ${5:zCLI}\n    zServer:\n        enabled: ${6:True}\n        zShell: ${7:True}\n    zPersist: ${8:True}\n    zVaFolder: ${9:@.UI}\n    zVaFile: ${10:zUI.Component}\n    zBlock: ${11:MainLayout}"
         insert_text_format: "snippet"
         priority: 1
         preselect: false
@@ -891,10 +898,10 @@ completions:
       - label: "zEnv"
         detail: "Environment"
         kind: "property"
-        documentation: "Deployment environment (Production or Development)"
+        documentation: "Deployment environment — loads zEnv.<name>.zolo over zEnv.base.zolo (Production, Development, Testing, Debug; lowercase accepted)"
         insert_text: "zEnv: "
         priority: 1
-        value_completions: ["Production", "Development"]
+        value_completions: ["Production", "Development", "Testing", "Debug"]
 
       - label: "zState"
         detail: "Environment (deprecated → zEnv)"
@@ -902,15 +909,15 @@ completions:
         documentation: "Deprecated. Use zEnv instead."
         insert_text: "zEnv: "
         priority: 0
-        value_completions: ["Production", "Development"]
+        value_completions: ["Production", "Development", "Testing", "Debug"]
       
       - label: "zLog"
         detail: "Logger level"
         kind: "property"
-        documentation: "Logging level (DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD)"
+        documentation: "Logging level (DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD; z-prefix adds engine trace, e.g. zINFO)"
         insert_text: "zLog: "
         priority: 1
-        value_completions: ["DEBUG", "SESSION", "INFO", "WARNING", "ERROR", "CRITICAL", "PROD"]
+        value_completions: ["DEBUG", "SESSION", "INFO", "WARNING", "ERROR", "CRITICAL", "PROD", "zDEBUG", "zINFO", "zWARNING", "zERROR"]
 
       - label: "zScrap"
         detail: "Logger level (deprecated → zLog)"
@@ -920,12 +927,19 @@ completions:
         priority: 0
         value_completions: ["DEBUG", "SESSION", "INFO", "WARNING", "ERROR", "CRITICAL", "PROD"]
       
-      - label: "zScrapath"
+      - label: "zLogPath"
         detail: "Log path"
         kind: "property"
         documentation: "Directory for log files (use zPath syntax: @.logs)"
-        insert_text: "zScrapath: "
+        insert_text: "zLogPath: "
         priority: 1
+
+      - label: "zScrapath"
+        detail: "Log path (deprecated → zLogPath)"
+        kind: "property"
+        documentation: "Deprecated. Use zLogPath instead."
+        insert_text: "zLogPath: "
+        priority: 0
       
       - label: "zMode"
         detail: "Execution mode"
@@ -1010,21 +1024,43 @@ completions:
     
     # Value completions for zUI-specific keys
     properties:
-      - label: "zVaFile"
-        detail: "zVaFile type"
-        kind: "property"
-        documentation: "Type of zVaFile (zTerminal, zWeb, zMobile)"
-        insert_text: "zVaFile: "
+      - label: "zMeta"
+        detail: "File meta block"
+        kind: "snippet"
+        documentation: "Root-level meta block — one per file, at indent 0. Carries zTitle, zNavBar, zBrush, zScripts, zSpool, zCanvas."
+        insert_text: "zMeta:\n    zTitle: ${1:Page Title}\n    zNavBar: ${2:true}"
+        insert_text_format: "snippet"
         priority: 1
-        value_completions: ["zTerminal", "zWeb", "zMobile"]
-      
-      - label: "zBlock"
-        detail: "zBlock type"
+
+      - label: "zTitle"
+        detail: "Page title (zMeta)"
         kind: "property"
-        documentation: "Type of zBlock rendering (zTerminal, zHTML, zJSON)"
-        insert_text: "zBlock: "
+        documentation: "Display title for the page — lives under the root zMeta block."
+        insert_text: "zTitle: "
         priority: 1
-        value_completions: ["zTerminal", "zHTML", "zJSON"]
+
+      - label: "zNavBar"
+        detail: "Navbar opt-in (zMeta)"
+        kind: "property"
+        documentation: "Opt the page into a navbar: true (Main group from zEnv ZNAVBAR) or [Name] for a named group."
+        insert_text: "zNavBar: "
+        priority: 1
+        value_completions: ["true", "false"]
+
+      - label: "zBrush"
+        detail: "Style brushes (zMeta)"
+        kind: "property"
+        documentation: "List of brush names applied to the page (e.g. [page])."
+        insert_text: "zBrush: "
+        priority: 1
+
+      - label: "zGate"
+        detail: "Access / conditional gate"
+        kind: "snippet"
+        documentation: "The one gate verb — checks WHO is asking before the thing renders. Knobs: authed, role, require (stacked lines AND). onDenied is a sibling beside the block."
+        insert_text: "zGate:\n    authed: ${1:true}"
+        insert_text_format: "snippet"
+        priority: 1
 
       - label: "zLogger"
         detail: "App log event"
@@ -1072,10 +1108,18 @@ completions:
       - label: "type"
         detail: "Field type"
         kind: "property"
-        documentation: "Data type for the field (string, integer, float, boolean, date, datetime)"
+        documentation: "Field kind (zAgents 08_data_crud): str (default), int, float, bool, date, time, datetime, uuid, json, blob"
         insert_text: "type: "
         priority: 1
-        value_completions: ["string", "integer", "float", "boolean", "date", "datetime"]
+        value_completions: ["str", "int", "float", "bool", "date", "time", "datetime", "uuid", "json", "blob"]
+
+      - label: "Data_Type"
+        detail: "Storage engine (zMeta)"
+        kind: "property"
+        documentation: "The day-one storage line — csv, sqlite, or postgresql. Change the word later; the rest keeps working."
+        insert_text: "Data_Type: "
+        priority: 1
+        value_completions: ["csv", "sqlite", "postgresql"]
 
 # ═══════════════════════════════════════════════════════════════
 # Completion Configuration (Global Settings)

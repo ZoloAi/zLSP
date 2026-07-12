@@ -119,9 +119,9 @@ def emit_value_tokens(
 
     # zPath (@ or ~ followed by dot-separated path)
     # ONLY in zOS files (zUI, zEnv, zConfig) - string-first for regular .zolo
-    # zSpark: ONLY for specific keys (zScrapath, zVaFolder, zSpace)
+    # zSpark: ONLY for specific keys (zLogPath, zVaFolder, zSpace; zScrapath = deprecated alias)
     is_zos_file = emitter.is_zui_file or emitter.is_zenv_file or emitter.is_zconfig_file
-    is_zspark_zpath_key = emitter.is_zspark_file and key in ('zScrapath', 'zVaFolder', 'zSpace')
+    is_zspark_zpath_key = emitter.is_zspark_file and key in ('zLogPath', 'zScrapath', 'zVaFolder', 'zSpace')
 
     if (is_zos_file or is_zspark_zpath_key) and is_zpath_value(value):
         emitter.emit_zpath_tokens(value, line, start_pos)

@@ -7,9 +7,9 @@ Tests multiple components working together.
 import pytest
 from zlsp.parser import tokenize
 from zlsp.server.semantic_tokenizer import encode_semantic_tokens
-from zlsp.providers.completion_provider import get_completions
-from zlsp.providers.hover_provider import get_hover_info
-from zlsp.providers.diagnostics_engine import get_diagnostics
+from zlsp.providers.completion import get_completions
+from zlsp.providers.hover import get_hover_info
+from zlsp.providers.diagnostics import get_diagnostics
 
 
 def test_parser_to_semantic_tokens_flow():
@@ -66,7 +66,9 @@ def test_hover_provider_integration():
     line = 0
     character = 6  # On "int"
     
-    hover = get_hover_info(content, line, character)
+    # Hover uses cached tokens from the LSP server (no re-parsing)
+    tokens = tokenize(content).tokens
+    hover = get_hover_info(content, line, character, tokens)
     
     # Hover may return None or string depending on position
     assert hover is None or isinstance(hover, str)

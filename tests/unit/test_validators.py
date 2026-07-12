@@ -89,14 +89,15 @@ class TestValidateAsciiOnly:
         assert "\\u" in error_msg
         assert "RFC 8259" in error_msg
     
-    def test_high_codepoint_surrogate_pair(self):
-        """Test high codepoint (emoji) uses surrogate pair."""
+    def test_high_codepoint_escape_format(self):
+        """Test high codepoint (emoji) suggests \\U escape (not surrogate pairs)."""
         with pytest.raises(ZoloParseError) as exc_info:
-            validate_ascii_only("🚀")  # U+1F680, needs surrogate pair
+            validate_ascii_only("🚀")  # U+1F680, supplementary plane
         
         error_msg = str(exc_info.value)
-        # Should have two \u sequences for surrogate pair
-        assert error_msg.count("\\u") >= 2
+        # Supplementary plane chars use single \UXXXXXXXX escape and U+XXXXX display
+        assert "\\U0001F680" in error_msg
+        assert "U+1F680" in error_msg
 
 
 # ============================================================================
@@ -131,10 +132,10 @@ class TestIsZpathValue:
         assert is_zpath_value("@name") == False
         assert is_zpath_value("~value") == False
     
-    def test_invalid_only_modifier(self):
-        """Test only @ or ~ is invalid."""
-        assert is_zpath_value("@") == False
-        assert is_zpath_value("~") == False
+    def test_bare_modifier_is_root(self):
+        """Test bare @ or ~ is a valid zPath (refers to root)."""
+        assert is_zpath_value("@") == True
+        assert is_zpath_value("~") == True
     
     def test_invalid_modifier_dot_only(self):
         """Test @. or ~. without component is invalid."""
@@ -354,10 +355,15 @@ class TestEdgeCases:
         assert is_env_config_value("Development") == True
         assert is_env_config_value("DEVELOPMENT") == True
         
-        # Other constants must be uppercase
-        assert is_env_config_value("debug") == False
-        assert is_env_config_value("Debug") == False
+        # 'debug' is a deployment term (matches zEnv: Debug) - case-insensitive
+        assert is_env_config_value("debug") == True
+        assert is_env_config_value("Debug") == True
         assert is_env_config_value("DEBUG") == True
+        
+        # Non-deployment constants must be uppercase
+        assert is_env_config_value("session") == False
+        assert is_env_config_value("Session") == False
+        assert is_env_config_value("SESSION") == True
     
     def test_number_vs_string_boundary(self):
         """Test boundary between valid numbers and strings."""

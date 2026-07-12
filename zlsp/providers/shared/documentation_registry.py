@@ -246,8 +246,8 @@ SPECIAL_KEYS = [
     Documentation(
         label="zEnv",
         title="Deployment Environment",
-        description="Deployment mode: Production or Development.",
-        example="zEnv: Production",
+        description="Names the active environment — loads zEnv.<name>.zolo over zEnv.base.zolo. Modes: Production, Development, Testing, Debug (lowercase accepted).",
+        example="zEnv: development",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zSpark"
     ),
@@ -262,8 +262,24 @@ SPECIAL_KEYS = [
     Documentation(
         label="zLog",
         title="Logger Level",
-        description="Logging level: DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD.",
+        description="Logging level: DEBUG, SESSION, INFO, WARNING, ERROR, CRITICAL, PROD. z-prefix (zINFO…) adds engine trace.",
         example="zLog: INFO",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zSpark"
+    ),
+    Documentation(
+        label="zLogPath",
+        title="Log Path",
+        description="Directory for log files (zPath syntax).",
+        example="zLogPath: @.logs",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zSpark"
+    ),
+    Documentation(
+        label="zScrapath",
+        title="Log Path (deprecated → zLogPath)",
+        description="Deprecated. Use zLogPath instead.",
+        example="zLogPath: @.logs",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zSpark"
     ),
@@ -356,7 +372,7 @@ SPECIAL_KEYS = [
     Documentation(
         label="zWizard",
         title="zWizard (Multi-step flow)",
-        description="A block of named steps run in order. Each step's answer files under its name → zHat[Step]. if: skips a step; a gate (zBtn submit / zDialog) holds the walk. _transaction: true wraps zData steps.",
+        description="A block of named steps run in order. Each step's answer files under its name → zHat[Step]. zGate: skips a step (legacy if: is deprecated); a gate event (zBtn submit / zDialog) holds the walk. _transaction: true wraps zData steps.",
         example="zWizard:\n  Ask_Name:\n    zInput: Your name\n  Say_Hi:\n    zText: Hello",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zUI"
@@ -389,8 +405,21 @@ SPECIAL_KEYS = [
     Documentation(
         label="zOmega",
         title="zOmega (Land on a zKey)",
-        description="An adjective on a zAlpha/zDelta saying WHERE in the block to arrive — matches a block's direct key; scrolls (browser) / opens at that key (terminal).",
+        description="An adjective on a zAlpha/zDelta saying WHERE in the block to arrive — matches a block's direct key; scrolls (browser) / opens at that key (terminal). Also rides zURL href (#zKey) and zModal landings.",
         example="zOmega: Pricing",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="zModal",
+        title="zModal (Detour with auto-return)",
+        description=(
+            "Run a block as a DETOUR and auto-return to the firing point on completion — a glance, not a move "
+            "(no crumb, route never changes). Value forms: inline dict {zH2: ...}, $Block (same file), "
+            "@.zViews… zPath (cross-file), or longhand {zUI: <target>, params: {...}}. "
+            "Fires from a menu option's value or a zBtn action (action: zModal($Block))."
+        ),
+        example="zModal: $Details",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zUI"
     ),

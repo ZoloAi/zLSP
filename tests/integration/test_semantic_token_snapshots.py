@@ -26,7 +26,7 @@ from typing import Dict, Any, List
 
 import pytest
 
-from zlsp.parser.parser import tokenize
+from zlsp.parser import tokenize
 from zlsp.parser.zvaf.file_type_detector import detect_file_type, FileType
 
 
@@ -113,6 +113,14 @@ def get_golden_path(filename: str) -> Path:
     return GOLDEN_DIR / f"{filename}.tokens.json"
 
 
+def get_example_path(filename: str) -> Path:
+    """Resolve an example file (special files live in examples/zSpecial/)."""
+    file_path = EXAMPLES_DIR / filename
+    if not file_path.exists():
+        file_path = EXAMPLES_DIR / "zSpecial" / filename
+    return file_path
+
+
 @pytest.mark.integration
 @pytest.mark.parametrize("filename", EXAMPLE_FILES)
 def test_semantic_token_snapshots(filename: str):
@@ -128,7 +136,7 @@ def test_semantic_token_snapshots(filename: str):
     4. Token output is deterministic (same every time)
     5. All editors receive identical tokens
     """
-    file_path = EXAMPLES_DIR / filename
+    file_path = get_example_path(filename)
     golden_path = get_golden_path(filename)
     
     # Capture current token output
@@ -235,7 +243,7 @@ def test_file_type_detection(filename: str, expected_type: FileType):
     This is critical because different file types emit different token types
     (e.g., zsparkKey vs rootKey).
     """
-    file_path = EXAMPLES_DIR / filename
+    file_path = get_example_path(filename)
     detected_type = detect_file_type(str(file_path))
     
     assert detected_type == expected_type, (

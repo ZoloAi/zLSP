@@ -73,7 +73,7 @@ enabled(bool): true"""
 
 def test_diagnostics_workflow():
     """Test complete diagnostics workflow."""
-    from zlsp.providers.diagnostics_engine import get_diagnostics
+    from zlsp.providers import get_diagnostics
     
     # Test valid content
     valid_content = """port(int): 8080
@@ -93,7 +93,7 @@ enabled(bool): invalid_bool"""
 
 def test_completion_workflow():
     """Test complete completion workflow."""
-    from zlsp.providers.completion_provider import get_completions
+    from zlsp.providers import get_completions
     
     # User typing: "port("
     content = "port("
@@ -114,17 +114,19 @@ def test_completion_workflow():
 
 def test_hover_workflow():
     """Test complete hover workflow."""
-    from zlsp.providers.hover_provider import get_hover_info
+    from zlsp.providers import get_hover_info
+    from zlsp.parser import tokenize
     
     content = "port(int): 8080"
+    tokens = tokenize(content).tokens
     
     # Hover over type hint
-    hover_type = get_hover_info(content, 0, 6)  # On "int"
+    hover_type = get_hover_info(content, 0, 6, tokens)  # On "int"
     # May return None or string depending on implementation
     assert hover_type is None or isinstance(hover_type, str)
     
     # Hover over value
-    hover_value = get_hover_info(content, 0, 11)  # On "8080"
+    hover_value = get_hover_info(content, 0, 11, tokens)  # On "8080"
     assert hover_value is None or isinstance(hover_value, str)
 
 

@@ -16,6 +16,7 @@ from .formatter import DiagnosticFormatter
 from .menu_validators import validate_menu_options
 from .quoted_value_validators import validate_quoted_values
 from .field_validators import validate_dialog_fields
+from .meta_position_validators import validate_meta_position
 from ..shared.value_validators import ValueValidator
 
 
@@ -142,6 +143,11 @@ def get_all_diagnostics(
     field_diags = validate_dialog_fields(content)
     logger.info("   📋 zDialog field diagnostics: %d", len(field_diags))
     diagnostics.extend(field_diags)
+
+    # Flag zMeta blocks that are not at file root (indent 0)
+    meta_diags = validate_meta_position(content)
+    logger.info("   📋 zMeta position diagnostics: %d", len(meta_diags))
+    diagnostics.extend(meta_diags)
 
     logger.info("   ✅ Total diagnostics: %d", len(diagnostics))
     return diagnostics

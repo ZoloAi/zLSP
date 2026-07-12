@@ -36,34 +36,51 @@ class TestValueValidator:
         assert ('zCLI' in diagnostic.message and 'zBifrost' in diagnostic.message)
     
     def test_validate_deployment_valid_production(self):
-        """Test zState validation with valid 'Production' value"""
+        """Test zEnv validation with valid 'Production' value"""
         diagnostic = ValueValidator.validate_deployment('Production', 0, 10)
         assert diagnostic is None
     
     def test_validate_deployment_valid_development(self):
-        """Test zState validation with valid 'Development' value"""
+        """Test zEnv validation with valid 'Development' value"""
         diagnostic = ValueValidator.validate_deployment('Development', 0, 10)
         assert diagnostic is None
     
+    def test_validate_deployment_valid_debug(self):
+        """Test zEnv validation with valid 'Debug' value"""
+        diagnostic = ValueValidator.validate_deployment('Debug', 0, 10)
+        assert diagnostic is None
+    
+    def test_validate_deployment_valid_lowercase_and_testing(self):
+        """zEnv accepts spec-style lowercase names + engine Testing mode"""
+        for value in ('production', 'development', 'testing', 'debug', 'Testing'):
+            diagnostic = ValueValidator.validate_deployment(value, 0, 10)
+            assert diagnostic is None, f"{value} should be valid"
+
     def test_validate_deployment_invalid(self):
-        """Test zState validation with invalid value"""
+        """Test zEnv validation with invalid value"""
         diagnostic = ValueValidator.validate_deployment('Staging', 0, 10)
         assert diagnostic is not None
-        assert "Invalid value for 'zState'" in diagnostic.message
+        assert "Invalid value for 'zEnv'" in diagnostic.message
         assert ('Production' in diagnostic.message and 'Development' in diagnostic.message)
     
     def test_validate_logger_valid_all_levels(self):
-        """Test zScrap validation with all valid log levels"""
+        """Test zLog validation with all valid log levels"""
         valid_levels = ['DEBUG', 'SESSION', 'INFO', 'WARNING', 'ERROR', 'CRITICAL', 'PROD']
         for level in valid_levels:
             diagnostic = ValueValidator.validate_logger(level, 0, 10)
             assert diagnostic is None, f"{level} should be valid"
+
+    def test_validate_logger_valid_engine_trace_levels(self):
+        """zLog accepts z-prefixed engine-trace variants (zINFO…) per 01_zspark.md"""
+        for level in ('zDEBUG', 'zINFO', 'zWARNING', 'zERROR'):
+            diagnostic = ValueValidator.validate_logger(level, 0, 10)
+            assert diagnostic is None, f"{level} should be valid"
     
     def test_validate_logger_invalid(self):
-        """Test zScrap validation with invalid value"""
+        """Test zLog validation with invalid value"""
         diagnostic = ValueValidator.validate_logger('TRACE', 0, 10)
         assert diagnostic is not None
-        assert "Invalid value for 'zScrap'" in diagnostic.message
+        assert "Invalid value for 'zLog'" in diagnostic.message
     
     def test_validate_zvafile_valid(self):
         """Test zVaFile validation with valid value"""
@@ -114,59 +131,75 @@ class TestValueValidatorIntegration:
     
     def test_validate_for_key_zspark_zmode_valid(self):
         """Test validate_for_key with valid zMode in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zMode', 'zCLI', 0, 10, emitter)
         assert result is True  # Validation was performed
         assert len(emitter.diagnostics) == 0  # No errors
     
     def test_validate_for_key_zspark_zmode_invalid(self):
         """Test validate_for_key with invalid zMode in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zMode', 'Invalid', 0, 10, emitter)
         assert result is True  # Validation was performed
         assert len(emitter.diagnostics) == 1  # Error added
         assert "Invalid value for 'zMode'" in emitter.diagnostics[0].message
     
     def test_validate_for_key_zspark_deployment_valid(self):
-        """Test validate_for_key with valid zState in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
-        result = ValueValidator.validate_for_key('zState', 'Production', 0, 10, emitter)
+        """Test validate_for_key with valid zEnv in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
+        result = ValueValidator.validate_for_key('zEnv', 'Production', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 0
     
     def test_validate_for_key_zspark_deployment_invalid(self):
-        """Test validate_for_key with invalid zState in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        """Test validate_for_key with invalid zEnv in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
+        result = ValueValidator.validate_for_key('zEnv', 'Staging', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 1
+        assert "Invalid value for 'zEnv'" in emitter.diagnostics[0].message
+    
+    def test_validate_for_key_zspark_deployment_deprecated_zstate(self):
+        """Test validate_for_key still validates deprecated zState alias"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zState', 'Staging', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 1
-        assert "Invalid value for 'zState'" in emitter.diagnostics[0].message
+        assert "Invalid value for 'zEnv'" in emitter.diagnostics[0].message
     
     def test_validate_for_key_zspark_logger_valid(self):
-        """Test validate_for_key with valid zScrap in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
-        result = ValueValidator.validate_for_key('zScrap', 'DEBUG', 0, 10, emitter)
+        """Test validate_for_key with valid zLog in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
+        result = ValueValidator.validate_for_key('zLog', 'DEBUG', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 0
     
     def test_validate_for_key_zspark_logger_invalid(self):
-        """Test validate_for_key with invalid zScrap in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        """Test validate_for_key with invalid zLog in zSpark file"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
+        result = ValueValidator.validate_for_key('zLog', 'TRACE', 0, 10, emitter)
+        assert result is True
+        assert len(emitter.diagnostics) == 1
+        assert "Invalid value for 'zLog'" in emitter.diagnostics[0].message
+    
+    def test_validate_for_key_zspark_logger_deprecated_zscrap(self):
+        """Test validate_for_key still validates deprecated zScrap alias"""
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zScrap', 'TRACE', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 1
-        assert "Invalid value for 'zScrap'" in emitter.diagnostics[0].message
+        assert "Invalid value for 'zLog'" in emitter.diagnostics[0].message
     
     def test_validate_for_key_zspark_zvafile_valid(self):
         """Test validate_for_key with valid zVaFile in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zVaFile', 'zUI.zVaF', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 0
     
     def test_validate_for_key_zspark_zvafile_invalid(self):
         """Test validate_for_key with invalid zVaFile in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zVaFile', 'Component', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 1
@@ -174,21 +207,21 @@ class TestValueValidatorIntegration:
     
     def test_validate_for_key_zspark_zblock_dotted(self):
         """Test validate_for_key with dotted zBlock name in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zBlock', 'zBlock.Navbar', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 0
     
     def test_validate_for_key_zspark_zblock_freeform(self):
         """Test validate_for_key with free-form zBlock name in zSpark file"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('zBlock', 'zBreakpoints_Details', 0, 10, emitter)
         assert result is True
         assert len(emitter.diagnostics) == 0
     
     def test_validate_for_key_unknown_key(self):
         """Test validate_for_key with unknown key (no validation)"""
-        emitter = TokenEmitter("", filename="zSpark.example.zolo")
+        emitter = TokenEmitter("", filename="zSpark.example.zolo", is_zspark_file=True)
         result = ValueValidator.validate_for_key('unknownKey', 'value', 0, 10, emitter)
         assert result is False  # No validation performed
         assert len(emitter.diagnostics) == 0

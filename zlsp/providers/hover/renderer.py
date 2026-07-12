@@ -303,7 +303,8 @@ class HoverRenderer:
                     from pathlib import Path
 
                     # Add zOS to path if not already there
-                    zlsp_root = Path(__file__).parent.parent.parent.parent.parent
+                    # renderer.py -> hover -> providers -> zlsp -> repo root
+                    zlsp_root = Path(__file__).resolve().parent.parent.parent.parent
                     zos_path = zlsp_root.parent / "zOS" / "core"
                     if zos_path.exists() and str(zos_path) not in sys.path:
                         sys.path.insert(0, str(zos_path))

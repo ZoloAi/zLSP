@@ -22,9 +22,12 @@ from zlsp.token_registry import (
     DISPATCH_KEYS,
     AUTO_MULTILINE_PROPERTIES,
     ZENV_CONFIG_ROOT_KEYS,
+    ZGATE_OPTION_KEYS,
     ZMACHINE_LOCKED_SECTIONS,
     ZMACHINE_EDITABLE_SECTIONS,
     UI_ELEMENT_BLOCK_TYPES,
+    BLOCK_ZGATE,
+    BLOCK_ZRBAC,
 )
 
 if TYPE_CHECKING:
@@ -138,14 +141,15 @@ class KeyDetector:
             elif indent >= 2:
                 return TokenType.ZCONFIG_NESTED_KEY  # LAVENDER
 
-        # zRBAC key (TOMATO RED - ANSI 196)
-        if key == 'zRBAC' and (emitter.is_zenv_file or emitter.is_zui_file):
+        # zGate — the one gate verb; zRBAC is its deprecated alias (TOMATO RED - ANSI 196)
+        if key in ('zGate', 'zRBAC') and (emitter.is_zenv_file or emitter.is_zui_file):
             return TokenType.ZRBAC_KEY
 
-        # zRBAC option keys (PURPLE 98)
-        if emitter.is_inside_block('zRBAC', indent):
-            ZRBAC_OPTION_KEYS = {'access', 'role', 'permissions', 'owner', 'public', 'private'}
-            if key in ZRBAC_OPTION_KEYS:
+        # Gate knob keys inside zGate/zRBAC blocks (PURPLE 98)
+        # Spec knobs (authed/role/require), combinators (zAll/zAny/zNot),
+        # legacy navbar knobs (authenticated/require_role/zGuest) — see token_registry.
+        if emitter.is_inside_block(BLOCK_ZGATE, indent) or emitter.is_inside_block(BLOCK_ZRBAC, indent):
+            if key in ZGATE_OPTION_KEYS:
                 return TokenType.ZRBAC_OPTION_KEY
 
         # ZNAVBAR first-level nested keys (ANSI 208 in zEnv files)
@@ -174,10 +178,9 @@ class KeyDetector:
         if key.startswith('_'):
             return TokenType.BIFROST_KEY
 
-        # zRaven-only test primitive keys — silver-white
-        _ZRAVEN_PRIMITIVE_KEYS = {'zPick', 'zSubmit', 'zAssert', 'zBoot', 'zExecute',
-                                   'zWait', 'zClick', 'zType', 'zShot', 'zDrag', 'zMarker'}
-        if emitter.is_zui_file and key in _ZRAVEN_PRIMITIVE_KEYS:
+        # zRaven-only test primitive keys — silver-white (SSOT: token_registry)
+        from zlsp.token_registry import ZRAVEN_REPEATABLE_KEYS
+        if emitter.is_zui_file and key in ZRAVEN_REPEATABLE_KEYS:
             filename = getattr(emitter, 'filename', '') or ''
             if 'zRaven.' in filename:
                 return TokenType.ZRAVEN_PICK_KEY

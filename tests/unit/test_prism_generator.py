@@ -42,13 +42,23 @@ class TestPatternExtraction:
         assert len(patterns) > 5  # At least basic patterns
     
     def test_zspark_patterns(self):
-        """Test zSpark-specific override extraction."""
+        """Test zSpark-specific override extraction.
+
+        zSpark semantic highlighting is parked (being rebuilt from scratch),
+        so the only remaining override is the zPath value pattern.
+        """
         patterns = generate_override_patterns_for_file_type(FileType.ZSPARK)
         pattern_names = [p['name'] for p in patterns]
 
-        assert 'zspark-root' in pattern_names
-        assert 'zspark-nested' in pattern_names
-        assert 'zspark-mode-value' in pattern_names
+        assert pattern_names == ['zspark-zpath-value']
+
+        zpath_pattern = patterns[0]
+        # zPath values only apply after specific keys (zScrapath = deprecated alias)
+        assert 'zLogPath' in zpath_pattern['pattern']
+        assert 'zScrapath' in zpath_pattern['pattern']
+        assert 'zVaFolder' in zpath_pattern['pattern']
+        assert 'zSpace' in zpath_pattern['pattern']
+        assert zpath_pattern['alias'] == 'keyword'
     
     def test_zui_patterns(self):
         """Test zUI-specific override extraction."""
@@ -166,22 +176,26 @@ class TestPatternOrdering:
         assert patterns[0]['name'] == 'comment', "Comments should be first"
     
     def test_specific_before_generic_roots(self):
-        """Test that specific root keys come before generic root-key in overrides."""
-        patterns = generate_override_patterns_for_file_type(FileType.ZSPARK)
+        """Test that specific root keys come before generic root-key in overrides.
+
+        Uses zUI (zSpark root overrides are parked while being rebuilt).
+        """
+        patterns = generate_override_patterns_for_file_type(FileType.ZUI)
         pattern_names = [p['name'] for p in patterns]
         
         # Both patterns should exist in overrides to override the base
-        assert 'zspark-root' in pattern_names
+        assert 'zui-special-root' in pattern_names
         assert 'root-key' in pattern_names
         
-        zspark_idx = pattern_names.index('zspark-root')
+        zui_idx = pattern_names.index('zui-special-root')
         root_idx = pattern_names.index('root-key')
-        assert zspark_idx < root_idx, "Specific zspark-root should override before generic root-key"
+        assert zui_idx < root_idx, "Specific zui-special-root should override before generic root-key"
     
     def test_punctuation_last(self):
-        """Test that punctuation has lowest priority in base."""
+        """Test that the colon separator (punctuation) has lowest priority in base."""
         patterns = generate_base_patterns()
-        assert patterns[-1]['name'] == 'punctuation', "Punctuation should be last in base"
+        assert patterns[-1]['name'] == 'colon', "Colon separator should be last in base"
+        assert patterns[-1]['alias'] == 'punctuation', "Colon should be aliased to punctuation"
 
 
 class TestLanguageDefinitionBuilding:
@@ -278,18 +292,15 @@ class TestLanguageConfigs:
 class TestFileTypeSpecificBehavior:
     """Test file-type-specific pattern behavior."""
     
-    def test_zspark_only_colors_zspark_root(self):
-        """Test that zSpark files only color 'zSpark:' as special root."""
+    def test_zspark_root_patterns_parked(self):
+        """Test that zSpark root key overrides are parked (rebuilt from scratch).
+
+        zSpark files inherit root-key highlighting from base zolo; the extractor
+        must not emit any zSpark-specific root patterns.
+        """
         patterns = extract_root_key_patterns(FileType.ZSPARK)
-        
-        # Should have zspark-root pattern
-        zspark_pattern = next((p for p in patterns if p['name'] == 'zspark-root'), None)
-        assert zspark_pattern is not None
-        assert 'zSpark' in zspark_pattern['pattern']
-        
-        # Should also have generic root-key for other capitals
-        generic_pattern = next((p for p in patterns if p['name'] == 'root-key'), None)
-        assert generic_pattern is not None
+        assert patterns == [], \
+            "zSpark root overrides are parked; expected no root key patterns"
     
     def test_zui_has_element_patterns(self):
         """Test that zUI files have UI element patterns."""

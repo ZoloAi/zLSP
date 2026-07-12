@@ -142,21 +142,22 @@ class TestConvenienceMethods:
         """Test has_modifiers for files that support modifiers."""
         zui_detector = FileTypeDetector('zUI.zVaF.zolo')
         zenv_detector = FileTypeDetector('zEnv.dev.zolo')
-        zspark_detector = FileTypeDetector('zSpark.app.zolo')
         
         assert zui_detector.has_modifiers()
         assert zenv_detector.has_modifiers()
-        assert zspark_detector.has_modifiers()
         
     def test_has_modifiers_false(self):
         """Test has_modifiers for files that don't support modifiers."""
         zconfig_detector = FileTypeDetector('zConfig.machine.zolo')
         zschema_detector = FileTypeDetector('zSchema.users.zolo')
         generic_detector = FileTypeDetector('config.zolo')
+        # zSpark is parked (being rebuilt from scratch) — modifiers disabled
+        zspark_detector = FileTypeDetector('zSpark.app.zolo')
         
         assert not zconfig_detector.has_modifiers()
         assert not zschema_detector.has_modifiers()
         assert not generic_detector.has_modifiers()
+        assert not zspark_detector.has_modifiers()
 
 
 class TestHelperFunctions:

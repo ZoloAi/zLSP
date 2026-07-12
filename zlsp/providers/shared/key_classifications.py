@@ -47,7 +47,7 @@ UI_ELEMENT_KEYS: Set[str] = {
     'zLink', 'zCrumbs',
 
     # Navigation verbs (doc 14)
-    'zAlpha', 'zDelta', 'zOmega', 'zPsi', 'zDelegate',
+    'zAlpha', 'zDelta', 'zOmega', 'zModal', 'zPsi', 'zDelegate',
 
     # Media events (doc 08)
     'zVideo', 'zEmbed',
@@ -119,8 +119,8 @@ UI_ELEMENTS: List[UIElement] = [
     UIElement(
         label="zURL",
         detail="URL/Link",
-        documentation="Single URL link. Use `href` and `text` properties.",
-        insert_text="zURL:\n    ",
+        documentation="The rendered, clickable link. Required: `label` + `href`. href routes by first character: @.zViews… (zAlpha) · $Block (zDelta) · #zKey (anchor) · https://… (external).",
+        insert_text="zURL:\n    label: \n    href: ",
         priority=1
     ),
     UIElement(

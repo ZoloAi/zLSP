@@ -209,7 +209,7 @@ class TestValidateStyle:
     
     def test_no_style_issues(self):
         """Test content with no style issues."""
-        content = "key: value\nnested:\n  child: data"
+        content = "key: value\nnested:\n    child: data"
         
         diagnostics = DiagnosticFormatter.validate_style(content)
         

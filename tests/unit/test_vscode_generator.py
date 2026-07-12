@@ -5,8 +5,8 @@ Tests that the generator correctly converts canonical theme to VS Code formats.
 """
 import pytest
 import json
-from themes import load_theme
-from themes.generators.vscode import VSCodeGenerator, generate_vscode_files
+from zlsp.themes import load_theme
+from zlsp.themes.generators.vscode import VSCodeGenerator, generate_vscode_files
 
 
 class TestVSCodeGenerator:

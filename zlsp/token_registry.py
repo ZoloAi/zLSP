@@ -199,8 +199,8 @@ UI_ELEMENT_KEYS: Set[str] = {
     'zVideo', 'zEmbed',
     # Rich-UI events (docs 22–25)
     'zSwiper', 'zDash', 'zProgress',
-    # Navigation verbs (doc 14) — cross-file / same-file / anchor hops
-    'zAlpha', 'zDelta', 'zOmega', 'zPsi', 'zDelegate',
+    # Navigation verbs (doc 14) — cross-file / same-file / anchor hops / detour
+    'zAlpha', 'zDelta', 'zOmega', 'zModal', 'zPsi', 'zDelegate',
     # Signal events
     'zSignal', 'zError', 'zWarning', 'zSuccess', 'zInfo', 'zPrimary', 'zSecondary',
 }
@@ -578,6 +578,7 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
     'zAlpha': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
     'zDelta': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
     'zOmega': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
+    'zModal': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
     'zPsi':   {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
     'zDelegate': {'block_type': None, 'block_name': None, 'requires_zui': True, 'is_shorthand': True},
     # Brand-emphasis signals (doc 09)
@@ -652,11 +653,13 @@ UI_ELEMENT_SHORTHAND_KEYS: Set[str] = {
     if props.get('is_shorthand', False)
 }
 
-# zRaven test primitives that are allowed to repeat at the same nesting level
-# (e.g., multiple zAssert or zPick entries within a single test block)
+# zRaven test primitives (zAgents 13_testing) — allowed to repeat at the same
+# nesting level (e.g., multiple zAssert or zPick entries within a test block)
 ZRAVEN_REPEATABLE_KEYS: Set[str] = {
     'zPick', 'zSubmit', 'zAssert', 'zBoot', 'zExecute',
     'zWait', 'zClick', 'zType', 'zShot', 'zDrag', 'zMarker',
+    # Bifrost-only primitives + declarative form fill
+    'zOpen', 'zFill', 'zUpload', 'zViewport', 'zHistory',
 }
 
 # Special blocks mapping (non-UI elements that create block contexts)
@@ -692,6 +695,15 @@ SPECIAL_BLOCK_MAPPING: Dict[str, Dict[str, any]] = {
         'block_name': 'zspark',
         'method': 'enter_block_single',
     },
+}
+
+# Gate knobs — lines inside a zGate: block (doc 21 / zAgents 15_rbac)
+# Spec knobs: authed / role / require; combinators zAll / zAny / zNot;
+# legacy navbar zRBAC knobs: authenticated / require_role / zGuest.
+ZGATE_OPTION_KEYS: Set[str] = {
+    'authed', 'role', 'require',
+    'zAll', 'zAny', 'zNot',
+    'authenticated', 'require_role', 'zGuest',
 }
 
 # zEnv config root keys
@@ -796,6 +808,7 @@ __all__ = [
     'UI_ELEMENT_MAPPING',
     'UI_ELEMENT_SHORTHAND_KEYS',
     'SPECIAL_BLOCK_MAPPING',
+    'ZGATE_OPTION_KEYS',
     'ZENV_CONFIG_ROOT_KEYS',
     'ZMACHINE_LOCKED_SECTIONS',
     'ZMACHINE_EDITABLE_SECTIONS',

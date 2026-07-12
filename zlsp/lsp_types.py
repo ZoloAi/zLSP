@@ -40,8 +40,8 @@ class Range:
     end: Position
 
     def contains(self, position: Position) -> bool:
-        """Check if a position is within this range."""
-        return self.start <= position <= self.end
+        """Check if a position is within this range (end-exclusive, per LSP)."""
+        return self.start <= position < self.end
 
     def overlaps(self, other: 'Range') -> bool:
         """Check if this range overlaps with another range."""

@@ -15,7 +15,7 @@ into LSP diagnostics:
 import pytest
 from lsprotocol import types as lsp_types
 
-from zlsp.providers.diagnostics_engine import get_diagnostics, get_all_diagnostics
+from zlsp.providers.diagnostics import get_diagnostics, get_all_diagnostics
 
 
 class TestGetDiagnostics:
@@ -357,7 +357,7 @@ class TestDiagnosticsIntegration:
     
     def test_diagnostics_integration_with_semantic_tokens(self):
         """Test that diagnostics work alongside semantic token generation."""
-        from zlsp.parser.parser import tokenize
+        from zlsp.parser.parser_service import tokenize
         
         content = "key: value\nport(int): 8080"
         

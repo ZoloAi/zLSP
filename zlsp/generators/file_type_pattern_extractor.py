@@ -131,7 +131,7 @@ def extract_root_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
 
     elif file_type == FileType.ZENV:
         # Line 78-79: Config root keys (DEPLOYMENT, DEBUG, LOG_LEVEL)
-        config_keys = '|'.join(ZENV_CONFIG_ROOT_KEYS)
+        config_keys = '|'.join(sorted(ZENV_CONFIG_ROOT_KEYS))
         patterns.append({
             'name': 'zenv-config-root',
             'pattern': rf'/((?:^|\n)[ \t]*)(?:{config_keys})(?=\s*:)/m',
@@ -190,7 +190,7 @@ def extract_nested_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
     
     elif file_type == FileType.ZCONFIG:
         # Line 127-128: Locked section headers (indent 1)
-        locked_sections = '|'.join(ZMACHINE_LOCKED_SECTIONS)
+        locked_sections = '|'.join(sorted(ZMACHINE_LOCKED_SECTIONS))
         patterns.append({
             'name': 'zmachine-locked-section',
             'pattern': rf'/(?<=\n)[ \t]{{1}}(?:{locked_sections})(?=\s*:)/m',
@@ -199,7 +199,7 @@ def extract_nested_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
             'comment': 'zMachine locked sections (red)'
         })
         # Line 129-130: Editable section headers (indent 1)
-        editable_sections = '|'.join(ZMACHINE_EDITABLE_SECTIONS)
+        editable_sections = '|'.join(sorted(ZMACHINE_EDITABLE_SECTIONS))
         patterns.append({
             'name': 'zmachine-editable-section',
             'pattern': rf'/(?<=\n)[ \t]{{1}}(?:{editable_sections})(?=\s*:)/m',
@@ -218,7 +218,7 @@ def extract_nested_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
     
     elif file_type == FileType.ZSCHEMA:
         # Line 153-155: zOS data keys under zMeta (indent 1)
-        zos_data_keys = '|'.join(ZOS_DATA_KEYS)
+        zos_data_keys = '|'.join(sorted(ZOS_DATA_KEYS))
         patterns.append({
             'name': 'zschema-zos-data',
             'pattern': rf'/(?<=\n)[ \t]{{1}}(?:{zos_data_keys})(?=\s*:)/m',
@@ -227,7 +227,7 @@ def extract_nested_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
             'comment': 'zOS data keys under zMeta (purple)'
         })
         # Line 160-161: Field properties (indent 2+)
-        schema_props = '|'.join(ZSCHEMA_PROPERTY_KEYS)
+        schema_props = '|'.join(sorted(ZSCHEMA_PROPERTY_KEYS))
         patterns.append({
             'name': 'zschema-property',
             'pattern': rf'/(?<=\n)[ \t]{{2,}}(?:{schema_props})(?=\s*:)/m',
@@ -278,7 +278,7 @@ def extract_nested_key_patterns(file_type: FileType) -> List[Dict[str, Any]]:
             'comment': 'zDispatch event keys (golden)'
         })
         # Line 180-186: UI element keys
-        ui_elements = '|'.join(UI_ELEMENT_KEYS)
+        ui_elements = '|'.join(sorted(UI_ELEMENT_KEYS))
         patterns.append({
             'name': 'zui-element',
             'pattern': rf'/\b(?:{ui_elements})(?=\s*(?:\([^)]+\))?[*!]?:)/',
@@ -391,13 +391,14 @@ def extract_value_patterns(file_type: FileType) -> List[Dict[str, Any]]:
         })
     
     elif file_type == FileType.ZSPARK:
-        # Context-aware zPath highlighting: ONLY for zScrapath, zVaFolder, and zSpace keys
+        # Context-aware zPath highlighting: ONLY for zLogPath, zVaFolder, and zSpace keys
+        # (zScrapath = deprecated alias of zLogPath, still highlighted)
         # Use lookbehind to match ONLY the zPath value after specific keys
         # This pattern will be inserted before string-unquoted to take priority
         # Matches: @ or ~ (bare root) OR @.path or ~.path (with components)
         patterns.append({
             'name': 'zspark-zpath-value',
-            'pattern': r'/(?<=(?:zScrapath|zVaFolder|zSpace):\s*)[@~](?:\.[a-zA-Z0-9_./]+)?/',
+            'pattern': r'/(?<=(?:zLogPath|zScrapath|zVaFolder|zSpace):\s*)[@~](?:\.[a-zA-Z0-9_./]+)?/',
             'alias': 'keyword',
             'lookbehind': True,
             'greedy': True,

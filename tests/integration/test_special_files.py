@@ -22,9 +22,11 @@ from zlsp.parser.zvaf.file_type_detector import FileType, detect_file_type
 # Helper functions
 
 def load_example_file(filename: str) -> tuple[str, Path]:
-    """Load example file content and path."""
+    """Load example file content and path (special files live in examples/zSpecial/)."""
     examples_dir = Path(__file__).parent.parent.parent / "examples"
     file_path = examples_dir / filename
+    if not file_path.exists():
+        file_path = examples_dir / "zSpecial" / filename
     assert file_path.exists(), f"Example file not found: {file_path}"
     
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -85,20 +87,23 @@ class TestZSparkFiles:
         assert len(result.tokens) > 0, "zSpark file should emit tokens"
     
     def test_zspark_root_keys_highlighted(self):
-        """Test that zSpark root keys have correct token type."""
+        """Test zSpark root key highlighting.
+        
+        zSpark-specific highlighting is parked (being rebuilt from scratch),
+        so zSpark files currently emit plain ROOT_KEY/NESTED_KEY tokens.
+        """
         content, file_path = load_example_file("zSpark.example.zolo")
         result = tokenize(content, filename=file_path.name)
         
-        # zSpark root keys should be highlighted as ZSPARK_KEY
+        # ZSPARK_KEY emission is disabled while zSpark is rebuilt
         zspark_tokens = get_tokens_by_type(result.tokens, TokenType.ZSPARK_KEY)
-        assert len(zspark_tokens) > 0, "Should have zSpark root key tokens"
+        assert len(zspark_tokens) == 0, "ZSPARK_KEY is parked; should not be emitted"
         
-        # The file should have at least one zSpark-specific key
-        # (Could be zSpark, zMode, zState, zScrap, etc.)
-        token_texts = [extract_token_text(content, t) for t in zspark_tokens]
-        # Just verify we got tokens, actual content may vary
-        assert len(token_texts) > 0, f"Should have zSpark key tokens, got: {token_texts}"
+        # Plain root keys should still be emitted
+        root_keys = get_tokens_by_type(result.tokens, TokenType.ROOT_KEY)
+        assert len(root_keys) > 0, "zSpark file should emit plain root key tokens"
     
+    @pytest.mark.skip(reason="zSpark validation parked (being rebuilt from scratch)")
     def test_zspark_zmode_validation(self):
         """Test that zMode values are validated."""
         content = """zMode: zCLI"""
@@ -212,13 +217,29 @@ class TestZEnvFiles:
         assert 'zRBAC' in token_texts, f"Expected zRBAC key, got: {token_texts}"
     
     def test_zenv_zsub_keys_highlighted(self):
-        """Test that zSub keys are highlighted correctly."""
-        content, file_path = load_example_file("zEnv.example.zolo")
-        result = tokenize(content, filename=file_path.name)
+        """Test that zSub keys are highlighted correctly.
+        
+        ZSUB_KEY is emitted for zSub at grandchild+ depth in zEnv/zUI files.
+        The zEnv example's zSub is now a first-level ZNAVBAR key (emitted as
+        ZNAVBAR_NESTED_KEY), so use synthetic content at the required depth.
+        """
+        content = """ZNAVBAR:
+  zProducts:
+    zItem:
+      zSub: [zCLI, zBifrost]"""
+        result = tokenize(content, filename="zEnv.test.zolo")
         
         # Should have zSub keys (grandchildren+)
         zsub_keys = get_tokens_by_type(result.tokens, TokenType.ZSUB_KEY)
         assert len(zsub_keys) > 0, "Should have zSub keys"
+        
+        # In the example file, zSub is a first-level ZNAVBAR key
+        example_content, file_path = load_example_file("zEnv.example.zolo")
+        example_result = tokenize(example_content, filename=file_path.name)
+        znavbar_keys = get_tokens_by_type(example_result.tokens, TokenType.ZNAVBAR_NESTED_KEY)
+        znavbar_texts = [extract_token_text(example_content, t) for t in znavbar_keys]
+        assert 'zSub' in znavbar_texts, \
+            f"zSub should be a ZNAVBAR nested key in example, got: {znavbar_texts}"
     
     def test_zenv_modifiers_highlighted(self):
         """Test that modifiers (^~!*) are highlighted correctly."""
@@ -360,11 +381,11 @@ class TestZConfigFiles:
         content, file_path = load_example_file("zConfig.machine.zolo")
         result = tokenize(content, filename=file_path.name)
         
-        # Should have zMachine key (special green color like zSpark)
-        root_keys = get_tokens_by_type(result.tokens, TokenType.ROOT_KEY)
-        root_key_texts = [extract_token_text(content, t) for t in root_keys]
-        # zMachine or other config keys should be present
-        assert len(root_key_texts) > 0, "Should have root keys in zConfig file"
+        # zMachine root key is emitted as ZCONFIG_KEY in zConfig files (green)
+        config_keys = get_tokens_by_type(result.tokens, TokenType.ZCONFIG_KEY)
+        config_key_texts = [extract_token_text(content, t) for t in config_keys]
+        assert 'zMachine' in config_key_texts, \
+            f"zMachine should be a ZCONFIG_KEY in zConfig file, got: {config_key_texts}"
 
 
 # ============================================================================

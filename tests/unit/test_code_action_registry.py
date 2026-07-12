@@ -4,7 +4,7 @@ Unit tests for Code Action Registry (themes/__init__.py)
 Tests YAML parsing and querying of code actions from zolo_default.yaml.
 """
 import pytest
-from themes import load_theme, CodeActionRegistry
+from zlsp.themes import load_theme, CodeActionRegistry
 
 
 class TestThemeCodeActions:
@@ -206,7 +206,7 @@ class TestCodeActionStructure:
         assert action['category'] == 'quickfix'
         assert action['execution']['type'] == 'replace_indentation'
         assert 'config' in action['execution']
-        assert action['execution']['config']['standard_indent'] == 2
+        assert action['execution']['config']['standard_indent'] == 4
     
     def test_add_required_fields_structure(self):
         """Test add_required_fields action has correct structure"""
