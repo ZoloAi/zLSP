@@ -37,8 +37,11 @@ For VSCode/Cursor:
 In Terminal run the following command:
 
 ```bash
-pip install zlsp
+pip install zolo-lsp
 ```
+
+> **Naming note:** the *package* is `zolo-lsp`; the *import* name is `zlsp`
+> (`from zlsp.parser import loads`). There is no `zlsp` package on PyPI.
 
 Then install for your editor:
 
@@ -68,7 +71,7 @@ This runs 5 essential checks:
 
 If anything fails, you'll get clear error messages with suggested fixes. Exit code 0 means success, 1 means issues found.
 
-> For installation troubleshoots see: [**INSTALLATION.md**](Documentation/INSTALLATION.md)
+> For installation troubleshoots see: [**Installation_GUIDE.md**](Documentation/Installation_GUIDE.md)
 
 ## Features
 
@@ -84,7 +87,7 @@ If anything fails, you'll get clear error messages with suggested fixes. Exit co
   - **Zero duplication** - All completions from SSOT (documentation registry, theme YAML)
 - **Hover Information** - Inline documentation and type information
 
-> **Design Philosophy:** See [**zLSP_Philosophy.md**](Documentation/zLSP_Philosophy.md) for the principles behind string-first syntax.
+> **Design Philosophy:** See [**Philosophy_GUIDE.md**](Documentation/Philosophy_GUIDE.md) for the principles behind string-first syntax.
 
 ## Parser Architecture
 
@@ -113,7 +116,7 @@ LSP Request → FileTypeDetector → Route to appropriate parser
 
 **Zero Overhead** - Basic files never load or execute zVaF code, resulting in faster parsing and lower memory usage.
 
-> See [**PARSER_ROUTING_ARCHITECTURE.md**](PARSER_ROUTING_ARCHITECTURE.md) for complete architectural details.
+> See [**Architecture_GUIDE.md**](Documentation/Architecture_GUIDE.md) for complete architectural details.
 
 ## Why .zolo?
 
@@ -235,7 +238,7 @@ Editor Clients (vim-lsp, VSCode LSP, Cursor)
     - Token types → `token_types.py` (enum definitions)
     - Token mappings → `token_registry.py` (LSP indices, key sets, block constants)
     - UI element definitions → `UI_ELEMENT_MAPPING` (22 elements, 1 location)
-    - Special blocks → `SPECIAL_BLOCK_MAPPING` (zRBAC, zMeta, ZNAVBAR, zMachine, zSpark)
+    - Special blocks → `SPECIAL_BLOCK_MAPPING` (zGate, zMeta, ZNAVBAR, zMachine, zSpark)
     - Type hint parsing → `basic/type_hints.py` (`extract_type_hint()`)
     - Root key validation → `basic/validators.py` (`validate_root_key()`)
     - Multiline detection → `key_detector.should_enable_auto_multiline()`
@@ -339,7 +342,7 @@ detect_file_type(filename)
 - Easy maintenance (change once, affects all)
 - User customization (theme-based completions)
 
-> See [COMPLETION_ARCHITECTURE.md](COMPLETION_ARCHITECTURE.md) and [PHASE3_ARCHITECTURE.md](PHASE3_ARCHITECTURE.md) for complete details.
+> See [Architecture_GUIDE.md](Documentation/Architecture_GUIDE.md) for complete details.
 
 ### Parser Separation (Basic/zVaF Example)
 
@@ -431,7 +434,7 @@ from zlsp.token_registry import (
     
     # NEW: Data-driven mappings (SSOT)
     UI_ELEMENT_MAPPING,          # Maps UI elements → block types, properties
-    SPECIAL_BLOCK_MAPPING,       # Maps special blocks (zRBAC, zMeta, etc.)
+    SPECIAL_BLOCK_MAPPING,       # Maps special blocks (zGate, zMeta, etc.)
     UI_ELEMENT_SHORTHAND_KEYS,   # Set of repeatable UI elements
 )
 
@@ -452,9 +455,9 @@ if 'zImage' in UI_ELEMENT_MAPPING:
 if 'zText' in UI_ELEMENT_SHORTHAND_KEYS:
     print("zText can appear multiple times")
 
-# Special blocks (zRBAC, zMeta, ZNAVBAR, zMachine, zSpark)
-if 'zRBAC' in SPECIAL_BLOCK_MAPPING:
-    block_info = SPECIAL_BLOCK_MAPPING['zRBAC']
+# Special blocks (zGate, zMeta, ZNAVBAR, zMachine, zSpark; zRBAC = deprecated alias)
+if 'zGate' in SPECIAL_BLOCK_MAPPING:
+    block_info = SPECIAL_BLOCK_MAPPING['zGate']
     print(f"Method: {block_info['method']}")  # → 'enter_block'
 ```
 
@@ -523,7 +526,7 @@ zLSP server provides all the expected industry-grade features:
 - File-type + key values → `themes/zolo_default.yaml`
 - Routing logic → `completion_router.py`
 
-> See [COMPLETION_ARCHITECTURE.md](COMPLETION_ARCHITECTURE.md) and [PHASE3_ARCHITECTURE.md](PHASE3_ARCHITECTURE.md) for complete details.
+> See [Architecture_GUIDE.md](Documentation/Architecture_GUIDE.md) for complete details.
 
 ## Project Structure
 
@@ -605,39 +608,31 @@ zlsp/
 │   │   └── generators/        # Editor-specific generators
 │   └── cli/                   # CLI commands
 ├── examples/                  # Example .zolo files
-├── Documentation/             # Full documentation
-├── REFACTORING_SUMMARY.md     # Token system refactoring details
-└── REFACTORING_DIAGRAM.md     # Visual before/after comparison
+└── Documentation/             # Full documentation (hub-and-satellite guides)
 ```
 
 ## Documentation
 
-### Getting Started
-- [INSTALLATION.md](Documentation/INSTALLATION.md) - Detailed installation guide
-- [basic.zolo](examples/basic.zolo) - Simple syntax examples
-- [advanced.zolo](examples/advanced.zolo) - Real-world configuration example
+Full documentation lives in [`Documentation/`](Documentation/README.md) — hub-and-satellite guides:
 
-### Core Documentation
-- [ARCHITECTURE.md](Documentation/ARCHITECTURE.md) - Design and architecture
-- [PARSER_ROUTING_ARCHITECTURE.md](PARSER_ROUTING_ARCHITECTURE.md) - Parser routing & performance
-- [COMPLETION_ARCHITECTURE.md](COMPLETION_ARCHITECTURE.md) - Completion system SSOT architecture (Phases 1-2)
-- [PHASE3_ARCHITECTURE.md](PHASE3_ARCHITECTURE.md) - Provider separation: Basic vs zVAF (Phase 3)
-- [FILE_TYPES.md](Documentation/FILE_TYPES.md) - File type detection and LSP features
-- [CLI_GUIDE.md](Documentation/CLI_GUIDE.md) - Complete CLI reference
-- [COLOR_LEDGER.md](Documentation/COLOR_LEDGER.md) - Complete token color reference (all file types)
+- [Installation_GUIDE](Documentation/Installation_GUIDE.md) — install, editor setup, troubleshooting
+- [Architecture_GUIDE](Documentation/Architecture_GUIDE.md) — dual-path parser routing, providers, LSP server
+- [Grammar_GUIDE](Documentation/Grammar_GUIDE.md) — file types, special blocks (zGate), diagnostics
+- [Themes_GUIDE](Documentation/Themes_GUIDE.md) — the color SSOT and generator pipeline
+- [Prism_GUIDE](Documentation/Prism_GUIDE.md) — web highlighting bundle (`bifrost_prism_dir()`)
+- [Editors_GUIDE](Documentation/Editors_GUIDE.md) — Vim / VSCode / Cursor specifics
+- [CLI_GUIDE](Documentation/CLI_GUIDE.md) — the `zlsp` command reference
+- [Philosophy_GUIDE](Documentation/Philosophy_GUIDE.md) — string-first, SSOT, generated grammars
 
-### Editor Integration
-- [editors/vim/README.md](editors/vim/README.md) - Vim/Neovim setup
-- [editors/vscode/README.md](editors/vscode/README.md) - VSCode setup
-- [editors/cursor/README.md](editors/cursor/README.md) - Cursor IDE setup
+Examples: [basic.zolo](examples/basic.zolo) · [advanced.zolo](examples/advanced.zolo)
 
 
 ## Development
 
 ```bash
 # Clone repository
-git clone https://github.com/ZoloAi/ZoloMedia.git
-cd ZoloMedia/zlsp
+git clone https://github.com/ZoloAi/zLSP.git
+cd zLSP
 
 # Install in editable mode
 pip install -e .
@@ -662,7 +657,7 @@ zolo-lsp
 pytest
 
 # Run with coverage
-pytest --cov=core --cov-report=html
+pytest --cov=zlsp --cov-report=html
 
 # Test specific module
 pytest tests/unit/test_parser.py
