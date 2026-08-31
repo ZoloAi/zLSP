@@ -9,6 +9,7 @@ Handles Zolo's dual comment syntax:
 from typing import Tuple
 
 from zlsp.token_types import TokenType
+from zlsp.lsp_types import Diagnostic, Position, Range
 
 
 # Forward reference for type hints - actual import happens at module level
@@ -215,6 +216,30 @@ def strip_comments_and_prepare_lines(content: str) -> Tuple[list[str], dict]:
     return cleaned_lines, line_mapping
 
 
+def _pos_of(content: str, offset: int) -> Position:
+    """Convert an absolute character offset to a 0-based LSP Position."""
+    line = content[:offset].count('\n')
+    col = offset - content.rfind('\n', 0, offset) - 1
+    return Position(line, col)
+
+
+def _warn_comment_pairing(content: str, offset: int, message: str, emitter: 'TokenEmitter') -> None:
+    """Emit a Warning diagnostic on the two-character comment delimiter at offset.
+
+    The #> swallow is silent and NON-LOCAL: one unpaired delimiter relocates
+    content boundaries far below it (zOS#80), and when the span crosses an
+    exclusion list the list fails OPEN (zOS#106 shipped a private file this
+    way). These pairing anomalies are the single most expensive silent failure
+    in both 2026 field reports — hence a first-class diagnostic, not a hint.
+    """
+    start = _pos_of(content, offset)
+    emitter.diagnostics.append(Diagnostic(
+        range=Range(start, Position(start.line, start.character + 2)),
+        message=message,
+        severity=2,  # Warning
+    ))
+
+
 def strip_comments_and_prepare_lines_with_tokens(content: str, emitter: 'TokenEmitter') -> Tuple[list[str], dict]:
     """
     Strip comments and prepare lines while emitting comment tokens.
@@ -362,9 +387,32 @@ def strip_comments_and_prepare_lines_with_tokens(content: str, emitter: 'TokenEm
         # Find matching closing <#
         end = content.find('<#', start + 2)
         if end == -1:
-            # No matching <# found, skip this #>
+            # No matching <# found: parsed as literal text here, but the zOS
+            # runtime swallows to the next <# below (or EOF) — warn loudly.
+            _warn_comment_pairing(
+                content, start,
+                "Unterminated `#>` comment — no closing `<#` below. The runtime "
+                "swallows everything after it until the next `<#` anywhere in the "
+                "file (or EOF), silently removing content (zOS#80/#106).",
+                emitter,
+            )
             search_pos = start + 2
             continue
+
+        # A second `#>` inside the open span is the leak signature: an earlier
+        # opener never closed, and THIS comment's `<#` is closing it — every
+        # line between them (ignore: entries included) is being swallowed.
+        inner = content.find('#>', start + 2, end)
+        while inner != -1:
+            opener_line = content[:start].count('\n') + 1
+            _warn_comment_pairing(
+                content, inner,
+                f"`#>` inside the comment opened at line {opener_line} — that opener "
+                f"is still unclosed, so everything between them is swallowed as "
+                f"comment text (zOS#80/#106). Close the first comment with `<#`.",
+                emitter,
+            )
+            inner = content.find('#>', inner + 2, end)
 
         # Store this comment range (from #> to <# inclusive)
         comment_char_ranges.append((start, end + 2))
