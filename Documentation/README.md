@@ -1,28 +1,36 @@
 # zLSP Documentation
 
-Technical documentation for **zLSP** — the Language Server Protocol implementation
-for `.zolo` declarative files. Each hub covers one domain; start with the one that
-matches your question.
+Documentation map for zLSP — the Language Server Protocol implementation for `.zolo` files.
 
-| Hub | Covers |
-|-----|--------|
-| [Installation_GUIDE](Installation_GUIDE.md) | Install (`pip install zolo-lsp`), editor setup, verification, troubleshooting, uninstall |
-| [Architecture_GUIDE](Architecture_GUIDE.md) | The live module tree: dual-path parser routing, providers, token registry, LSP server |
-| [Grammar_GUIDE](Grammar_GUIDE.md) | File-type detection (zSpark/zEnv/zUI/zConfig/zSchema/zRaven), special blocks, zGate, diagnostics |
-| [Themes_GUIDE](Themes_GUIDE.md) | The theme SSOT (`zolo_default.yaml`), token→color ledger, generator pipeline |
-| [Prism_GUIDE](Prism_GUIDE.md) | Web highlighting: packaged Prism bundle, `bifrost_prism_dir()`, regeneration |
-| [Editors_GUIDE](Editors_GUIDE.md) | Vim/Neovim, VSCode, Cursor integrations; language ids; installer behavior |
-| [CLI_GUIDE](CLI_GUIDE.md) | `zlsp verify / test / server / info / generate-prism` reference |
-| [Philosophy_GUIDE](Philosophy_GUIDE.md) | Why zLSP exists: SSOT, string-first, generated grammars |
+Each `*_GUIDE.md` file is a hub; its `*_Guides/` folder holds focused satellite guides.
 
-**Orientation:**
-- New user? [Installation_GUIDE](Installation_GUIDE.md) → open a `.zolo` file → done.
-- Contributor? [Architecture_GUIDE](Architecture_GUIDE.md) first, then the domain hub you're touching.
-- Coming from zOS/zBifrost? [Prism_GUIDE](Prism_GUIDE.md) explains how the web bundle ships.
+## Guides
 
-**Package facts (SSOT):** PyPI package **`zolo-lsp`** (current: 1.2.0) · import as `zlsp` ·
-repo [github.com/ZoloAi/zLSP](https://github.com/ZoloAi/zLSP) · Python 3.8+.
+| Hub | Satellites | Covers |
+|-----|-----------|--------|
+| [Installation_GUIDE.md](Installation_GUIDE.md) | [Installation_Guides/](Installation_Guides/) | Installing from PyPI or source, verifying, troubleshooting |
+| [Architecture_GUIDE.md](Architecture_GUIDE.md) | [Architecture_Guides/](Architecture_Guides/) | Parser routing, providers, token registry, LSP server |
+| [Grammar_GUIDE.md](Grammar_GUIDE.md) | [Grammar_Guides/](Grammar_Guides/) | File types, zGate, zRaven, zMenu, diagnostics |
+| [Themes_GUIDE.md](Themes_GUIDE.md) | [Themes_Guides/](Themes_Guides/) | Color ledger, semantic token pipeline |
+| [Prism_GUIDE.md](Prism_GUIDE.md) | [Prism_Guides/](Prism_Guides/) | Prism.js generation, Bifrost mount, bundle freshness |
+| [Editors_GUIDE.md](Editors_GUIDE.md) | [Editors_Guides/](Editors_Guides/) | Vim, VSCode, Cursor, icons and language IDs |
+| [CLI_GUIDE.md](CLI_GUIDE.md) | [CLI_Guides/](CLI_Guides/) | `zlsp` command reference |
+| [Philosophy_GUIDE.md](Philosophy_GUIDE.md) | — | Design principles behind zLSP |
 
-> **Naming note:** the *package* is `zolo-lsp`, the *import* is `zlsp`
-> (`from zlsp.parser import loads`). There is no `zlsp` package on PyPI —
-> `pip install zlsp` simply fails.
+## Quick facts
+
+- **Install:** `pip install zolo-lsp` (NOT `pip install zlsp` — that is an old, unrelated package on PyPI)
+- **Import:** `from zlsp.parser import load, loads, dump, dumps`
+- **Repo:** [github.com/ZoloAi/zLSP](https://github.com/ZoloAi/zLSP)
+- **Current version:** 1.2.0
+
+## Source-of-truth pointers
+
+The code is always the SSOT. When docs and code disagree, trust:
+
+- Parser API and routing — `zlsp/parser/` (`parser_service.py`, `parser.py`)
+- File types — `zlsp/parser/zvaf/file_type_detector.py`
+- Token types and key sets — `zlsp/token_types.py`, `zlsp/token_registry.py`
+- Colors — `zlsp/themes/zolo_default.yaml`
+- CLI — `zlsp/cli/argument_parser.py`
+- Prism generation — `zlsp/generators/` (has its own co-located dev docs)
