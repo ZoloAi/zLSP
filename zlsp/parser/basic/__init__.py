@@ -23,6 +23,7 @@ from .value_processors import (
     parse_brace_object,
     parse_bracket_array,
     split_on_comma,
+    parens_balanced,
 )
 from .multiline_collectors import (
     collect_str_hint_multiline,
@@ -52,6 +53,7 @@ __all__ = [
     'parse_brace_object',
     'parse_bracket_array',
     'split_on_comma',
+    'parens_balanced',
     'collect_str_hint_multiline',
     'collect_dash_list',
     'collect_bracket_array',

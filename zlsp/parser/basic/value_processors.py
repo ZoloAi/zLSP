@@ -232,14 +232,38 @@ def parse_bracket_array(value: str) -> list:
     return items
 
 
+def parens_balanced(text: str) -> bool:
+    """True when every ``(`` closes and no ``)`` arrives unopened.
+
+    Gate for paren-aware comma splitting (zOS#82): parens only participate in
+    nesting when the text balances, so prose carrying a lone ``(`` or ``)``
+    (enumerations, smileys) keeps the exact pre-#82 behavior instead of a
+    half-open paren silently swallowing the rest of the object.
+    """
+    depth = 0
+    for ch in text:
+        if ch == '(':
+            depth += 1
+        elif ch == ')':
+            depth -= 1
+            if depth < 0:
+                return False
+    return depth == 0
+
+
 def split_on_comma(text: str) -> list[str]:
     """
-    Split text on commas, but respect nested brackets/braces and escape sequences.
+    Split text on commas, but respect nesting and escape sequences.
     
     Supports:
     - Nested brackets/braces: [1, 2] and {a: 1, b: 2} are kept together
+    - Balanced parentheses (zOS#82): a comma inside (...) is prose, not a
+      delimiter — 'label: Sector (e.g. Publishing, Music Label)' stays whole.
+      Unbalanced parens are ignored (fail-open to the historical behavior).
     - Escaped commas: \\, is treated as a literal comma (not a delimiter)
-    - Escapes are only processed at depth 0 (top level), preserved in nested structures
+    - Escapes are processed while at bracket/brace depth 0 (including inside
+      parens — paren content is prose, never re-parsed), and preserved inside
+      brackets/braces (nested structures re-parse and handle them)
     
     Args:
         text: Text to split
@@ -254,36 +278,48 @@ def split_on_comma(text: str) -> list[str]:
         >>> split_on_comma('a: [1, 2], b: 3')
         ['a: [1, 2]', 'b: 3']
         
+        >>> split_on_comma('label: Sector (e.g. Publishing, Music Label), type: text')
+        ['label: Sector (e.g. Publishing, Music Label)', ' type: text']
+        
         >>> split_on_comma('func(x\\, y), other')
         ['func(x, y)', 'other']
         
         >>> split_on_comma('[[x\\, y], z]')  # Escape preserved in nested array
-        ['[[x\\, y]', ' z]']
+        ['[[x\\, y], z]']
     """
     parts = []
     current = []
-    depth = 0  # Track nesting depth
+    bracket_depth = 0  # [ { nesting — content is re-parsed recursively
+    paren_depth = 0    # ( ) nesting — prose, only honored when balanced
+    nest_parens = parens_balanced(text)
     i = 0
 
     while i < len(text):
         char = text[i]
 
-        # Check for escape sequence ONLY at depth 0
-        if char == '\\' and i + 1 < len(text) and depth == 0:
+        # Escaped comma: processed at bracket depth 0 (paren content is prose,
+        # never re-parsed, so the escape must resolve here); preserved inside
+        # brackets/braces for the recursive parse to handle
+        if char == '\\' and i + 1 < len(text) and bracket_depth == 0:
             next_char = text[i + 1]
             if next_char == ',':
-                # Escaped comma at top level - add literal comma, skip backslash
                 current.append(',')
                 i += 2
                 continue
 
         if char in '[{':
-            depth += 1
+            bracket_depth += 1
             current.append(char)
         elif char in ']}':
-            depth -= 1
+            bracket_depth -= 1
             current.append(char)
-        elif char == ',' and depth == 0:
+        elif char == '(' and nest_parens:
+            paren_depth += 1
+            current.append(char)
+        elif char == ')' and nest_parens:
+            paren_depth -= 1
+            current.append(char)
+        elif char == ',' and bracket_depth == 0 and paren_depth == 0:
             # Top-level comma - split here
             parts.append(''.join(current))
             current = []

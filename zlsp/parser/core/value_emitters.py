@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Optional, Callable
 from zlsp.token_types import TokenType
 from ..basic.validators import is_zpath_value, is_env_config_value, is_valid_number
 from ..basic.type_hints import TYPE_HINT_PATTERN
+from ..basic.value_processors import parens_balanced
 
 if TYPE_CHECKING:
     from .token_emitter import TokenEmitter
@@ -266,15 +267,17 @@ def emit_array_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmit
     # Parse inner content
     inner = value[1:-1].strip()
     if inner:
-        # Split array items at top-level commas (respecting nesting)
+        # Split array items at top-level commas (respecting nesting;
+        # balanced parens are prose — mirror split_on_comma, zOS#82)
         items = []
         depth = 0
+        nest_parens = parens_balanced(inner)
         item_start = 0
 
         for i, char in enumerate(inner):
-            if char in '[{':
+            if char in '[{' or (nest_parens and char == '('):
                 depth += 1
-            elif char in ']}':
+            elif char in ']}' or (nest_parens and char == ')'):
                 depth -= 1
             elif char == ',' and depth == 0:
                 # Found item boundary
@@ -318,15 +321,17 @@ def emit_object_tokens(value: str, line: int, start_pos: int, emitter: 'TokenEmi
         # Calculate offset from stripping
         strip_offset = len(inner) - len(inner.lstrip())
         
-        # Split object pairs at top-level commas (respecting nesting)
+        # Split object pairs at top-level commas (respecting nesting;
+        # balanced parens are prose — mirror split_on_comma, zOS#82)
         pairs = []
         depth = 0
+        nest_parens = parens_balanced(inner)
         pair_start = 0
 
         for i, char in enumerate(inner):
-            if char in '[{':
+            if char in '[{' or (nest_parens and char == '('):
                 depth += 1
-            elif char in ']}':
+            elif char in ']}' or (nest_parens and char == ')'):
                 depth -= 1
             elif char == ',' and depth == 0:
                 # Found pair boundary
