@@ -7,6 +7,7 @@ All implementation delegated to modular components in parser_modules/.
 This file is THIN - it only orchestrates, doesn't implement.
 """
 
+import re
 from pathlib import Path
 from typing import Any, Union, Optional, IO
 
@@ -14,7 +15,7 @@ from typing import Any, Union, Optional, IO
 from zlsp.exceptions import ZoloParseError, ZoloDumpError
 
 # Import types
-from zlsp.lsp_types import ParseResult
+from zlsp.lsp_types import ParseResult, Diagnostic, Position, Range
 
 # Import from modular components
 from .core import (
@@ -32,6 +33,30 @@ from .basic import (
 
 # Import constants
 from .constants import FILE_EXT_ZOLO
+
+
+# ZoloParseError messages carry their position as prose ("at line N") — the
+# exception has no structured range, so the diagnostic extracts it here.
+_LINE_IN_ERROR_RE = re.compile(r"\bline (\d+)")
+
+
+def _parse_error_diagnostic(exc: ZoloParseError) -> Diagnostic:
+    """Convert a fatal parse error into an Error diagnostic at its line.
+
+    tokenize is the FEEDBACK path (editor squiggles, z lint, strict boot) —
+    swallowing a ZoloParseError here meant a duplicate named block or a bad
+    indent produced data=None with ZERO diagnostics: the exact silence
+    zOS#84 is about, on the one path built to be loud. loads() keeps raising;
+    tokenize now reports the same fault instead of hiding it.
+    """
+    message = str(exc)
+    match = _LINE_IN_ERROR_RE.search(message)
+    line = max(int(match.group(1)) - 1, 0) if match else 0
+    return Diagnostic(
+        range=Range(Position(line, 0), Position(line + 1, 0)),
+        message=message,
+        severity=1,  # Error
+    )
 
 
 # ============================================================================
@@ -79,8 +104,10 @@ def tokenize_basic(content: str, filename: Optional[str] = None) -> ParseResult:
             diagnostics=emitter.diagnostics
         )
     except ZoloParseError as e:
-        # Still return tokens even if parse failed
+        # Still return tokens even if parse failed — and surface the fault as
+        # an Error diagnostic (tokenize is the feedback path; see _parse_error_diagnostic)
         errors.append(str(e))
+        emitter.diagnostics.append(_parse_error_diagnostic(e))
         return ParseResult(
             data=None,
             tokens=emitter.get_tokens(),
@@ -131,8 +158,10 @@ def tokenize_zvaf(content: str, filename: Optional[str] = None) -> ParseResult:
             diagnostics=emitter.diagnostics
         )
     except ZoloParseError as e:
-        # Still return tokens even if parse failed
+        # Still return tokens even if parse failed — and surface the fault as
+        # an Error diagnostic (tokenize is the feedback path; see _parse_error_diagnostic)
         errors.append(str(e))
+        emitter.diagnostics.append(_parse_error_diagnostic(e))
         return ParseResult(
             data=None,
             tokens=emitter.get_tokens(),
