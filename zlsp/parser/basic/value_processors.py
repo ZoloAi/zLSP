@@ -71,6 +71,16 @@ def detect_value_type(value: str) -> Any:
     if not value:
         return ''
 
+    # Explicit empty string: a value that is EXACTLY a bare quote pair can only
+    # mean '' — there is no other way to write an empty string in value
+    # position (zOS board #18: every `default: ""` in every real schema stored
+    # the two-char literal '""', which is TRUTHY and broke emptiness checks
+    # downstream). String-first still holds: quotes WITHIN text stay content,
+    # and \"\" remains the escape hatch for a genuinely literal quote pair
+    # (decode_unicode_escapes resolves it below, bypassing this exact-match).
+    if value in ('""', "''"):
+        return ''
+
     # Array (bracket syntax)
     if value.startswith('[') and value.endswith(']'):
         return parse_bracket_array(value)

@@ -115,6 +115,41 @@ def test_empty_file():
     assert data is None or data == {}
 
 
+# ── zOS board #18: a bare quote pair in value position means EMPTY STRING ──
+# Pre-1.2.4 it parsed as the two-char literal '""' — truthy, so every schema
+# `default: ""` silently defaulted to two quote characters and downstream
+# emptiness checks lied. \"\" stays the escape hatch for a literal pair.
+
+def test_empty_quote_pair_is_empty_string():
+    assert loads('T:\n    a: ""') == {'T': {'a': ''}}
+
+
+def test_empty_single_quote_pair_is_empty_string():
+    assert loads("T:\n    a: ''") == {'T': {'a': ''}}
+
+
+def test_empty_quotes_inside_flow_object():
+    # The inline-dict schema shape: {type: str, default: ""}
+    data = loads('T:\n    f: {type: str, default: ""}')
+    assert data['T']['f'] == {'type': 'str', 'default': ''}
+
+
+def test_empty_quotes_inside_bracket_array():
+    assert loads('T:\n    a: [x, "", y]') == {'T': {'a': ['x', '', 'y']}}
+
+
+def test_quotes_within_text_stay_content():
+    # String-first: quotes inside prose are content, not syntax.
+    data = loads('T:\n    a: say "hello" twice')
+    assert data['T']['a'] == 'say "hello" twice'
+
+
+def test_escaped_quote_pair_stays_literal():
+    # The escape hatch: someone who truly wants two quote characters.
+    data = loads('T:\n    a: \\"\\"')
+    assert data['T']['a'] == '""'
+
+
 def test_comments():
     """Test that comments are ignored in parsing."""
     data = loads('''
