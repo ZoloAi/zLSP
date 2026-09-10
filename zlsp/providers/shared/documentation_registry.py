@@ -364,8 +364,20 @@ SPECIAL_KEYS = [
     Documentation(
         label="zDialog",
         title="zDialog (Form / collect-then-submit)",
-        description="Gathers inputs + controls and, onSubmit, hands zConv to an action. Props: title, fields, onSubmit, zReset, model.",
-        example="zDialog:\n  fields: [name, email]\n  onSubmit:\n    zData: { action: insert }",
+        description="Gathers inputs + controls and, onSubmit, hands zConv to an action. Props: title, fields, onSubmit, onSuccess, zReset, retry, model.",
+        example="zDialog:\n  fields: [name, email]\n  retry: true\n  onSubmit:\n    zData: { action: insert }",
+        doc_type=DocumentationType.SPECIAL_KEY,
+        category="zUI"
+    ),
+    Documentation(
+        label="retry",
+        title="retry (Stay after a red result)",
+        description=(
+            "On a RED onSubmit, zCLI shows the error then a stock zBtn "
+            "(Click [would you like to retry]? y/n). y re-collects; n leaves. "
+            "Bifrost needs none — the form stays. Not field required. Distinct from zReset."
+        ),
+        example="zDialog:\n  retry: true\n  fields: [name]\n  onSubmit:\n    zData: { action: insert }",
         doc_type=DocumentationType.SPECIAL_KEY,
         category="zUI"
     ),

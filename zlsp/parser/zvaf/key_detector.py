@@ -19,6 +19,7 @@ from zlsp.token_registry import (
     ZSCHEMA_PROPERTY_KEYS,
     CONTROL_FLOW_KEYS,
     UI_ELEMENT_PROPERTY_KEYS,
+    ZDATA_PAYLOAD_KEYS,
     DISPATCH_KEYS,
     AUTO_MULTILINE_PROPERTIES,
     ZENV_CONFIG_ROOT_KEYS,
@@ -28,6 +29,8 @@ from zlsp.token_registry import (
     UI_ELEMENT_BLOCK_TYPES,
     BLOCK_ZGATE,
     BLOCK_ZRBAC,
+    BLOCK_ZDATA,
+    BLOCK_ZDATA_PAYLOAD,
 )
 
 if TYPE_CHECKING:
@@ -146,7 +149,7 @@ class KeyDetector:
             return TokenType.ZRBAC_KEY
 
         # Gate knob keys inside zGate/zRBAC blocks (PURPLE 98)
-        # Spec knobs (authed/role/require), combinators (zAll/zAny/zNot),
+        # Spec knobs (authed/role/require/onDenied), combinators (zAll/zAny/zNot),
         # legacy navbar knobs (authenticated/require_role/zGuest) — see token_registry.
         if emitter.is_inside_block(BLOCK_ZGATE, indent) or emitter.is_inside_block(BLOCK_ZRBAC, indent):
             if key in ZGATE_OPTION_KEYS:
@@ -202,6 +205,11 @@ class KeyDetector:
                     return TokenType.UI_ELEMENT_KEY
             else:
                 return TokenType.UI_ELEMENT_KEY
+
+        # zData data:/values: children are column names (zKeys), even when
+        # the column is named name/id/action — those strings are also UI props.
+        if emitter.is_inside_block(BLOCK_ZDATA_PAYLOAD, indent):
+            return TokenType.NESTED_KEY
 
         # zShot / zRaven primitive property keys — lavender, no block-context check needed
         _ZRAVEN_PROP_KEYS = {
@@ -262,6 +270,9 @@ class KeyDetector:
             Block type name if should enter, None otherwise
         """
         from zlsp.token_registry import UI_ELEMENT_MAPPING, SPECIAL_BLOCK_MAPPING
+
+        if key in ZDATA_PAYLOAD_KEYS and emitter.is_inside_block(BLOCK_ZDATA, 10**6):
+            return BLOCK_ZDATA_PAYLOAD
         
         # Check special blocks (zRBAC, zMeta, ZNAVBAR, zMachine, zSpark)
         if key in SPECIAL_BLOCK_MAPPING:

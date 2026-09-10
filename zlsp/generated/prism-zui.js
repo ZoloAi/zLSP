@@ -39,7 +39,7 @@ Prism.languages.insertBefore('zui', 'property', {
             alias: 'constant',
         },
         'control-flow-key': {
-            pattern: /\b(?:zKnot|zList|zLoom|zShuttle|zVar|zWizard)(?=\s*:)/,
+            pattern: /\b(?:zKnot|zLoom|zShuttle|zVar|zWizard)(?=\s*:)/,
             alias: 'function',
         },
         'zsub-key': {
@@ -47,7 +47,7 @@ Prism.languages.insertBefore('zui', 'property', {
             alias: 'keyword',
         },
         'zui-element': {
-            pattern: /\b(?:zAlpha|zBtn|zCheckbox|zCode|zCrumbs|zDL|zDash|zDelegate|zDelta|zEmbed|zError|zFunc|zH0|zH1|zH2|zH3|zH4|zH5|zH6|zIcon|zImage|zInfo|zInput|zLink|zMD|zModal|zNavBar|zOL|zOmega|zPrimary|zProgress|zPsi|zRange|zSecondary|zSelect|zSignal|zSuccess|zSwiper|zTable|zTerminal|zText|zUL|zURL|zVideo|zWarning|zWizard)(?=\s*(?:\([^)]+\))?[*!]?:)/,
+            pattern: /\b(?:zAlpha|zBtn|zCheckbox|zCode|zCrumbs|zDL|zDash|zDelegate|zDelta|zEmbed|zError|zFunc|zH0|zH1|zH2|zH3|zH4|zH5|zH6|zIcon|zImage|zInfo|zInput|zLink|zList|zMD|zModal|zNavBar|zOL|zOmega|zPrimary|zProgress|zPsi|zRange|zSecondary|zSelect|zSignal|zSuccess|zSwiper|zTable|zTerminal|zText|zUL|zURL|zVideo|zWarning|zWizard)(?=\s*(?:\([^)]+\))?[*!]?:)/,
             alias: 'function',
         },
         'metadata': {
@@ -55,7 +55,7 @@ Prism.languages.insertBefore('zui', 'property', {
             alias: 'keyword',
         },
         'zui-element-property': {
-            pattern: /\b(?:_savepoint|_transaction|accept|action|alias|alt_text|anchor|auth|auth_model|authed|autoConnect|auto_advance|auto_join|autocomplete|autoplay|backfill|break_message|buckets|burst|caption|checked|color|columns|conflict_fields|conflict_key|content|count|current|data|datalist|default|delay|description|disabled|distinct|each|enabled|every|field|fields|folder|format|frame|from|full_page|function|group_by|handler|having|header|href|icon|id|indent|inputs|interactive|into|items|joins|kind|label|limit|link|loop|materialized|max|maxlength|merge|method|min|minlength|model|mounts|multi|multiple|muted|name|offset|on|onAfterInsert|onAfterUpdate|onBeforeInsert|onBeforeUpdate|onChange|onClick|onDenied|onLoad|onSubmit|onSuccess|open_prompt|options|order_by|overwrite|parent|partition_by|pattern|pause|placeholder|poster|prefix|prompt|quality|queries|readonly|recursive|rel|require|required|resolution|returning|role|routes|rows|search|search_fields|search_mode|selector|semantic|sep|set|show|show_header|sidebar|size|slides|soft_delete|source|src|step|style|suffix|tables|target|then|title|total|trail|truncate|type|using|value|values|view|where|window|with|zAPI|zAdd|zAnchor|zApp|zBack|zBrand|zBrush|zCanvas|zCase|zConv|zDiv|zDye|zExpr|zFilters|zIf|zJoin|zMul|zOmega|zPages|zPattern|zReset|zRun|zScripts|zSpool|zSub|zTitle)(?=\s*(?:\([^)]+\))?:)/,
+            pattern: /\b(?:_savepoint|_transaction|accept|action|alias|alt_text|anchor|auth|auth_model|authed|autoConnect|auto_advance|auto_join|autocomplete|autoplay|backfill|break_message|buckets|burst|caption|checked|color|columns|conflict_fields|conflict_key|content|count|current|data|datalist|default|delay|description|disabled|distinct|each|enabled|every|field|fields|folder|format|frame|from|full_page|function|group_by|handler|having|header|href|icon|id|indent|inputs|interactive|into|items|joins|kind|label|limit|link|loop|materialized|max|maxlength|merge|method|min|minlength|model|mounts|multi|multiple|muted|name|offset|on|onAfterInsert|onAfterUpdate|onBeforeInsert|onBeforeUpdate|onChange|onClick|onDenied|onLoad|onSubmit|onSuccess|open_prompt|options|order_by|overwrite|parent|partition_by|pattern|pause|placeholder|poster|prefix|prompt|quality|queries|readonly|recursive|rel|require|required|resolution|retry|returning|role|routes|rows|search|search_fields|search_mode|selector|semantic|sep|set|show|show_header|sidebar|size|slides|soft_delete|source|src|step|style|suffix|tables|target|then|title|total|trail|truncate|type|using|value|values|view|where|window|with|zAPI|zAdd|zAnchor|zApp|zBack|zBrand|zBrush|zCanvas|zCase|zConv|zDiv|zDye|zEach|zExpr|zFilters|zIf|zJoin|zMul|zOmega|zPages|zPattern|zReset|zRun|zScripts|zSpool|zSub|zTitle)(?=\s*(?:\([^)]+\))?:)/,
             alias: 'variable',
         },
         'zgate-key': {

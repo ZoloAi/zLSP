@@ -37,7 +37,7 @@ UI_ELEMENT_KEYS: Set[str] = {
     'zFunc',
     
     # Lists and tables
-    'zUL', 'zOL', 'zDL', 'zTable',
+    'zUL', 'zOL', 'zDL', 'zTable', 'zList',
     
     # Interactive elements
     'zInput', 'zCheckbox', 'zBtn', 'zSelect', 'zRange',

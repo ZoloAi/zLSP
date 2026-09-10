@@ -276,7 +276,7 @@ tokens:
   uiElementPropertyKey:
     color: lavender
     style: none
-    description: "Property keys inside UI elements (src, label, color)"
+    description: "Property keys inside UI elements and dispatch events (src, label, color, zLogin title/model/fields/zAPI/onSuccess)"
   
   zsubKey:
     color: lavender
@@ -304,7 +304,7 @@ tokens:
   zrbacOptionKey:
     color: lavender
     style: none
-    description: "Gate knob keys inside zGate/zRBAC blocks (authed, role, require, zAll/zAny/zNot, legacy authenticated/require_role/zGuest)"
+    description: "Gate knob keys inside zGate/zRBAC blocks (authed, role, require, onDenied, zAll/zAny/zNot, legacy authenticated/require_role/zGuest)"
   
   envConfigValue:
     color: bright_yellow
@@ -1057,7 +1057,7 @@ completions:
       - label: "zGate"
         detail: "Access / conditional gate"
         kind: "snippet"
-        documentation: "The one gate verb — checks WHO is asking before the thing renders. Knobs: authed, role, require (stacked lines AND). onDenied is a sibling beside the block."
+        documentation: "The one gate verb — checks WHO is asking before the thing renders. Knobs: authed, role, require, onDenied (stacked lines AND)."
         insert_text: "zGate:\n    authed: ${1:true}"
         insert_text_format: "snippet"
         priority: 1

@@ -134,6 +134,7 @@ BLOCK_ZINPUT = 'zinput'
 BLOCK_ZLINK = 'zlink'
 BLOCK_ZCHECKBOX = 'zcheckbox'
 BLOCK_ZBTN = 'zbtn'
+BLOCK_ZLIST = 'zlist'
 BLOCK_ZSELECT = 'zselect'
 BLOCK_ZRANGE = 'zrange'
 # Media + rich-UI element blocks
@@ -148,6 +149,13 @@ BLOCK_ZTERMINAL = 'zterminal'
 BLOCK_ZMENU = 'zmenu'
 BLOCK_ZEXPORT = 'zexport'
 BLOCK_ZIMPORT = 'zimport'
+BLOCK_ZLOGIN = 'zlogin'
+BLOCK_ZLOGOUT = 'zlogout'
+BLOCK_ZDIALOG = 'zdialog'
+BLOCK_ZDATA = 'zdata'
+BLOCK_ZDATA_PAYLOAD = 'zdata_payload'
+BLOCK_ZCRUD = 'zcrud'
+BLOCK_ZDISPATCH = 'zdispatch'
 BLOCK_PLURAL_SHORTHAND = 'plural_shorthand'
 BLOCK_ZMACHINE = 'zMachine'
 BLOCK_ZSPARK = 'zSpark'
@@ -158,7 +166,8 @@ BLOCK_ZMETA = 'zMeta'
 UI_ELEMENT_BLOCK_TYPES = [
     BLOCK_ZIMAGE, BLOCK_ZICON, BLOCK_ZTEXT, BLOCK_ZMD, BLOCK_ZCODE, BLOCK_ZURL, BLOCK_ZUL, BLOCK_ZOL, BLOCK_ZDL,
     BLOCK_ZTABLE, BLOCK_HEADER, BLOCK_ZCRUMBS, BLOCK_ZINPUT, BLOCK_ZLINK,
-    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE, BLOCK_ZMENU, BLOCK_ZEXPORT, BLOCK_ZIMPORT,
+    BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZLIST, BLOCK_ZSELECT, BLOCK_ZRANGE, BLOCK_ZMENU, BLOCK_ZEXPORT, BLOCK_ZIMPORT,
+    BLOCK_ZLOGIN, BLOCK_ZLOGOUT, BLOCK_ZDIALOG, BLOCK_ZDATA, BLOCK_ZCRUD, BLOCK_ZDISPATCH,
     BLOCK_ZVIDEO, BLOCK_ZEMBED, BLOCK_ZSWIPER, BLOCK_ZDASH, BLOCK_ZPROGRESS, BLOCK_ZTERMINAL,
 ]
 
@@ -195,6 +204,7 @@ UI_ELEMENT_KEYS: Set[str] = {
     'zImage', 'zIcon', 'zText', 'zMD', 'zCode', 'zURL', 'zNavBar', 'zUL', 'zOL', 'zDL', 'zTable',
     'zH0', 'zH1', 'zH2', 'zH3', 'zH4', 'zH5', 'zH6', 'zCrumbs', 'zInput', 'zLink',
     'zCheckbox', 'zBtn', 'zSelect', 'zRange', 'zFunc', 'zWizard', 'zTerminal',
+    'zList',
     # Media events (doc 08)
     'zVideo', 'zEmbed',
     # Rich-UI events (docs 22–25)
@@ -218,10 +228,10 @@ DISPATCH_KEYS: Set[str] = {
 }
 
 # Control flow / dynamic-content (zLoom) construct keys
-# NOTE: zWizard stays in UI_ELEMENT_MAPPING for consistent coloring; these are the
-# zLoom weaving events (doc 18) that render green like control flow.
+# NOTE: zWizard / zList stay in UI_ELEMENT_MAPPING so they color as zEvents
+# (orange-red) like zBtn/zText. Remaining keys are green control flow.
 CONTROL_FLOW_KEYS: Set[str] = {
-    'zLoom', 'zShuttle', 'zList', 'zKnot', 'zVar',
+    'zLoom', 'zShuttle', 'zKnot', 'zVar',
 }
 
 # UI element property keys (properties inside UI elements)
@@ -255,13 +265,13 @@ UI_ELEMENT_PROPERTY_KEYS: Set[str] = {
     # Breadcrumbs / navigation props (doc 14)
     'trail', 'header', 'zBrand', 'zBack', 'zOmega',
     # Forms / dialog (doc 13) + event hooks
-    'fields', 'onSubmit', 'onSuccess', 'zReset', 'zApp', 'inputs',
+    'fields', 'onSubmit', 'onSuccess', 'zReset', 'retry', 'zApp', 'inputs',
     'onClick', 'onLoad', 'onChange',
     'onBeforeInsert', 'onAfterInsert', 'onBeforeUpdate', 'onAfterUpdate',
     # Gate knobs (doc 21) — authed/role/require live inside zGate
     'authed', 'role', 'require', 'onDenied',
     # zLoom weaving props (doc 18) — spool/pattern names, knot ops
-    'zSpool', 'zPattern', 'zDye', 'each', 'source',
+    'zSpool', 'zPattern', 'zDye', 'each', 'zEach', 'source',
     'zAdd', 'zSub', 'zMul', 'zDiv', 'zJoin', 'zIf', 'sep', 'then',
     # zData CRUD + advanced query/write vocabulary (docs 16, 17)
     'model', 'action', 'data', 'values', 'where', 'order_by', 'distinct',
@@ -276,6 +286,12 @@ UI_ELEMENT_PROPERTY_KEYS: Set[str] = {
     'enabled', 'routes', 'mounts',
     # zUI zMeta config keys
     'zTitle', 'zBrush', 'zScripts', 'zCanvas',
+}
+
+# Column bag under zData — keys here are table columns (zKeys), not UI props.
+# `data:` / `values:` themselves stay uiElementPropertyKey; only their children flip.
+ZDATA_PAYLOAD_KEYS: Set[str] = {
+    'data', 'values',
 }
 
 # UI Element Schemas - Define valid properties per element type
@@ -361,6 +377,17 @@ UI_ELEMENT_SCHEMAS: Dict[str, Dict[str, List[str]]] = {
     'zterminal': {
         'required': ['content'],
         'optional': ['title', 'zRun', '_zClass', '_id'],
+    },
+    'zlogin': {
+        'required': ['model'],
+        'optional': ['title', 'fields', 'inputs', 'zAPI', 'onSuccess', 'zApp', 'retry', '_zClass', '_id'],
+    },
+    'zdialog': {
+        'required': [],
+        'optional': [
+            'title', 'fields', 'inputs', 'model', 'table',
+            'onSubmit', 'onSuccess', 'zReset', 'retry', '_zClass', '_id',
+        ],
     },
     # More elements to be added as needed
 }
@@ -500,6 +527,12 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
         'requires_zui': True,
         'is_shorthand': True,
     },
+    'zList': {
+        'block_type': BLOCK_ZLIST,
+        'block_name': 'zlist',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
     'zButton': {  # Alias for zBtn
         'block_type': BLOCK_ZBTN,
         'block_name': 'zbtn',
@@ -602,6 +635,44 @@ UI_ELEMENT_MAPPING: Dict[str, Dict[str, any]] = {
         'requires_zui': True,
         'is_shorthand': False,
     },
+    # Dispatch events — golden key, but their props (title/model/fields/zAPI/onSuccess)
+    # need a tracked block so they color as uiElementPropertyKey (lavender).
+    'zLogin': {
+        'block_type': BLOCK_ZLOGIN,
+        'block_name': 'zlogin',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    'zLogout': {
+        'block_type': BLOCK_ZLOGOUT,
+        'block_name': 'zlogout',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    'zDialog': {
+        'block_type': BLOCK_ZDIALOG,
+        'block_name': 'zdialog',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    'zData': {
+        'block_type': BLOCK_ZDATA,
+        'block_name': 'zdata',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    'zCRUD': {
+        'block_type': BLOCK_ZCRUD,
+        'block_name': 'zcrud',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
+    'zDispatch': {
+        'block_type': BLOCK_ZDISPATCH,
+        'block_name': 'zdispatch',
+        'requires_zui': True,
+        'is_shorthand': True,
+    },
     'zOL': {  # Ordered list
         'block_type': BLOCK_ZOL,
         'block_name': 'zol',
@@ -698,10 +769,12 @@ SPECIAL_BLOCK_MAPPING: Dict[str, Dict[str, any]] = {
 }
 
 # Gate knobs — lines inside a zGate: block (doc 21 / zAgents 15_rbac)
-# Spec knobs: authed / role / require; combinators zAll / zAny / zNot;
+# Spec knobs: authed / role / require / onDenied; combinators zAll / zAny / zNot;
 # legacy navbar zRBAC knobs: authenticated / require_role / zGuest.
+#note onDenied-on-zGate: onDenied is a knob ON the gate (same token as authed).
+#  Sibling form still parses. Doc 15_rbac / zCloud Identity / zAgents before release.
 ZGATE_OPTION_KEYS: Set[str] = {
-    'authed', 'role', 'require',
+    'authed', 'role', 'require', 'onDenied',
     'zAll', 'zAny', 'zNot',
     'authenticated', 'require_role', 'zGuest',
 }

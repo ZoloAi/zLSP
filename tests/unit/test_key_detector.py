@@ -15,7 +15,8 @@ from zlsp.parser.zvaf.key_detector import KeyDetector, detect_key_type
 from zlsp.parser.zvaf.file_type_detector import FileTypeDetector
 from zlsp.parser.core.token_emitter import TokenEmitter
 from zlsp.token_registry import (
-    BLOCK_ZRBAC, BLOCK_ZNAVBAR, BLOCK_ZMETA, BLOCK_ZIMAGE
+    BLOCK_ZRBAC, BLOCK_ZNAVBAR, BLOCK_ZMETA, BLOCK_ZIMAGE, BLOCK_ZLOGIN,
+    BLOCK_ZDIALOG, BLOCK_ZDATA, BLOCK_ZDATA_PAYLOAD,
 )
 from zlsp.token_types import TokenType
 
@@ -125,7 +126,7 @@ class TestNestedKeyDetection:
         # Spec knobs inside a zGate block
         emitter = make_emitter("zUI.zVaF.zolo")
         emitter.enter_block(BLOCK_ZGATE, 2, 0)
-        for key in ['authed', 'role', 'require', 'zAll', 'zAny', 'zNot']:
+        for key in ['authed', 'role', 'require', 'onDenied', 'zAll', 'zAny', 'zNot']:
             token_type = KeyDetector.detect_nested_key(key, emitter, 4)
             assert token_type == TokenType.ZRBAC_OPTION_KEY
 
@@ -205,6 +206,20 @@ class TestUIElementKeys:
         emitter = make_emitter("zUI.zVaF.zolo")
         token_type = KeyDetector.detect_nested_key('zText', emitter, 2)
         assert token_type == TokenType.UI_ELEMENT_KEY
+
+    def test_zlist_key_is_ui_event(self):
+        """zList is a zEvent (orange-red), not green control-flow"""
+        emitter = make_emitter("zUI.zVaF.zolo")
+        assert KeyDetector.detect_nested_key('zList', emitter, 2) == TokenType.UI_ELEMENT_KEY
+
+    def test_zlist_source_is_property(self):
+        """source/each under zList are UI props (lavender), like label on zBtn"""
+        from zlsp.token_registry import BLOCK_ZLIST
+        emitter = make_emitter("zUI.zVaF.zolo")
+        emitter.enter_block(BLOCK_ZLIST, 2, 0)
+        assert KeyDetector.detect_nested_key('source', emitter, 4) == TokenType.UI_ELEMENT_PROPERTY_KEY
+        assert KeyDetector.detect_nested_key('zEach', emitter, 4) == TokenType.UI_ELEMENT_PROPERTY_KEY
+        assert KeyDetector.detect_nested_key('each', emitter, 4) == TokenType.UI_ELEMENT_PROPERTY_KEY
     
     def test_zmd_key(self):
         """Test zMD detection in zUI files"""
@@ -235,6 +250,39 @@ class TestUIElementKeys:
             token_type = KeyDetector.detect_nested_key(key, emitter, 2)
             assert token_type == TokenType.NESTED_KEY
     
+    def test_zlogin_property_keys(self):
+        """zLogin props color as UI properties (lavender) once the block is entered"""
+        emitter = make_emitter("zUI.zVaF.zolo")
+        assert KeyDetector.detect_nested_key('zLogin', emitter, 2) == TokenType.DISPATCH_KEY
+        assert KeyDetector.should_enter_block('zLogin', emitter) == 'zlogin'
+
+        emitter.enter_block(BLOCK_ZLOGIN, 2, 0)
+        for key in ['title', 'model', 'fields', 'zAPI', 'onSuccess']:
+            token_type = KeyDetector.detect_nested_key(key, emitter, 4)
+            assert token_type == TokenType.UI_ELEMENT_PROPERTY_KEY
+
+    def test_zdialog_retry_is_property_key(self):
+        """retry: true colors as a zDialog property (lavender), not a nested key."""
+        emitter = make_emitter("zUI.zVaF.zolo")
+        assert KeyDetector.detect_nested_key('zDialog', emitter, 2) == TokenType.DISPATCH_KEY
+        assert KeyDetector.should_enter_block('zDialog', emitter) == 'zdialog'
+
+        emitter.enter_block(BLOCK_ZDIALOG, 2, 0)
+        for key in ['title', 'fields', 'onSubmit', 'onSuccess', 'zReset', 'retry']:
+            token_type = KeyDetector.detect_nested_key(key, emitter, 4)
+            assert token_type == TokenType.UI_ELEMENT_PROPERTY_KEY
+
+    def test_zdata_payload_columns_are_nested_keys(self):
+        """Columns under zData.data: are zKeys, even when named name/id/action."""
+        emitter = make_emitter("zUI.zVaF.zolo")
+        emitter.enter_block(BLOCK_ZDATA, 2, 0)
+        assert KeyDetector.detect_nested_key('data', emitter, 4) == TokenType.UI_ELEMENT_PROPERTY_KEY
+        assert KeyDetector.should_enter_block('data', emitter) == BLOCK_ZDATA_PAYLOAD
+
+        emitter.enter_block(BLOCK_ZDATA_PAYLOAD, 4, 1)
+        for key in ['name', 'slug', 'owner_id', 'id', 'action', 'type']:
+            assert KeyDetector.detect_nested_key(key, emitter, 6) == TokenType.NESTED_KEY
+
     def test_ui_element_option_keys(self):
         """Test UI element option keys inside a UI element block"""
         emitter = make_emitter("zUI.zVaF.zolo")

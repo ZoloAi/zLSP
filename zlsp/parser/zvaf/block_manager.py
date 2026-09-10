@@ -8,7 +8,8 @@ from zlsp.token_registry import (
     BLOCK_ZRBAC, BLOCK_ZIMAGE, BLOCK_ZTEXT, BLOCK_ZMD, BLOCK_ZURL,
     BLOCK_ZCRUMBS, BLOCK_HEADER, BLOCK_ZUL, BLOCK_ZTABLE, BLOCK_ZINPUT,
     BLOCK_ZCHECKBOX, BLOCK_ZBTN, BLOCK_ZSELECT, BLOCK_ZRANGE,
-    BLOCK_ZMACHINE, BLOCK_ZSPARK, BLOCK_ZNAVBAR, BLOCK_ZMETA
+    BLOCK_ZMACHINE, BLOCK_ZSPARK, BLOCK_ZNAVBAR, BLOCK_ZMETA,
+    BLOCK_ZDATA, BLOCK_ZDATA_PAYLOAD, ZDATA_PAYLOAD_KEYS,
 )
 from ..zvaf.key_detector import KeyDetector
 
@@ -46,6 +47,10 @@ def enter_block_for_key(core_key: str, indent: int, line_num: int, emitter: 'Tok
         emitter: Token emitter with block tracking
     """
     from zlsp.token_registry import UI_ELEMENT_MAPPING, SPECIAL_BLOCK_MAPPING
+
+    if core_key in ZDATA_PAYLOAD_KEYS and emitter.is_inside_block(BLOCK_ZDATA, indent):
+        emitter.enter_block(BLOCK_ZDATA_PAYLOAD, indent, line_num)
+        return
     
     # Check special blocks first (zRBAC, zMeta, ZNAVBAR, zMachine, zSpark)
     if core_key in SPECIAL_BLOCK_MAPPING:
